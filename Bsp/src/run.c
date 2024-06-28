@@ -37,7 +37,7 @@ void Power_Off(void)
 void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t data1,uint8_t data2)
 {
 	
-	static uint8_t hum1,hum2,temp1,temp2; 
+	
 
    switch(ulid){
 
@@ -72,25 +72,8 @@ void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t data1,uint8_t data2)
 	    run_t.gReal_humtemp[0] = data1 ;  //Humidity 
         run_t.gReal_humtemp[1] = data2;  // temperature
 	   
-       
-        hum1 =  run_t.gReal_humtemp[0]/10 ;  //Humidity 
-        hum2 =  run_t.gReal_humtemp[0]%10;
-        
-        temp1 = run_t.gReal_humtemp[1]/10 ;  // temperature
-        temp2 = run_t.gReal_humtemp[1]%10;
-
-
-        if(run_t.gPower_On ==power_on){
-         //temperature 
-         TM1639_Write_2bit_TempData(temp1,temp2); 
-	     TM1639_Write_2bit_HumData(hum1,hum2);
-	      
-        }
-
-
-  
- 
-      break;
+      
+       break;
 
 	  case ANSWER_DATA:
           
@@ -189,7 +172,7 @@ void Power_Off_Fun(void)
  
 		run_t.gPlasma=0;
 		run_t.gDry =0;
-		run_t.gBug =0;
+		gpro_t.gmouse = 0;
 		
         run_t.gPower_On =power_off;
 		run_t.gTimer_set_temp_times=0; //conflict with send temperatur value 

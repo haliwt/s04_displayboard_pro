@@ -59,7 +59,7 @@ void power_on_run_handler(void)
            
             run_t.gTimer_detect_mb_receive_flag =0;
 			Power_On_Fun();
-			
+			run_t.gTimer_display_dht11 = 20; //at once display temperature and humidity value.
 			run_t.gRunCommand_label= SPECIAL_DISP;
 
             break;
@@ -92,7 +92,9 @@ void power_on_run_handler(void)
 					break;
 
 					case 1:
-               			RunLocal_Dht11_Data_Process();
+                 
+               			 RunLocal_Dht11_Data_Process();
+                       
 				        step_state=2;
 	                    
 				   break;
@@ -107,10 +109,10 @@ void power_on_run_handler(void)
 
                           }
 
-                       if(gpro_t.answer_signal_flag == 0){
-
-                            SendData_PowerOff(1);  
-                       }
+//                       if(gpro_t.answer_signal_flag == 0 &&  ){
+//
+//                            SendData_PowerOff(1);  
+//                       }
 
                      step_state=0;
                     break;
@@ -184,7 +186,7 @@ void power_off_run_handler(void)
 		      }
 			  else if(run_t.gTimer_fan_continue > 59){
                     run_t.gTimer_fan_continue =0;
-				   LED_FAN_OFF() ;
+				  // LED_FAN_OFF() ;
 				   run_t.gFan_RunContinue ++;
                    power_on_off_flag = 1;
 

@@ -99,17 +99,12 @@ typedef struct __RUN{
    uint8_t  gPlasma;
  
    uint8_t  gDry;
-   uint8_t  gBug;
+  
 
 
    uint8_t  ptc_warning;
    uint8_t  fan_warning;
 
-
-
-
-
-  
    //key ref
    uint8_t recoder_start_conuter_flag;
 
@@ -133,16 +128,8 @@ typedef struct __RUN{
    uint8_t set_up_temp_flag;
    uint8_t gSet_up_times;
 
-
-  
-   
-
    uint8_t gTimer_display_dht11;
   
-
-   uint8_t first_power_on_times;
-   
- 
 
    uint8_t Timer_model_flag;
    uint8_t temperature_set_flag;
@@ -153,18 +140,6 @@ typedef struct __RUN{
 	
    uint8_t gReal_humtemp[2];
    uint8_t rx_mb_data_tag;
- 
-
-   //timer ref
-  
-
-  // uint8_t input_timer_timing_numbers_flag;
-
-  //usart ref
-
-
-	
-    
  
    /***/
    uint8_t 	gTimer_numbers_one_two_blink;

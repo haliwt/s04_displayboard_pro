@@ -71,15 +71,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //usart
       
 	   run_t.gTimer_usart_error++;
-	 
-   
-		
-
-		
-
-		
-		
-	}
+       
+	 }
     
     }
  }

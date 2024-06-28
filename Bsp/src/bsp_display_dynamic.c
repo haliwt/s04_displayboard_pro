@@ -65,11 +65,7 @@ static void DisplayPanel_DHT11_Value(void)
 *******************************************************/
 void RunLocal_Dht11_Data_Process(void)
 {
-   if(run_t.first_power_on_times==1){
-      run_t.first_power_on_times++;
-       Display_DHT11_Value();
-  
-  }
+
   if(run_t.gTimer_display_dht11 > 9){
 	    run_t.gTimer_display_dht11=0;
        	Display_DHT11_Value();
