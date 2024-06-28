@@ -182,7 +182,7 @@ void power_off_run_handler(void)
 
             if(run_t.gTimer_fan_continue < 61 && run_t.gFan_RunContinue == 1 && power_on_off_flag !=0){
                    
-					LED_FAN_ON() ;
+					//LED_FAN_ON() ;
 		      }
 			  else if(run_t.gTimer_fan_continue > 59){
                     run_t.gTimer_fan_continue =0;
