@@ -167,7 +167,7 @@ void Set_TimerTiming_Number_Value(void)
 void set_timer_fun_led_blink(void)
 {
 
-   if(gpro_t.set_timer_timing_doing_value==1){
+   if(gpro_t.set_timer_timing_doing_value==1 && run_t.gPower_On == power_on){
 
    
     if(run_t.gTimer_smg_timing < 18){
@@ -184,6 +184,11 @@ void set_timer_fun_led_blink(void)
 
 
     }
+
+   }
+   else{
+      LED_AI_OFF();
+
 
    }
 
