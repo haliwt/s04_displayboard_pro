@@ -170,7 +170,7 @@ void set_timer_fun_led_blink(void)
        gpro_t.set_timer_first_smg_blink_flag++ ;
 
         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
-
+         LED_AI_OFF();
        
         gpro_t.gTimer_4bitsmg_blink_times=0;
 
@@ -181,10 +181,10 @@ void set_timer_fun_led_blink(void)
        
        
        TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
-        
+       LED_AI_ON();
         
     }
-    else if(gpro_t.gTimer_4bitsmg_blink_times > 79 && gpro_t.gTimer_4bitsmg_blink_times < 120 ){
+    else if(gpro_t.gTimer_4bitsmg_blink_times > 79 && gpro_t.gTimer_4bitsmg_blink_times < 100 ){//120
        
       
       // if(smg_blink == 1){
@@ -193,7 +193,7 @@ void set_timer_fun_led_blink(void)
           TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
       // }
           //Display_DHT11_Value();
-        
+         LED_AI_OFF();
 
     }
     else{
