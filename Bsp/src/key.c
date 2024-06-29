@@ -160,7 +160,7 @@ void Set_TimerTiming_Number_Value(void)
 
 void set_timer_fun_led_blink(void)
 {
-    static uint8_t smg_blink;
+  //  static uint8_t smg_blink;
  
    if(gpro_t.set_timer_timing_doing_value==1 && run_t.gPower_On == power_on){
 
@@ -192,13 +192,13 @@ void set_timer_fun_led_blink(void)
           
           TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
       // }
-          Display_DHT11_Value();
+          //Display_DHT11_Value();
         
 
     }
     else{
     gpro_t.gTimer_4bitsmg_blink_times=0;
-     smg_blink =0;
+   //  smg_blink =0;
    //  TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
         
 

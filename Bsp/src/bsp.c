@@ -144,7 +144,7 @@ void mode_key_fun(void)
 {
 
    if(gpro_t.set_timer_timing_doing_value  == 0){
-       run_t.ai_model_flag = NO_AI_MODE; //set up timer timing value 
+  
        gpro_t.set_timer_timing_doing_value = 1;
        run_t.gTimer_key_timing = 0;
        run_t.gTimer_smg_blink_times =0;
@@ -158,6 +158,7 @@ void mode_key_fun(void)
           gpro_t.set_timer_timing_value_success  = TIMER_SUCCESS;
           run_t.gTimer_timer_timing_counter = 0;
            LED_AI_OFF();
+         run_t.ai_model_flag = NO_AI_MODE; //set up timer timing value 
          run_t.timer_dispTime_hours = run_t.temporary_timer_dispTime_hours ;
          run_t.timer_dispTime_minutes = run_t.temporary_timer_dispTime_minutes ;
 
