@@ -186,12 +186,10 @@ void set_timer_fun_led_blink(void)
     }
 
    }
-   else{
+   if(run_t.gPower_On == power_off){
       LED_AI_OFF();
-
-
+       
    }
-
 }
 
  
