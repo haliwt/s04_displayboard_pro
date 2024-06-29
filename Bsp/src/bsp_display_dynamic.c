@@ -13,7 +13,7 @@ void (*display_fan_speed_value)(uint8_t fan_level);
 
 
 
-static void DisplayPanel_DHT11_Value(void);
+//static void DisplayPanel_DHT11_Value(void);
 
 static void Display_Works_Time_Fun(void);
 static void WorksTime_DonotDisplay_Fun(void);

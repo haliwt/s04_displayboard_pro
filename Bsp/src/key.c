@@ -150,14 +150,8 @@ void Set_TimerTiming_Number_Value(void)
    //set timer timing value 
     if(run_t.gTimer_key_timing > 4){
 		run_t.gTimer_key_timing =0;		
-		
-      //  run_t.timer_dispTime_hours =0;
-	//	run_t.timer_dispTime_minutes =0;
-
-        gpro_t.set_timer_timing_doing_value  =0 ;
-	
-		
-        run_t.gTimer_timer_timing_counter=0;
+		gpro_t.set_timer_timing_doing_value  =0 ;
+	    run_t.gTimer_timer_timing_counter=0;
 	
 	 }
 
@@ -166,30 +160,87 @@ void Set_TimerTiming_Number_Value(void)
 
 void set_timer_fun_led_blink(void)
 {
-
+    static uint8_t smg_blink;
+ 
    if(gpro_t.set_timer_timing_doing_value==1 && run_t.gPower_On == power_on){
 
+    
+
+    if(gpro_t.set_timer_first_smg_blink_flag ==0){
+       gpro_t.set_timer_first_smg_blink_flag++ ;
+
+        TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
+
+       
+        gpro_t.gTimer_4bitsmg_blink_times=0;
+
+    }
+    else{
    
-    if(run_t.gTimer_smg_timing < 18){
-    LED_AI_ON();
+    if(gpro_t.gTimer_4bitsmg_blink_times < 80 ){ //180ms
+       
+       
+       TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
+        
+        
     }
-    else if(run_t.gTimer_smg_timing > 17 && run_t.gTimer_smg_timing < 35){
-    LED_AI_OFF();
+    else if(gpro_t.gTimer_4bitsmg_blink_times > 79 && gpro_t.gTimer_4bitsmg_blink_times < 120 ){
+       
+      
+      // if(smg_blink == 1){
+        //  smg_blink ++;
+          
+          TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
+      // }
+          Display_DHT11_Value();
+        
 
     }
-    else if(run_t.gTimer_smg_timing > 34){
-    run_t.gTimer_smg_timing=0;  
-    LED_AI_ON();
+    else{
+    gpro_t.gTimer_4bitsmg_blink_times=0;
+     smg_blink =0;
+   //  TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
+        
+
+    }
+    }
+   // RunLocal_Dht11_Data_Process();
 
 
+
+    
+    
+     if(run_t.gTimer_smg_blink_times < 20){
+           LED_AI_ON();
+         }
+         else if(run_t.gTimer_smg_blink_times > 19 && run_t.gTimer_smg_blink_times< 41){
+         LED_AI_OFF();
+    
+        }
+        else {
+        
+         run_t.gTimer_smg_blink_times=0;  
+         
+       }
+ 
 
     }
 
-   }
+
+
+
+
+   
    if(run_t.gPower_On == power_off){
       LED_AI_OFF();
        
    }
+
+   //input set timer timing numbers is blink.
+
+   
+
+   
 }
 
  
@@ -205,7 +256,7 @@ void Set_Temperature_Value(void)
 {
      static uint8_t counter_times;
 	  //waiting for 4 s 
-	  if(run_t.gTimer_key_temp_timing > 1 && run_t.set_temperature_special_value ==1){
+	  if(run_t.gTimer_key_temp_timing > 1 && run_t.set_temperature_special_value ==1 && gpro_t.set_timer_timing_doing_value==0){
 			
 			
 			run_t.set_temperature_special_value =2;
@@ -213,11 +264,11 @@ void Set_Temperature_Value(void)
 
 	 }
 	 //temperature of smg of LED blink .
-	  if(run_t.set_temperature_special_value ==2){
+	  if(run_t.set_temperature_special_value ==2 && gpro_t.set_timer_timing_doing_value==0){
 	  	
 	  	
 		  if(run_t.gTimer_set_temp_times < 15 ){ // 4
-		        TM1639_Write_2bit_SetUp_TempData(0,0,1);
+		        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,1);
           }
 		  else if(run_t.gTimer_set_temp_times > 14 && run_t.gTimer_set_temp_times < 29){
 		  	

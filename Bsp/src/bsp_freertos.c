@@ -218,7 +218,7 @@ static void vTaskRunPro(void *pvParameters)
               else if(key_mode_flag == 1){
                  key_mode_flag++;
                  SendData_Buzzer();
-                mode_key_fun();
+                 mode_key_fun();
 
                   
 
@@ -293,10 +293,30 @@ static void vTaskRunPro(void *pvParameters)
 
       if(run_t.gPower_On == power_on){
 
-       power_on_run_handler();
+      
+       if((key_add_flag ==2 ||  key_dec_flag==2) && gpro_t.set_timer_timing_doing_value==1){
+           key_add_flag++;
+           key_dec_flag++;
+
        
+         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
+
+       }
+       else if((key_add_flag ==2 ||  key_dec_flag==2) && gpro_t.set_timer_timing_doing_value==0){
+            key_add_flag++;
+           key_dec_flag++;
+
+         TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
+
+
+       }
+
+       
+       power_on_run_handler();
+             
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
+     
        
        }
        else{

@@ -3,7 +3,12 @@
 
 pro_run_t  gpro_t;
 
+
+
 uint8_t hours_one,hours_two,minutes_one,minutes_two;
+
+uint8_t  step_state;
+
 
 
 void bsp_init(void)
@@ -47,8 +52,8 @@ if(run_t.gPower_On==power_off){
 ******************************************************************************/
 void power_on_run_handler(void)
 {
-  // static uint8_t power_off_set_flag;
-   static uint8_t  step_state;
+
+ //  static uint8_t  step_state;
    switch(run_t.gRunCommand_label){
 
       case RUN_POWER_ON:
@@ -117,11 +122,7 @@ void power_on_run_handler(void)
                      step_state=0;
                     break;
 
-                   
-
-                  
-
-                }
+              }
             
              }    
       break;
@@ -134,7 +135,7 @@ void power_on_run_handler(void)
 /******************************************************************************
 	*
 	*Function Name:void mode_key_fun(void)
-	*Funcion: 
+	*Funcion: exit this mode set fun ,
 	*Input Ref: NO
 	*Return Ref:NO
 	*
@@ -142,11 +143,40 @@ void power_on_run_handler(void)
 void mode_key_fun(void)
 {
 
- 
-   run_t.ai_model_flag = NO_AI_MODE; //set up timer timing value 
-   gpro_t.set_timer_timing_doing_value = 1;
-   run_t.gTimer_key_timing = 0;
-   run_t.gTimer_smg_timing =0;
+   if(gpro_t.set_timer_timing_doing_value  == 0){
+       run_t.ai_model_flag = NO_AI_MODE; //set up timer timing value 
+       gpro_t.set_timer_timing_doing_value = 1;
+       run_t.gTimer_key_timing = 0;
+       run_t.gTimer_smg_blink_times =0;
+       //gpro_t.gTimer_4bitsmg_blink_times=0; //4bit sumaguan blink time.
+       gpro_t.set_timer_first_smg_blink_flag=0;
+   }
+   else{ //the send be pressed is confirm 
+
+        gpro_t.set_timer_timing_doing_value  = 0;
+        if(run_t.temporary_timer_dispTime_hours >0 || run_t.temporary_timer_dispTime_minutes >0){
+          gpro_t.set_timer_timing_value_success  = TIMER_SUCCESS;
+          run_t.gTimer_timer_timing_counter = 0;
+           LED_AI_OFF();
+         run_t.timer_dispTime_hours = run_t.temporary_timer_dispTime_hours ;
+         run_t.timer_dispTime_minutes = run_t.temporary_timer_dispTime_minutes ;
+
+         run_t.ai_model_flag =NO_AI_MODE;
+
+          Display_Timing(run_t.timer_dispTime_hours,run_t.timer_dispTime_minutes);
+         
+
+         }
+         else{
+            run_t.ai_model_flag =AI_MODE;
+            gpro_t.set_timer_timing_value_success  = 0;
+            LED_AI_ON();
+
+         }
+
+
+
+   }
 
  
  }
@@ -246,11 +276,9 @@ void ai_on_off_handler(void)
         }
         break;
 
+        #if 0
         case 1://ai key is confirm function . set timer timing numbers 
 
-        
-        
-      
         SendData_Buzzer();
 
         gpro_t.set_timer_timing_doing_value  = 0;
@@ -275,6 +303,7 @@ void ai_on_off_handler(void)
          }
         
          break;
+         #endif 
 
         }
 
@@ -354,12 +383,15 @@ void key_add_fun(void)
         gpro_t.manual_turn_off_dry_flag =0; //after set temperature allow shut off dry .
       
         
-         TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
+      //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
     break;
+    
 
     case 1: //set timer timing value 
         SendData_Buzzer();
+
+       
         run_t.gTimer_key_timing =0;
     
         if(run_t.temporary_timer_dispTime_hours !=24)
@@ -396,15 +428,7 @@ void key_add_fun(void)
     run_t.minutes_one_decade_bit =  run_t.temporary_timer_dispTime_minutes /10;
 
     run_t.minutes_one_unit_bit = run_t.temporary_timer_dispTime_minutes %10;
-    
-
-    
-    TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
-
-  
-
-     
-
+ //   TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
     break;
 
     }
@@ -427,6 +451,7 @@ void key_dec_fun(void)
     switch(gpro_t.set_timer_timing_doing_value){
 
     case 0: //set temperature value
+
         SendData_Buzzer();
 
         //setup temperature of value,minimum 20,maximum 40
@@ -444,7 +469,7 @@ void key_dec_fun(void)
         run_t.gTimer_time_colon=0;
         gpro_t.manual_turn_off_dry_flag =0; //after set temperature allow shut off dry .
 
-        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
+     //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
         
 
     break;
@@ -452,7 +477,7 @@ void key_dec_fun(void)
     case 1: //set timer timing value
     SendData_Buzzer();
 
-
+    
     run_t.gTimer_key_timing =0;
     
     run_t.temporary_timer_dispTime_minutes =  run_t.temporary_timer_dispTime_minutes -30;
@@ -483,7 +508,7 @@ void key_dec_fun(void)
     
 
     
-    TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
+  //  TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
 
   
 
