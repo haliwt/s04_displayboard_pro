@@ -378,11 +378,7 @@ static void vTaskDecoderPro(void *pvParameters)
         
 		
          }
-         else{
-             
-               set_timer_fun_led_blink();
-
-        }
+      
        
 		
       }
