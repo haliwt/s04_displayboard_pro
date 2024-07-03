@@ -65,6 +65,7 @@ void power_on_run_handler(void)
             run_t.gTimer_detect_mb_receive_flag =0;
 			Power_On_Fun();
 			run_t.gTimer_display_dht11 = 20; //at once display temperature and humidity value.
+			gpro_t.set_timer_timing_doing_value = 0;
 			run_t.gRunCommand_label= SPECIAL_DISP;
 
             break;
