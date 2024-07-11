@@ -113,7 +113,7 @@ static void vTaskRunPro(void *pvParameters)
     
     static uint8_t power_on_off_flag, fan_on_flag, fan_on_off_flag ;
     static uint8_t dry_on_off_flag,plasma_on_off_flag, ai_on_off_flag ;
-    static uint8_t key_add_flag,key_dec_flag,key_mode_flag;
+    static uint8_t key_add_flag,key_dec_flag,key_mode_flag,power_on_first;
     
     while(1)
     {
@@ -193,7 +193,8 @@ static void vTaskRunPro(void *pvParameters)
     }
     else{
 
-           if(power_on_off_flag == 1){
+     
+        if(power_on_off_flag == 1){
              power_on_off_flag++;
 
              power_on_handler();
@@ -316,6 +317,14 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
+       
+//          if(power_on_first ==0 ){
+//        
+//           power_on_first++;
+//           gpro_t.set_timer_timing_value_success =  1;
+//           run_t.timer_dispTime_hours =0;
+//           run_t.timer_dispTime_minutes =2;
+//        }
      
        
        }

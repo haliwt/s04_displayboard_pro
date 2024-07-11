@@ -367,6 +367,7 @@ void Display_SmgTiming_Value(void)
 			run_t.timer_dispTime_minutes=0;
              
 	        run_t.gPower_On = power_off;
+            run_t.power_off_flag = 0;
             SendData_PowerOff(0);
 			power_off_run_handler();
 			
