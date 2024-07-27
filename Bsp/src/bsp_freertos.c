@@ -318,13 +318,6 @@ static void vTaskRunPro(void *pvParameters)
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
        
-//          if(power_on_first ==0 ){
-//        
-//           power_on_first++;
-//           gpro_t.set_timer_timing_value_success =  1;
-//           run_t.timer_dispTime_hours =0;
-//           run_t.timer_dispTime_minutes =2;
-//        }
      
        
        }
@@ -350,7 +343,7 @@ static void vTaskDecoderPro(void *pvParameters)
 {
     MSG_T *ptMsg;
 	BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(30); /* 设置最大等待时间为200ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(50); /* 设置最大等待时间为30ms */
 	//uint8_t uldata,usdata;
 	
     while(1)
@@ -372,18 +365,6 @@ static void vTaskDecoderPro(void *pvParameters)
      
          Receive_MainBoard_Data_Handler(ulid,uldata,usdata);
        
-         /* 成功接收，  并通过串口将数据打印出来 */
-			
-		    //printf("ptMsg->ucMessageID = %d\r\n",ptMsg->ucMessageID);
-            ///printf("ptMsg->usData[0] = %d\r\n",ptMsg->usData[0]);
-            //printf("ptMsg->ulData[0] = %d\r\n",ptMsg->ulData[0]);
-      
-
-          
-          //  HAL_UART_Transmit(&huart1, &uldata, 1, 0xffff);
-            
-          //  HAL_UART_Transmit(&huart1, &space_key, 1, 0xffff);
-          //  HAL_UART_Transmit(&huart1, &usdata, 1, 0xffff);
         
 		
          }
@@ -511,14 +492,14 @@ void AppTaskCreate (void)
                  "vTaskRunPro",  		/* 任务各1�7    */
                  128,         		/* stack大小，单位word，也就是4字节 */
                  NULL,        		/* 任务参数  */
-                 2,           		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
+                 1,           		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
                  &xHandleTaskRunPro); /* 任务句柄  */
 	
 	xTaskCreate( vTaskDecoderPro,     		/* 任务函数  */
                  "vTaskDecoderPro",   		/* 任务各1�7    */
                  128,             		/* 任务栈大小，单位word，也就是4字节 */
                  NULL,           		/* 任务参数  */
-                 1,               		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
+                 2,               		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
                  &xHandleTaskDecoderPro );  /* 任务句柄  */
 	
 	
