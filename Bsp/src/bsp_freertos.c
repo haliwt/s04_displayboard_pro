@@ -63,15 +63,15 @@ typedef struct Msg
 
 MSG_T   g_tMsg; /* 定义丢�个结构体用于消息队列 */
 
-uint8_t decoder_flag;
+volatile uint8_t decoder_flag;
 
-uint8_t ulid,uldata,usdata;
+volatile uint8_t ulid,uldata,usdata;
 
-//uint8_t  space_key = 0x20;
 
 uint32_t mode_key_long_conter;
 
 uint8_t rxcmd[1];
+
 
 
 /*
@@ -386,22 +386,18 @@ static void vTaskDecoderPro(void *pvParameters)
 static void vTaskStart(void *pvParameters)
 {
 	
-    static uint8_t dc_power_On;
+
     while(1)
     {
       
     if(POWER_KEY_VALUE()  ==KEY_DOWN){
 
-         if(dc_power_On ==0){
-            dc_power_On++;
-
-         }
-         else{
-            xTaskNotify(xHandleTaskRunPro, /* 目标任务 */
+           
+           xTaskNotify(xHandleTaskRunPro, /* 目标任务 */
                         POWER_KEY_0,            /* 设置目标任务事件标志位bit0  */
                          eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
 
-        }      
+             
 
      }
      else if( MODEL_KEY_VALUE() ==KEY_DOWN){

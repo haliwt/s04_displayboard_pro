@@ -4,6 +4,7 @@
 pro_run_t  gpro_t;
 
 
+volatile uint8_t power_on_of_id ;
 
 uint8_t hours_one,hours_two,minutes_one,minutes_two;
 
@@ -21,7 +22,9 @@ void bsp_init(void)
 
 void power_on_handler(void)
 {
-    if(run_t.gPower_On==power_off){
+
+    power_on_of_id = power_on_of_id ^ 0x01;
+    if(power_on_of_id == 1){
         run_t.gTimer_set_temp_times=0; //conflict with send temperatur value
 
         run_t.gRunCommand_label =RUN_POWER_ON;
@@ -33,7 +36,7 @@ void power_on_handler(void)
 
 
     }
-    else if(run_t.gPower_On==power_on){
+    else{
 
         SendData_PowerOff(0);
         run_t.gPower_On = power_off;
