@@ -111,9 +111,9 @@ static void vTaskRunPro(void *pvParameters)
 	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(40); /* 设置最大等待时间为500ms */
 	uint32_t ulValue;
     
-    static uint8_t power_on_off_flag, fan_on_flag, fan_on_off_flag ;
+    static uint8_t power_on_off_flag,fan_on_off_flag ;
     static uint8_t dry_on_off_flag,plasma_on_off_flag, ai_on_off_flag ;
-    static uint8_t key_add_flag,key_dec_flag,key_mode_flag,power_on_first;
+    static uint8_t key_add_flag,key_dec_flag,key_mode_flag;
     
     while(1)
     {
@@ -321,7 +321,7 @@ static void vTaskRunPro(void *pvParameters)
      
        
        }
-       else{
+       else if(run_t.gPower_On == power_off){
 
           power_off_run_handler();
 
@@ -453,13 +453,13 @@ static void vTaskStart(void *pvParameters)
                             eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
 
      }
-     else if(PLASMA_KEY_VALUE()==1){
+     else if(PLASMA_KEY_VALUE()==KEY_DOWN){
 
             xTaskNotify(xHandleTaskRunPro, /* 目标任务 */
                             PLASMA_KEY_5,            /* 设置目标任务事件标志位bit0  */
                             eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/
      }
-     else if(DRY_KEY_VALUE()==1){
+     else if(DRY_KEY_VALUE()==KEY_DOWN){
             xTaskNotify(xHandleTaskRunPro, /* 目标任务 */
                             DRY_KEY_6,            /* 设置目标任务事件标志位bit0  */
                             eSetBits);          /* 将目标任务的事件标志位与BIT_0进行或操作，  将结果赋值给事件标志位。*/

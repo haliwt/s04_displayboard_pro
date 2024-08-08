@@ -102,8 +102,11 @@ typedef enum{
 
 typedef enum
 {
-  KEY_UP   = 0,
-  KEY_DOWN = 1,
+
+ 
+ KEY_UP ,
+ KEY_DOWN ,
+
 }KEYState_TypeDef;
 
 typedef enum{

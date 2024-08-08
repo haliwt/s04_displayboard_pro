@@ -86,13 +86,13 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = POWER_KEY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN; //GPIO_NOPULL; //WT.EDIT 2024.08.08
   HAL_GPIO_Init(POWER_KEY_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAPin PAPin PAPin */
   GPIO_InitStruct.Pin = MODEL_KEY_Pin|DEC_KEY_Pin|ADD_KEY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN ;//GPIO_NOPULL; //WT.EDIT 2024.08.08
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }

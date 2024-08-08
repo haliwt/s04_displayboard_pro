@@ -55,7 +55,7 @@ void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t data1,uint8_t data2)
 		 case FAN_WARNING:
 		 	run_t.fan_warning =1;
             run_t.gDry = 0;
-            gpro_t.gmouse = 0;
+            gpro_t.gmouse = 1;
             run_t.gPlasma = 0;
            // SendData_Set_Command(DRY_OFF_NO_BUZZER); //main board shuld be shut down DRY AND PLASMA
 		 	

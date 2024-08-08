@@ -21,25 +21,25 @@ void bsp_init(void)
 
 void power_on_handler(void)
 {
-if(run_t.gPower_On==power_off){
+    if(run_t.gPower_On==power_off){
         run_t.gTimer_set_temp_times=0; //conflict with send temperatur value
 
         run_t.gRunCommand_label =RUN_POWER_ON;
         run_t.gPower_On = power_on;
         run_t.power_off_flag = 0;
         run_t.ai_model_flag=AI_MODE;
-        
+
         SendData_PowerOff(1);
 
 
-        }
-        else{
+    }
+    else if(run_t.gPower_On==power_on){
 
         SendData_PowerOff(0);
         run_t.gPower_On = power_off;
 
 
-        }
+    }
 }
 
 /******************************************************************************
