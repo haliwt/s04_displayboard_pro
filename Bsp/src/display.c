@@ -117,7 +117,7 @@ static void TimeColon_Smg_Blink_Fun(void)
 void Display_TimeColon_Blink_Fun(void)
 {
 
-  if(run_t.gTimer_time_colon >80){ //10*20ms=300ms
+  if(run_t.gTimer_time_colon >160){ //10*20ms=300ms
 
 	   run_t.gTimer_time_colon =0;
        

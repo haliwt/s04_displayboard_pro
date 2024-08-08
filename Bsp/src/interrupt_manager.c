@@ -37,7 +37,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 *******************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  static uint8_t tm0;
+  static uint16_t tm0;
     if(htim->Instance==TIM3){  
     tm0++;
 	
@@ -47,7 +47,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     run_t.gTimer_error_digital++;
     gpro_t.gTimer_4bitsmg_blink_times++;
 	
-    if(tm0>99){ //100 *10ms = 1000ms = 1s
+    if(tm0>999){ //100 *10ms = 1000ms = 1s
 		tm0=0;
 		run_t.gTimer_run_ico++;
 	    run_t.gTimer_colon++;

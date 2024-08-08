@@ -401,7 +401,7 @@ void key_add_fun(void)
     case 1: //set timer timing value 
         SendData_Buzzer();
 
-       
+       ai_ico_fast_blink();
         run_t.gTimer_key_timing =0;
     
         if(run_t.temporary_timer_dispTime_hours !=24)
@@ -438,6 +438,8 @@ void key_add_fun(void)
     run_t.minutes_one_decade_bit =  run_t.temporary_timer_dispTime_minutes /10;
 
     run_t.minutes_one_unit_bit = run_t.temporary_timer_dispTime_minutes %10;
+
+    ai_ico_fast_blink();
  //   TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
     break;
 
@@ -487,7 +489,7 @@ void key_dec_fun(void)
     case 1: //set timer timing value
     SendData_Buzzer();
 
-    
+    ai_ico_fast_blink();
     run_t.gTimer_key_timing =0;
     
     run_t.temporary_timer_dispTime_minutes =  run_t.temporary_timer_dispTime_minutes -30;
@@ -516,7 +518,7 @@ void key_dec_fun(void)
 
     run_t.minutes_one_unit_bit = run_t.temporary_timer_dispTime_minutes %10;
     
-
+    ai_ico_fast_blink();
     
   //  TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; //timer is default 12 hours "12:00" 
 

@@ -108,7 +108,7 @@ void freeRTOS_Handler(void)
 static void vTaskRunPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(40); /* 设置最大等待时间为500ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(50); /* 设置最大等待时间为500ms */
 	uint32_t ulValue;
     
     static volatile uint8_t power_on_off_flag,fan_on_off_flag ;
@@ -302,7 +302,7 @@ static void vTaskRunPro(void *pvParameters)
            if(key_add_flag==2)key_add_flag++;
            else if(key_dec_flag==2)key_dec_flag ++ ;
 
-       
+         ai_ico_fast_blink();
          TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
 
        }
@@ -346,7 +346,7 @@ static void vTaskDecoderPro(void *pvParameters)
 {
     MSG_T *ptMsg;
 	BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(300); /* 设置最大等待时间为30ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(400); /* 设置最大等待时间为30ms */
 	//uint8_t uldata,usdata;
 	
     while(1)
@@ -533,7 +533,7 @@ void AppObjCreate (void)
 //    }
 	
 	/* 创建10个存储指针变量的消息队列，由于CM3/CM4内核昄1�732位机，一个指针变量占甄1�74个字芄1�7 */
-	xQueue2 = xQueueCreate(6, sizeof(struct Msg *));
+	xQueue2 = xQueueCreate(4, sizeof(struct Msg *));
     if( xQueue2 == 0 )
     {
         /* 没有创建成功，用户可以在这里加入创建失败的处理机刄1�7 */

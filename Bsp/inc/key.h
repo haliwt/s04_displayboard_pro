@@ -186,6 +186,9 @@ void Set_Temperature_Value(void);
 
 void set_timer_fun_led_blink(void);
 
+void  ai_ico_fast_blink(void);
+
+
 #endif 
 
 

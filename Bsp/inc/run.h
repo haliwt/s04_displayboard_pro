@@ -160,7 +160,7 @@ typedef struct __RUN{
    int8_t temporary_timer_dispTime_hours;
    int8_t temporary_timer_dispTime_minutes;
   
-   uint8_t gTimer_smg_blink_times;
+
  
    volatile uint8_t gTimer_key_temp_timing;
 
@@ -195,6 +195,7 @@ typedef struct __RUN{
 
 	uint16_t gTimer_usart_error;
 	uint16_t gTimer_error_digital ;
+       uint16_t gTimer_smg_blink_times;
    
   
 

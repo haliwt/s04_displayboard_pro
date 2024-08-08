@@ -67,7 +67,7 @@ typedef struct _pro_t{
    uint8_t answer_signal_flag;
    uint8_t set_timer_first_smg_blink_flag;
     
-   uint8_t gTimer_4bitsmg_blink_times;
+   uint16_t gTimer_4bitsmg_blink_times;
 
 
 
