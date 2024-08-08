@@ -227,12 +227,12 @@ void power_off_run_handler(void)
 
 			}
 
-           if(gpro_t.answer_signal_flag == power_on){
-
-                 SendData_PowerOff(0);
-				
-            }
-            
+//           if(gpro_t.answer_signal_flag == power_on){
+//
+//                 SendData_PowerOff(0);
+//				
+//            }
+//            
 		  
             Breath_Led();
 		 

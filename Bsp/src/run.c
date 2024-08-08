@@ -77,17 +77,17 @@ void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t data1,uint8_t data2)
 
 	  case ANSWER_DATA:
           
-        if(data1 == 'P' && data2 == 0x01){
-
-           gpro_t.answer_signal_flag = power_on;
-
-
-        }
-        else if(data1 == 'P' && data2 == 0){
-           gpro_t.answer_signal_flag = power_off;
-
-
-        }
+//        if(data1 == 'P' && data2 == 0x01){
+//
+//           gpro_t.answer_signal_flag = power_on;
+//
+//
+//        }
+//        else if(data1 == 'P' && data2 == 0){
+//           gpro_t.answer_signal_flag = power_off;
+//
+//
+//        }
      
 
 	  break;

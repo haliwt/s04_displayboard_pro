@@ -150,41 +150,43 @@ static void vTaskRunPro(void *pvParameters)
             }
             else if((ulValue & MODE_KEY_1) != 0){
             if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){
-
+                if(run_t.gPower_On == power_on)
                  key_mode_flag = 1;
                //mode_key_fun();
                }
 
             }
             else if((ulValue & DEC_KEY_2) != 0){
+                if(run_t.gPower_On == power_on)
                   key_dec_flag = 1;
                  //key_dec_fun();
 
             }
             else if((ulValue & ADD_KEY_3) != 0){
+                if(run_t.gPower_On == power_on)
                   key_add_flag = 1;
                   //key_add_fun();
            
             }
             else if((ulValue & FAN_KEY_4) != 0){
-
+                 if(run_t.gPower_On == power_on)
                  fan_on_off_flag = 1;
              
 				  
             }
             else if((ulValue & PLASMA_KEY_5) != 0){
-              
+              if(run_t.gPower_On == power_on)
                plasma_on_off_flag = 1;
 
            }
             else if((ulValue & DRY_KEY_6) != 0){
              
-
+                 if(run_t.gPower_On == power_on)
                   dry_on_off_flag =1;
     		     
             }   
             else if((ulValue & AI_KEY_7) != 0){
-
+               if(run_t.gPower_On == power_on)
                   ai_on_off_flag = 1;
 
             }
@@ -200,8 +202,8 @@ static void vTaskRunPro(void *pvParameters)
              power_on_handler();
 
             }
-            else if((plasma_on_off_flag ==1 || dry_on_off_flag == 1 || ai_on_off_flag ==1 ||  fan_on_off_flag ==1 \
-                     || key_add_flag ==1 || key_dec_flag ==1 || key_mode_flag == 1) && run_t.gPower_On == power_on){
+            else if(plasma_on_off_flag ==1 || dry_on_off_flag == 1 || ai_on_off_flag ==1 ||  fan_on_off_flag ==1 \
+                     || key_add_flag ==1 || key_dec_flag ==1 || key_mode_flag == 1){
                 
 
               if(key_add_flag == 1 && run_t.ptc_warning ==0 && run_t.fan_warning == 0){
@@ -290,22 +292,23 @@ static void vTaskRunPro(void *pvParameters)
                       mouse_on_off_handler();
 
                  }
-       }
-
+            }
+          
+          
       if(run_t.gPower_On == power_on){
 
       
        if((key_add_flag ==2 ||  key_dec_flag==2) && gpro_t.set_timer_timing_doing_value==1){
-           key_add_flag++;
-           key_dec_flag++;
+           if(key_add_flag==2)key_add_flag++;
+           else if(key_dec_flag==2)key_dec_flag ++ ;
 
        
          TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
 
        }
        else if((key_add_flag ==2 ||  key_dec_flag==2) && gpro_t.set_timer_timing_doing_value==0){
-            key_add_flag++;
-           key_dec_flag++;
+            if(key_add_flag ==2)key_add_flag++;
+            else if(key_dec_flag == 2)key_dec_flag++;
 
          TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
