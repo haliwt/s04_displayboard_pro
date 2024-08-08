@@ -232,6 +232,7 @@ void set_timer_fun_led_blink(void)
 void  ai_ico_fast_blink(void)
 {
 
+    if(gpro_t.set_timer_timing_doing_value==1){
     if(run_t.gTimer_smg_blink_times < 100){
               LED_AI_ON();
             }
@@ -245,7 +246,7 @@ void  ai_ico_fast_blink(void)
             
           }
     
-    
+        }
   }
 
 
