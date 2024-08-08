@@ -15,7 +15,8 @@ uint8_t  step_state;
 void bsp_init(void)
 {
 
-    run_t.gRunCommand_label =RUN_POWER_OFF;
+    run_t.gRunCommand_label =RUN_NULL;
+    run_t.gPower_On = power_off;
 
 
 }
@@ -25,6 +26,7 @@ void power_on_handler(void)
 
     power_on_of_id = power_on_of_id ^ 0x01;
     if(power_on_of_id == 1){
+
         run_t.gTimer_set_temp_times=0; //conflict with send temperatur value
 
         run_t.gRunCommand_label =RUN_POWER_ON;
@@ -37,9 +39,12 @@ void power_on_handler(void)
 
     }
     else{
+        if(run_t.gRunCommand_label ==SPECIAL_DISP && run_t.gPower_On == power_on){
+            SendData_PowerOff(0);
+            run_t.gPower_On = power_off;
+            run_t.gRunCommand_label =RUN_NULL;
 
-        SendData_PowerOff(0);
-        run_t.gPower_On = power_off;
+        }
 
 
     }

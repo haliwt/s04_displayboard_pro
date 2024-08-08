@@ -50,8 +50,8 @@ typedef enum{
 
 typedef enum power_onoff_state_t{
 
-    power_off,
-    power_on,
+    power_off= 0x2,
+    power_on =0x01
 
 
 }power_onoff_stae;

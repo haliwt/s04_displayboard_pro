@@ -162,7 +162,7 @@ void set_timer_fun_led_blink(void)
 {
   //  static uint8_t smg_blink;
  
-   if(gpro_t.set_timer_timing_doing_value==1 && run_t.gPower_On == power_on){
+   if(gpro_t.set_timer_timing_doing_value==1){
 
     
 

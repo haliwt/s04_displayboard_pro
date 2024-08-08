@@ -97,6 +97,7 @@ int main(void)
    HAL_TIM_Base_Start_IT(&htim3);
    UART_Start_Receive_IT(&huart1,inputBuf,1);
    __HAL_UART_ENABLE_IT(&huart1,UART_IT_ERR);
+   
 
    freeRTOS_Handler();
   /* USER CODE END 2 */

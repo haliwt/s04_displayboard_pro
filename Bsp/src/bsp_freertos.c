@@ -111,7 +111,7 @@ static void vTaskRunPro(void *pvParameters)
 	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(40); /* 设置最大等待时间为500ms */
 	uint32_t ulValue;
     
-    static uint8_t power_on_off_flag,fan_on_off_flag ;
+    static volatile uint8_t power_on_off_flag,fan_on_off_flag ;
     static uint8_t dry_on_off_flag,plasma_on_off_flag, ai_on_off_flag ;
     static uint8_t key_add_flag,key_dec_flag,key_mode_flag;
     
