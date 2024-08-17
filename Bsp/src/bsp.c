@@ -117,12 +117,7 @@ void power_on_run_handler(void)
                         if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){ //read main board ptc_warning of ref.
                             Display_SmgTiming_Value();
                             }
-                        else{
-
-                            Warning_Error_Numbers_Fun();
-
-                          }
-
+                        
 //                       if(gpro_t.answer_signal_flag == 0 &&  ){
 //
 //                            SendData_PowerOff(1);  
@@ -139,6 +134,14 @@ void power_on_run_handler(void)
 	 
 
   }
+}
+
+
+void detected_ptc_or_fan_warning_fun(void)
+{
+
+    Warning_Error_Numbers_Fun();
+
 }
 
 /******************************************************************************

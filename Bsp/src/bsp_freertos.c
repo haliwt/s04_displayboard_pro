@@ -320,6 +320,8 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
+
+       Warning_Error_Numbers_Fun();
        
      
        
@@ -370,7 +372,7 @@ static void vTaskDecoderPro(void *pvParameters)
        
         
 		
-         }
+          }
       
        
 		
