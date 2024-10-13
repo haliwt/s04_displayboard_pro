@@ -10,6 +10,7 @@
   *
   * disply "mouse" symbol
   * mass version 1.0 no wifi displayPanel DATA.2024.06.27
+  * mass version 2.1 interval ten minutes stop relay sound .DATA.2024.10.13
   *
   ******************************************************************************
   */

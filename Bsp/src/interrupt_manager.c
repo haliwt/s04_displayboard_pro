@@ -38,6 +38,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0;
+  static uint8_t tm1;
     if(htim->Instance==TIM3){  
     tm0++;
 	
@@ -49,6 +50,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
     if(tm0>999){ //100 *10ms = 1000ms = 1s
 		tm0=0;
+        
 		run_t.gTimer_run_ico++;
 	    run_t.gTimer_colon++;
 		run_t.gTimer_display_dht11++;
@@ -70,6 +72,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //usart
       
 	   run_t.gTimer_usart_error++;
+
+       
+      gpro_t.gTimer_total_works_two_hours++;
+
+       
        
 	 }
     

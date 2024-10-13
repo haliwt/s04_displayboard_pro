@@ -234,6 +234,7 @@ static void vTaskRunPro(void *pvParameters)
 
                     run_t.gPlasma = 0;
                     LED_PLASMA_OFF();
+                 
                     SendData_Set_Command(PLASMA_OFF);
 
                 }  
@@ -260,7 +261,9 @@ static void vTaskRunPro(void *pvParameters)
     			  if(run_t.gDry== 1){
     				    run_t.gDry =0;
                         LED_DRY_OFF();
-    					SendData_Set_Command(DRY_OFF);
+                       
+    				   SendData_Set_Command(DRY_OFF);
+                        
                         gpro_t.manual_turn_off_dry_flag =1;
                      
                        
@@ -269,8 +272,9 @@ static void vTaskRunPro(void *pvParameters)
                         run_t.gDry =1;
     			    
                         LED_DRY_ON();
-                     
+                        
     					SendData_Set_Command(DRY_ON);
+                        
                         gpro_t.manual_turn_off_dry_flag =0;
                     
                      }  
@@ -320,7 +324,7 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
-       
+       works_run_two_hours_handler();
      
        
        }

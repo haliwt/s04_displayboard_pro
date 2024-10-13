@@ -66,7 +66,12 @@ typedef struct _pro_t{
    uint8_t manual_turn_off_dry_flag;
    uint8_t answer_signal_flag;
    uint8_t set_timer_first_smg_blink_flag;
-    
+
+
+   
+
+   uint8_t interval_works_ten_minutes_flag;
+   uint16_t gTimer_total_works_two_hours ;
    uint16_t gTimer_4bitsmg_blink_times;
 
 
