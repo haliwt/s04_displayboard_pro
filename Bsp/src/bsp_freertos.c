@@ -103,7 +103,7 @@ void freeRTOS_Handler(void)
 *	返 回 值: 无
 *   优 先 级: 1  
 
-*   伄1�7 兄1�7 纄1�7: 1  (数��越小优先级越低，这个跟uCOS相反)
+*   priority : 1  (数值越小优先级越低，这个跟uCOS相反)
 **********************************************************************************************************/
 static void vTaskRunPro(void *pvParameters)
 {
@@ -138,7 +138,7 @@ static void vTaskRunPro(void *pvParameters)
 		xResult = xTaskNotifyWait(0x00000000,      
 						          0xFFFFFFFF,      
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          xMaxBlockTime);  /* 最大允许延迟时间 */
+						          xMaxBlockTime);  /* 阻塞时间，释放CUP控制权*/
 		
 		if( xResult == pdPASS )
 		{
@@ -193,7 +193,7 @@ static void vTaskRunPro(void *pvParameters)
 
         
     }
-    else{
+    else{ //超时时间，处理程序
 
      
         if(power_on_off_flag == 1){
@@ -340,25 +340,25 @@ static void vTaskRunPro(void *pvParameters)
    }
 }
 /**********************************************************************************************************
-*	凄1�7 敄1�7 各1�7: vTaskStart
-*	功能说明: 启动任务，也就是朢�高优先级任务，这里用作按键扫描��1�7
-*	彄1�7    叄1�7: pvParameters 是在创建该任务时传��的形参
-*	迄1�7 囄1�7 倄1�7: 旄1�7
-*   伄1�7 兄1�7 纄1�7: 4  (数��越小优先级越低，这个跟uCOS相反)
+*	Function Name: vTaskStart
+*	Function: 
+*	Input Ref: pvParameters 是在创建该任务时传��的形参
+*	Return Ref:
+*   priority: 2  (数值越小优先级越低，这个跟uCOS相反)
 **********************************************************************************************************/
 static void vTaskDecoderPro(void *pvParameters)
 {
     MSG_T *ptMsg;
 	BaseType_t xResult;
 	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(300); /* 设置最大等待时间为30ms */
-	//uint8_t uldata,usdata;
+	
 	
     while(1)
     {
 		
        xResult = xQueueReceive(xQueue2,                   /* 消息队列句柄 */
 		                        (void *)&ptMsg,  		   /* 这里获取的是结构体的地址 */
-		                        (TickType_t)xMaxBlockTime);/* 设置阻塞时间 */
+		                        (TickType_t)xMaxBlockTime);/* 设置阻塞时间,放弃CUP控制权 */
 		
 		if(xResult == pdPASS){
             
@@ -373,23 +373,21 @@ static void vTaskDecoderPro(void *pvParameters)
          Receive_MainBoard_Data_Handler(ulid,uldata,usdata);
        
         
-		
-         }
+		}
       
        
-		
-      }
+    }
 }
 
-/*
-*********************************************************************************************************
-*	凄1�7 敄1�7 各1�7: vTaskStart
-*	功能说明: 消息处理，使用函数comGetChar获取串口命令，使用函数comSendBuf发��串口消恄1�7
-*	彄1�7    叄1�7: pvParameters 是在创建该任务时传��的形参
-*	迄1�7 囄1�7 倄1�7: 旄1�7
-*   伄1�7 兄1�7 纄1�7: 3  (数��越小优先级越低，这个跟uCOS相反)
-*********************************************************************************************************
-*/
+/**********************************************************************************************************
+*
+*	Function Name: vTaskStart
+*	Function: 
+*	Input Ref: pvParameters 是在创建该任务时传��的形参
+*	Return Ref:
+*   priority: 3  (数��越小优先级越低，这个跟uCOS相反)
+*
+**********************************************************************************************************/
 static void vTaskStart(void *pvParameters)
 {
 	
@@ -536,7 +534,7 @@ void AppObjCreate (void)
 //        /* 没有创建成功，用户可以在这里加入创建失败的处理机刄1�7 */
 //    }
 	
-	/* 创建10个存储指针变量的消息队列，由于CM3/CM4内核昄1�732位机，一个指针变量占甄1�74个字芄1�7 */
+	/* 一次性可以传送4个字节的数据(一次性可以存储的最大项目数)，由于CM3/CM4内核昄1�732位机，一个指针变量占甄1�74个字芄1�7 */
 	xQueue2 = xQueueCreate(4, sizeof(struct Msg *));
     if( xQueue2 == 0 )
     {
@@ -689,9 +687,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     		    ptMsg->ulData[0] =  rxcmd[0];
                 ptMsg ->usData[0] = inputBuf[0];
                
-               
-
-                 /* 向消息队列发数据 */
+                /* 向消息队列发数据 */
             	xQueueSendFromISR(xQueue2,
             				      (void *)&ptMsg,
             				      &xHigherPriorityTaskWoken);
