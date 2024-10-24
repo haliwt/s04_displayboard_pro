@@ -88,7 +88,7 @@ void power_on_run_handler(void)
       case SPECIAL_DISP:
 
 
-              if(gpro_t.set_timer_timing_doing_value == 1){
+              if(gpro_t.set_timer_timing_doing_value == 1 && run_t.ptc_warning ==0 && run_t.fan_warning ==0){
 
                    Set_TimerTiming_Number_Value();
                    
@@ -120,17 +120,14 @@ void power_on_run_handler(void)
                     case 2:
                         if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){ //read main board ptc_warning of ref.
                             Display_SmgTiming_Value();
-                            }
+                         }
                         else{
 
                             Warning_Error_Numbers_Fun();
 
                           }
 
-//                       if(gpro_t.answer_signal_flag == 0 &&  ){
-//
-//                            SendData_PowerOff(1);  
-//                       }
+
 
                      step_state=0;
                     break;
@@ -570,10 +567,7 @@ void compare_temp_value(void)
          LED_DRY_OFF();
       
     	 SendData_Set_Command(DRY_OFF_NO_BUZZER);
-         
-
-
-     }
+         }
 
    }
    else{

@@ -138,7 +138,7 @@ static void vTaskRunPro(void *pvParameters)
 		xResult = xTaskNotifyWait(0x00000000,      
 						          0xFFFFFFFF,      
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          xMaxBlockTime);  /* 阻塞时间，释放CUP控制权*/
+						          xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权*/
 		
 		if( xResult == pdPASS )
 		{
@@ -333,7 +333,7 @@ static void vTaskRunPro(void *pvParameters)
           power_off_run_handler();
 
        }
-      USART1_Cmd_Error_Handler();
+     // USART1_Cmd_Error_Handler();
 
     }
 
@@ -358,7 +358,7 @@ static void vTaskDecoderPro(void *pvParameters)
 		
        xResult = xQueueReceive(xQueue2,                   /* 消息队列句柄 */
 		                        (void *)&ptMsg,  		   /* 这里获取的是结构体的地址 */
-		                        (TickType_t)xMaxBlockTime);/* 设置阻塞时间,放弃CUP控制权 */
+		                        (TickType_t)xMaxBlockTime);/* 设置阻塞时间,放弃CUP控制权,如果在阻塞时间内，条件满足，没有高优先级运行，执行本次任务 */
 		
 		if(xResult == pdPASS){
             
@@ -391,7 +391,7 @@ static void vTaskDecoderPro(void *pvParameters)
 static void vTaskStart(void *pvParameters)
 {
 	
-
+//   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(20); /* 设置最大等待时间为30ms */
     while(1)
     {
       
@@ -475,7 +475,7 @@ static void vTaskStart(void *pvParameters)
 
     
 
-     vTaskDelay(20);
+     vTaskDelay(pdMS_TO_TICKS(20));//
      
     }
 

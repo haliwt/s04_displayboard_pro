@@ -128,22 +128,27 @@ void Display_TimeColon_Blink_Fun(void)
 
 void Warning_Error_Numbers_Fun(void)
 {
-    static uint8_t alternate_flag;
+
+    static uint8_t alternate_flag,times;
 
    if(run_t.ptc_warning ==1 ||  run_t.fan_warning ==1){
 
-		if(run_t.gTimer_error_digital < 60){//10ms * 51= 510
+
+
+       if(run_t.ptc_warning ==1 &&   run_t.fan_warning ==1)alternate_flag =1;
+       else alternate_flag =0;
+
+
+		if(run_t.gTimer_error_digital < 3){//10ms * 51= 510
 
 		      
             if(alternate_flag ==0){
 			   	  
-                     
-			     if(run_t.ptc_warning ==1){
+                 if(run_t.ptc_warning ==1){
                  
 					Display_Error_Digital(0x01,0);
 			     }
-				 else {
-			        if(run_t.fan_warning ==1){
+				 else if(run_t.fan_warning ==1){
 
 					  
                       Display_Error_Digital(0x02,0);
@@ -151,38 +156,42 @@ void Warning_Error_Numbers_Fun(void)
 
 			        }
 
-				 }
-			    
+				 
+			  }
+			   else if(alternate_flag ==1){
 
-               }
-			   else{
+			      
+				   if(run_t.ptc_warning ==1 && times == 0){ // && run_t.fan_warning ==1){
+                       
+                    
 
-			      alternate_flag=2;
-				   if(run_t.ptc_warning ==1 && run_t.fan_warning ==1){
-
-					     Display_Error_Digital(0x02,0);
+                        Display_Error_Digital(0x01,0);
 
 				   	}
-				    else  if(run_t.ptc_warning ==1 && run_t.fan_warning ==0){
-                       
-					    Display_Error_Digital(0x01,0);
-			        }
-					else  if(run_t.ptc_warning ==0 && run_t.fan_warning ==1){
-                       
+				    else  if(run_t.fan_warning ==1 && times > 0){
+                      
 					    Display_Error_Digital(0x02,0);
 			        }
+				
 
 
 			   }
 			   
 
 		   }
-		   else if(run_t.gTimer_error_digital > 59 && run_t.gTimer_error_digital  < 121 ){
-		   		alternate_flag++;
- 				Display_Error_Digital(0x10,1);
- 				if(alternate_flag==2 ||alternate_flag>2 )alternate_flag=0;
+		   else if(run_t.gTimer_error_digital > 3 && run_t.gTimer_error_digital  < 5 ){
+ 				//Display_Error_Digital(0x10,1);
+                if(alternate_flag ==1){
+                if(times > 0)times = 0;
+                else times ++;
+
+                }
+                    
+
+                
+ 				
 		   }
-		    else if(run_t.gTimer_error_digital > 119){
+		    else if(run_t.gTimer_error_digital > 5){
 
 			  run_t.gTimer_error_digital=0;
 
