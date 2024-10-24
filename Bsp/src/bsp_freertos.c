@@ -324,15 +324,11 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
-<<<<<<< HEAD
-       works_run_two_hours_handler();
-=======
 
-       Warning_Error_Numbers_Fun();
-       
->>>>>>> bcc55a778270d83d208f8ddd3f067ade2a721e77
-     
-       
+       works_run_two_hours_handler();
+
+
+
        }
        else if(run_t.gPower_On == power_off){
 
@@ -378,16 +374,9 @@ static void vTaskDecoderPro(void *pvParameters)
      
          Receive_MainBoard_Data_Handler(ulid,uldata,usdata);
        
-        
-<<<<<<< HEAD
-		}
-=======
-		
-          }
->>>>>>> bcc55a778270d83d208f8ddd3f067ade2a721e77
-      
-       
-    }
+         }
+     }
+    
 }
 
 /**********************************************************************************************************
