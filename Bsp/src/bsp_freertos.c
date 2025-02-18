@@ -74,15 +74,13 @@ uint8_t rxcmd[1];
 
 
 
-/*
-*********************************************************************************************************
+/**********************************************************************************************************
 *	凄1�7 敄1�7 各1�7: vTaskTaskUserIF
 *	功能说明: 接口消息处理〄1�7
 *	彄1�7    叄1�7: pvParameters 是在创建该任务时传��的形参
 *	迄1�7 囄1�7 倄1�7: 旄1�7
 *   伄1�7 兄1�7 纄1�7: 1  (数��越小优先级越低，这个跟uCOS相反)
-*********************************************************************************************************
-*/
+**********************************************************************************************************/
 void freeRTOS_Handler(void)
 {
      /* 创建任务 */
@@ -136,9 +134,9 @@ static void vTaskRunPro(void *pvParameters)
 		*/
 		
 		xResult = xTaskNotifyWait(0x00000000,      
-						          0xFFFFFFFF,      
+						          0xFFFFFFFF,     /* Reset the notification value to 0 on */   
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权*/
+						          xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
 		
 		if( xResult == pdPASS )
 		{
@@ -327,10 +325,8 @@ static void vTaskRunPro(void *pvParameters)
 
        works_run_two_hours_handler();
 
-
-
-       }
-       else if(run_t.gPower_On == power_off){
+      }
+      else if(run_t.gPower_On == power_off){
 
           power_off_run_handler();
 

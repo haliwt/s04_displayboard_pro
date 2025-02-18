@@ -158,7 +158,7 @@ void Warning_Error_Numbers_Fun(void)
 
 				 
 			  }
-			   else if(alternate_flag ==1){
+			  else if(alternate_flag ==1){
 
 			      
 				   if(run_t.ptc_warning ==1 && times == 0){ // && run_t.fan_warning ==1){
