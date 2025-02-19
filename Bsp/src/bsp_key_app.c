@@ -25,40 +25,52 @@ void bsp_KeyScan(void)
 		bsp_PutKey(keyvalue);
 	 }
 	 else if( MODEL_KEY_VALUE() ==KEY_DOWN){
+         if(run_t.gPower_On == power_on){
 		 keyvalue = KEY_MODE_DOWN;
 		 bsp_PutKey(keyvalue);
+        }
 
 	  }
 	   else if(DEC_KEY_VALUE() == KEY_DOWN){
+           if(run_t.gPower_On == power_on){
 
 		   keyvalue = KEY_DEC_DOWN;
 		    bsp_PutKey(keyvalue);
+            }
 	     }
 	     else if(ADD_KEY_VALUE() ==KEY_DOWN){
+             if(run_t.gPower_On == power_on){
 	    	 keyvalue = KEY_ADD_DOWN;
 	    	 bsp_PutKey(keyvalue);
+                }
 
 
 	    }
 	     else if(AI_KEY_VALUE()==KEY_DOWN){
-
-	    	 keyvalue = KEY_AI_DOWN;
-	    	 bsp_PutKey(keyvalue);
+             if(run_t.gPower_On == power_on){
+    	    	 keyvalue = KEY_AI_DOWN;
+    	    	 bsp_PutKey(keyvalue);
+             }
 
 	     }
 	     else if(PLASMA_KEY_VALUE()==KEY_DOWN){
-
+              if(run_t.gPower_On == power_on){
 	    	 keyvalue = KEY_PLASMA_DOWN;
 	    	  bsp_PutKey(keyvalue);
+                }
 	     }
 	     else if(DRY_KEY_VALUE()==KEY_DOWN){
+             if(run_t.gPower_On == power_on){
 	    	 keyvalue = KEY_DRY_DOWN;
 	    	 bsp_PutKey(keyvalue);
+                }
 
 	     }
 	     else if(MOUSE_KEY_VALUE() == KEY_DOWN){
+             if(run_t.gPower_On == power_on){
 	    	 keyvalue = KEY_MOUSE_DOWN;
 	    	 bsp_PutKey(keyvalue);
+                }
 
 	     }
 
@@ -72,7 +84,7 @@ void bsp_KeyScan(void)
 **********************************************************************************************************/
 static void bsp_PutKey(uint8_t _KeyCode)
 {
-	s_tKey.Buf[s_tKey.Write] = _KeyCode;
+	s_tKey.Buf[0] = _KeyCode;
 
 	if (++s_tKey.Write  >= KEY_FIFO_SIZE)
 	{
