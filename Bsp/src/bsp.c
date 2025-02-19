@@ -4,7 +4,7 @@
 pro_run_t  gpro_t;
 
 
-volatile uint8_t power_on_of_id ;
+
 
 uint8_t hours_one,hours_two,minutes_one,minutes_two;
 
@@ -24,35 +24,26 @@ void bsp_init(void)
 void power_on_handler(void)
 {
 
-    power_on_of_id = power_on_of_id ^ 0x01;
-    if(power_on_of_id == 1){
+	run_t.gTimer_set_temp_times=0; //conflict with send temperatur value
 
-        run_t.gTimer_set_temp_times=0; //conflict with send temperatur value
+	run_t.gPower_On = power_on;
+	run_t.gRunCommand_label =RUN_POWER_ON;
+	run_t.power_off_flag = 0;
+	run_t.ai_model_flag=AI_MODE;
 
-        run_t.gRunCommand_label =RUN_POWER_ON;
-        run_t.gPower_On = power_on;
-        run_t.power_off_flag = 0;
-        run_t.ai_model_flag=AI_MODE;
+	gpro_t.gTimer_total_works_two_hours =0;
 
-       gpro_t.gTimer_total_works_two_hours =0;
+	gpro_t.interval_works_ten_minutes_flag = 0;
 
-       gpro_t.interval_works_ten_minutes_flag = 0;
+ }
 
-        SendData_PowerOff(1);
+void power_off_handler(void)
+{
 
+    run_t.gPower_On = power_off;
+	run_t.gRunCommand_label =RUN_NULL;
 
-    }
-    else{
-        if(run_t.gRunCommand_label ==SPECIAL_DISP && run_t.gPower_On == power_on){
-            SendData_PowerOff(0);
-            run_t.gPower_On = power_off;
-            run_t.gRunCommand_label =RUN_NULL;
-
-        }
-
-
-    }
-}
+ }
 
 /******************************************************************************
 	*
@@ -193,13 +184,9 @@ void mode_key_fun(void)
             LED_AI_ON();
 
          }
+   	   }
+}
 
-
-
-   }
-
- 
- }
 /******************************************************************************
 	*
 	*Function Name:void RunPocess_Command_Handler(void)
@@ -266,113 +253,24 @@ void power_off_run_handler(void)
  * 
  * 
  **********************************************************************************/
-void ai_on_off_handler(void)
-{
-    if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){
-       switch(gpro_t.set_timer_timing_doing_value){
-
-        case 0:  //don't set timer timing item
-
-        if(run_t.ai_model_flag ==AI_MODE){
-            run_t.ai_model_flag =NO_AI_MODE;
-            LED_AI_OFF();
-            SendData_Set_Command(AI_MODE_OFF);
-            if(gpro_t.set_timer_timing_value_success ==TIMER_SUCCESS)
-              Display_Timing(run_t.timer_dispTime_hours,run_t.timer_dispTime_minutes);
-        }
-        else{
-            if(run_t.ai_model_flag ==NO_AI_MODE){
-            run_t.ai_model_flag =AI_MODE;
-            SendData_Set_Command(AI_MODE_ON);
-
-      
-            run_t.gDry= 1;
-            
-            run_t.gPlasma = 1;
-            gpro_t.gmouse = 1;
-            led_mouse_on();
-            LED_PLASMA_ON();
-            LED_DRY_ON();
-            LED_AI_ON();
-            Display_Timing(run_t.works_dispTime_hours,run_t.works_dispTime_minutes);
-           
-            }  
-
-        }
-        break;
-
-        #if 0
-        case 1://ai key is confirm function . set timer timing numbers 
-
-        SendData_Buzzer();
-
-        gpro_t.set_timer_timing_doing_value  = 0;
-        if(run_t.temporary_timer_dispTime_hours >0 || run_t.temporary_timer_dispTime_minutes >0){
-          gpro_t.set_timer_timing_value_success  = TIMER_SUCCESS;
-          run_t.gTimer_timer_timing_counter = 0;
-           LED_AI_OFF();
-         run_t.timer_dispTime_hours = run_t.temporary_timer_dispTime_hours ;
-         run_t.timer_dispTime_minutes = run_t.temporary_timer_dispTime_minutes ;
-
-         run_t.ai_model_flag =NO_AI_MODE;
-
-          Display_Timing(run_t.timer_dispTime_hours,run_t.timer_dispTime_minutes);
-         
-
-         }
-         else{
-            run_t.ai_model_flag =AI_MODE;
-            gpro_t.set_timer_timing_value_success  = 0;
-            LED_AI_ON();
-
-         }
-        
-         break;
-         #endif 
-
-        }
 
 
-    }
 
-
-}
 /*********************************************************************************
  * 
  * Function Name:void mouse_on_off_handler(void)
  * 
  * 
  **********************************************************************************/
-void mouse_on_off_handler(void)
-{
-   if(run_t.fan_warning ==0 && run_t.ptc_warning == 0){ 
 
-        if(run_t.ai_model_flag== NO_AI_MODE){
+/*******************************************************
+*
+*Function Name: void bsp_plasma_handler(uint8_t data)
+*Function :
+*
+*
+*******************************************************/
 
-
-        if(gpro_t.gmouse ==1){
-
-            gpro_t.gmouse =0; //tur Off
-           led_mouse_off();
-           
-            
-           SendData_Set_Command(MOUSE_STOP);
-
-        }
-        else {
-
-          gpro_t.gmouse =1; //turn on
-          led_mouse_on();
-          
-          SendData_Set_Command(MOUSE_RUN);
-        }
-
-
-        }
-  }
- 
-
-}
 
 /******************************************************
 *
@@ -547,6 +445,9 @@ void key_dec_fun(void)
 
 }
 
+
+
+
 /*******************************************************
 *
 *Function Name: void compare_temp_value()
@@ -566,7 +467,7 @@ void compare_temp_value(void)
     	
         LED_DRY_ON();
        if(gpro_t.interval_works_ten_minutes_flag ==0){
-		SendData_Set_Command(DRY_ON_NO_BUZZER);
+		SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
 
         }
         
@@ -575,7 +476,7 @@ void compare_temp_value(void)
          run_t.gDry =0;
          LED_DRY_OFF();
       
-    	 SendData_Set_Command(DRY_OFF_NO_BUZZER);
+    	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
          }
 
    }
@@ -585,7 +486,7 @@ void compare_temp_value(void)
          run_t.gDry =0;
          LED_DRY_OFF();
        
-    	 SendData_Set_Command(DRY_OFF_NO_BUZZER);
+    	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
         
          first_one_flag =1;
         }
@@ -600,13 +501,11 @@ void compare_temp_value(void)
 
                 if(gpro_t.interval_works_ten_minutes_flag ==0){
              
-        		SendData_Set_Command(DRY_ON_NO_BUZZER);
+        		//SendData_Set_Command(DRY_ON_NO_BUZZER);
+        		SendData_Set_Command(dry_notice_cmd,0x01);
 
                 }
-
-               
-
-             }
+               }
            }
 
       }
@@ -646,4 +545,5 @@ void works_run_two_hours_handler(void)
 
 
 }
+
 

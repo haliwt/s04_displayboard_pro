@@ -103,14 +103,11 @@ void Panel_Led_OnOff_Function(void)
 
     if(gpro_t.gmouse == 0 ){
 
-       mouse_led_onoff(0); //display fan of grass is one 
+       LED_MOUSE_OFF();//mouse_led_onoff(0); //display fan of grass is one 
     } 
     else if(gpro_t.gmouse == 1){ // && (run_t.gDry==0 && run_t.gPlasma==0)){ //WT.DEDIT 20223.09.15
       
-          mouse_led_onoff(1); //display fan of grass is two .
-           
-
-         
+       LED_MOUSE_ON();    //mouse_led_onoff(1); //display fan of grass is two .
     }
 	 
 	  
@@ -440,7 +437,7 @@ void Power_Off_Led_Off(void)
    LED_DRY_OFF();
    LED_TIME_OFF();
    LED_PLASMA_OFF();
-   LED_FAN_OFF();
+   LED_MOUSE_OFF();
    LED_POWER_OFF();
    SMG_POWER_OFF();
 
@@ -452,7 +449,7 @@ void Power_ON_Led(void)
    LED_DRY_ON();
    LED_TIME_ON();
    LED_PLASMA_ON();
-   LED_FAN_ON();
+   LED_MOUSE_ON();
    LED_POWER_ON();
    SMG_POWER_ON();
 

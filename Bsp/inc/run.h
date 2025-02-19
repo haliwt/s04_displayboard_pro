@@ -99,6 +99,7 @@ typedef struct __RUN{
    uint8_t  gPlasma;
  
    uint8_t  gDry;
+   uint8_t  gMouse;
   
 
 
@@ -195,7 +196,7 @@ typedef struct __RUN{
 
 	uint16_t gTimer_usart_error;
 	uint16_t gTimer_error_digital ;
-       uint16_t gTimer_smg_blink_times;
+    uint16_t gTimer_smg_blink_times;
    
   
 

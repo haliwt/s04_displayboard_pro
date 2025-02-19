@@ -1,10 +1,6 @@
 #include "bsp.h"
 
 
-
-
-key_types key_t;
-
 /***********************************************************
 *
 *
@@ -23,7 +19,7 @@ uint8_t KEY_Scan(void)
 	{
 		key_t.read &= ~0x80; // 0x1f & 0x7F =  0x7F
 	}
-    else if(FAN_KEY_VALUE()   ==1 ) //FAN_KEY_ID = 0x10
+    else if(MOUSE_KEY_VALUE()   ==1 ) //FAN_KEY_ID = 0x10
 	{
 		  key_t.read &= ~0x10; // 0xFf & 0xEF =  0xEF
 	}

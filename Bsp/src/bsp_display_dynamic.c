@@ -368,7 +368,8 @@ void Display_SmgTiming_Value(void)
              
 	        run_t.gPower_On = power_off;
             run_t.power_off_flag = 0;
-            SendData_PowerOff(0);
+            //SendData_PowerOff(0);
+            SendData_PowerOnOff(0);//power on
 			power_off_run_handler();
 			
 	      }

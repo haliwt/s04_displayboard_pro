@@ -3,14 +3,14 @@
 #include "main.h"
 
 
-#define LED_POWER_TOGGLE()            	HAL_GPIO_TogglePin(LED_POWER_GPIO_Port, LED_POWER_Pin)
-#define LED_POWER_ON()					HAL_GPIO_WritePin(LED_POWER_GPIO_Port, LED_POWER_Pin,GPIO_PIN_SET)
-#define LED_POWER_OFF()            		HAL_GPIO_WritePin(LED_POWER_GPIO_Port, LED_POWER_Pin,GPIO_PIN_RESET)
+#define LED_POWER_TOGGLE()            HAL_GPIO_TogglePin(LED_POWER_GPIO_Port, LED_POWER_Pin)
+#define LED_POWER_ON()				  HAL_GPIO_WritePin(LED_POWER_GPIO_Port, LED_POWER_Pin,GPIO_PIN_SET)
+#define LED_POWER_OFF()            	  HAL_GPIO_WritePin(LED_POWER_GPIO_Port, LED_POWER_Pin,GPIO_PIN_RESET)
 
 
 #define LED_WIFI_TOGGLE()          HAL_GPIO_TogglePin(WIFI_LED_EN_GPIO_Port, WIFI_LED_EN_Pin)
 
-#define LED_AI_ON()			  HAL_GPIO_WritePin(WIFI_LED_EN_GPIO_Port , WIFI_LED_EN_Pin,GPIO_PIN_SET)
+#define LED_AI_ON()			        HAL_GPIO_WritePin(WIFI_LED_EN_GPIO_Port , WIFI_LED_EN_Pin,GPIO_PIN_SET)
 #define LED_AI_OFF()    	      HAL_GPIO_WritePin(WIFI_LED_EN_GPIO_Port , WIFI_LED_EN_Pin,GPIO_PIN_RESET)
 
 #define LED_DRY_ON()			  HAL_GPIO_WritePin(DRY_LED_EN_GPIO_Port, DRY_LED_EN_Pin,GPIO_PIN_SET)
@@ -23,6 +23,8 @@
 #define LED_PLASMA_OFF()            HAL_GPIO_WritePin(PLASMA_LED_EN_GPIO_Port, PLASMA_LED_EN_Pin,GPIO_PIN_RESET)
 
 
+#define LED_MOUSE_ON()  			HAL_GPIO_WritePin(FAN_LED_EN_GPIO_Port, FAN_LED_EN_Pin,GPIO_PIN_SET)
+#define LED_MOUSE_OFF()				HAL_GPIO_WritePin(FAN_LED_EN_GPIO_Port, FAN_LED_EN_Pin,GPIO_PIN_RESET)
 
 
 //control SMG supply power 

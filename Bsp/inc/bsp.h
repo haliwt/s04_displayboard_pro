@@ -1,6 +1,7 @@
 #ifndef __BSP_H
 #define __BSP_H
 #include "main.h"
+#include "stdio.h"
 
 
 #include "usart.h"
@@ -17,6 +18,9 @@
 #include "display.h"
 #include "interrupt_manager.h"
 #include "delay.h"
+
+#include "bsp_key_app.h"
+#include "bsp_message.h"
 #include "bsp_freertos.h"
 
 
@@ -50,8 +54,8 @@ typedef enum{
 
 typedef enum power_onoff_state_t{
 
-    power_off= 0x2,
-    power_on =0x01
+    power_off,
+    power_on
 
 
 }power_onoff_stae;
@@ -67,12 +71,16 @@ typedef struct _pro_t{
    uint8_t answer_signal_flag;
    uint8_t set_timer_first_smg_blink_flag;
 
+   uint8_t send_ack_cmd;
+   uint8_t receive_copy_cmd;
+
 
    
-
+   uint8_t gTimer_again_send_power_on_off;
    uint8_t interval_works_ten_minutes_flag;
    uint16_t gTimer_total_works_two_hours ;
    uint16_t gTimer_4bitsmg_blink_times;
+
 
 
 
@@ -91,9 +99,15 @@ void power_on_run_handler(void);
 
 void power_off_run_handler(void);
 
-void ai_on_off_handler(void);
+void plasma_key_fun(uint8_t data);
 
-void mouse_on_off_handler(void);
+
+void ai_key_fun(uint8_t data);
+
+
+
+void bsp_dry_fun(uint8_t data);
+
 
 void key_add_fun(void);
 
@@ -104,6 +118,10 @@ void mode_key_fun(void);
 void compare_temp_value(void);
 
 void detected_ptc_or_fan_warning_fun(void);
+
+
+void works_run_two_hours_handler(void);
+
 
 #endif 
 
