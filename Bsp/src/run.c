@@ -22,7 +22,7 @@ void Power_Off(void)
     SMG_POWER_OFF()	;
 	run_t.gPlasma=0;
 	run_t.gDry=0;
-	gpro_t.gmouse =0;
+	run_t.gMouse =0;
 			
 }
 
@@ -44,7 +44,7 @@ void Power_On_Fun(void)
 	
 		run_t.gPlasma=1;
 		run_t.gDry =1;
-        gpro_t.gmouse = 1;
+        run_t.gMouse = 1;
 		run_t.ai_model_flag =AI_MODE;
 
   
@@ -102,7 +102,7 @@ void Power_Off_Fun(void)
  
 		run_t.gPlasma=0;
 		run_t.gDry =0;
-		gpro_t.gmouse = 0;
+		run_t.gMouse = 0;
 		
         run_t.gPower_On =power_off;
 		run_t.gTimer_set_temp_times=0; //conflict with send temperatur value 

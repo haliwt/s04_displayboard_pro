@@ -62,7 +62,7 @@ typedef enum power_onoff_state_t{
 
 typedef struct _pro_t{
 
-   uint8_t gmouse;
+   
    uint8_t set_timer_timing_value_success;
    uint8_t set_timer_timing_doing_value;
    uint8_t set_temp_value_success;

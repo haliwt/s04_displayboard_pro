@@ -101,11 +101,11 @@ void Panel_Led_OnOff_Function(void)
       }
 
 
-    if(gpro_t.gmouse == 0 ){
+    if(run_t.gMouse  == 0 ){
 
        LED_MOUSE_OFF();//mouse_led_onoff(0); //display fan of grass is one 
     } 
-    else if(gpro_t.gmouse == 1){ // && (run_t.gDry==0 && run_t.gPlasma==0)){ //WT.DEDIT 20223.09.15
+    else if(run_t.gMouse  == 1){ // && (run_t.gDry==0 && run_t.gPlasma==0)){ //WT.DEDIT 20223.09.15
       
        LED_MOUSE_ON();    //mouse_led_onoff(1); //display fan of grass is two .
     }

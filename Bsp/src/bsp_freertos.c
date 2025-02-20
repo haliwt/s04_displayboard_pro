@@ -274,7 +274,7 @@ static void vTaskRunPro(void *pvParameters)
         		   //gpro_t.send_ack_cmd = ack_mouse_off;
         		   //gpro_t.gTimer_again_send_power_on_off =0;
                  
-                    LED_MOUSE_OFF();
+                  
         		   
 				}
 			    
@@ -301,6 +301,7 @@ static void vTaskRunPro(void *pvParameters)
 
        if(run_t.gMouse == 0) LED_MOUSE_OFF();
        else  LED_MOUSE_ON();
+       
        power_on_run_handler();
              
        Display_TimeColon_Blink_Fun();
