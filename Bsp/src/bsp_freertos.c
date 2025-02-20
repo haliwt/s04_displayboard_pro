@@ -788,7 +788,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
      case DRY_KEY_Pin:
       ///   DISABLE_INT();
-        if(DEC_KEY_VALUE() == KEY_DOWN){
+        if(DRY_KEY_VALUE() == KEY_DOWN){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 DRY_BIT_6,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -805,6 +805,20 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
         if(PLASMA_KEY_VALUE() == KEY_DOWN){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 PLASMA_BIT_5,     /* 设置目标任务事件标志位bit0  */
+                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+                &xHigherPriorityTaskWoken);
+   
+         /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+    ///    ENABLE_INT();
+   break;
+
+   case MOUSE_KEY_Pin:
+      ///   DISABLE_INT();
+        if(MOUSE_KEY_VALUE() == KEY_DOWN){
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+                MOUSE_BIT_4,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
                 &xHigherPriorityTaskWoken);
    

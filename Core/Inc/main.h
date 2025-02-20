@@ -123,7 +123,7 @@ void Error_Handler(void);
 
 //KEY INPUT GPIO
 
-#define MOUSE_KEY_Pin                       GPIO_PIN_0
+#define MOUSE_KEY_Pin                       GPIO_PIN_0  //? 
 #define MOUSE_KEY_GPIO_Port                 GPIOB
 #define MOUSE_KEY_EXTI_IRQn                 EXTI0_1_IRQn
 
@@ -136,7 +136,7 @@ void Error_Handler(void);
 #define DRY_KEY_EXTI_IRQn                   EXTI2_3_IRQn
 
 
-#define AI_KEY_Pin                          GPIO_PIN_10
+#define AI_KEY_Pin                          GPIO_PIN_10 // ? 
 #define AI_KEY_GPIO_Port                    GPIOB
 #define AI_KEY_EXTI_IRQn                    EXTI4_15_IRQn
 

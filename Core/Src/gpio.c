@@ -106,7 +106,7 @@ void MX_GPIO_Init(void)
    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
    HAL_GPIO_Init(AI_KEY_GPIO_Port, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin;
+  GPIO_InitStruct.Pin = PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin|MOUSE_KEY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
