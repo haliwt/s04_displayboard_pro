@@ -215,54 +215,67 @@ static void vTaskRunPro(void *pvParameters)
 				 key_t.key_plasma_flag ++;
 				 if(run_t.gPlasma == 1){
         			 run_t.gPlasma = 0;
+                     SendData_Set_Command(plasma_cmd,0x0); //
         			 LED_PLASMA_OFF();
 					gpro_t.send_ack_cmd = ack_plasma_off;
 				     gpro_t.gTimer_again_send_power_on_off =0;
-        			 SendData_Set_Command(plasma_cmd,0x0); //
+        			 
         		 }
         		 else{
         			 run_t.gPlasma = 1;
+
+                     SendData_Set_Command(plasma_cmd,0x01); //
         			 LED_PLASMA_ON();
 					  gpro_t.send_ack_cmd = ack_plasma_on;
 				     gpro_t.gTimer_again_send_power_on_off =0;
-        			 SendData_Set_Command(plasma_cmd,0x01); //
+        			
         	     }
 
 			}
 			else if(key_t.key_dry_flag ==1){ // && DRY_KEY_VALUE()==KEY_UP){
 				 key_t.key_dry_flag ++;
 				 if(run_t.gDry ==0){
+                    SendData_Set_Command(dry_cmd,0x01); //
         		   run_t.gDry =1;
         		   LED_DRY_ON();
         		   gpro_t.send_ack_cmd = ack_ptc_on;
         		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(dry_cmd,0x01); //
+        		   
         	   }
         	   else{
+                  SendData_Set_Command(dry_cmd,0x00); //
         		   run_t.gDry = 0;
         		   LED_DRY_OFF();
         		   gpro_t.send_ack_cmd = ack_ptc_off;
         		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(dry_cmd,0x00); //
+        		  
         	   }
 
 				
 			}
-			else if(key_t.key_mouse_flag ==1){// && MOUSE_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_mouse_flag ==1 && MOUSE_KEY_VALUE()==KEY_UP){
 				 key_t.key_mouse_flag ++;
+               
 				 if(run_t.gMouse ==0){
-        		   run_t.gMouse =1;
+        		   
+                   SendData_Set_Command(mouse_cmd,0x01); //
+                   run_t.gMouse =1;
         		   LED_MOUSE_ON();
-        		   gpro_t.send_ack_cmd = ack_ultra_on;
-        		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(mouse_cmd,0x01); //
+        		  // gpro_t.send_ack_cmd = ack_mouse_on;
+        		  // gpro_t.gTimer_again_send_power_on_off =0;
+                   
+        		   
 				   }
-        	   else{
-        		   run_t.gMouse = 0;
+        	      else if(run_t.gMouse ==1){
+        		   
+                   SendData_Set_Command(mouse_cmd,0x00); //
+                   run_t.gMouse = 0;
         		   LED_MOUSE_OFF();
-        		   gpro_t.send_ack_cmd = ack_ultra_off;
-        		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(mouse_cmd,0x00); //
+        		   //gpro_t.send_ack_cmd = ack_mouse_off;
+        		   //gpro_t.gTimer_again_send_power_on_off =0;
+                 
+                    LED_MOUSE_OFF();
+        		   
 				}
 			    
 			}
@@ -279,11 +292,15 @@ static void vTaskRunPro(void *pvParameters)
        }
        else if(gpro_t.set_timer_timing_doing_value==0){
 
-          TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
+          //run_t.set_temperature_decade_value = gpro_t.gtmep_value /10;
+          //run_t.set_temperature_unit_value = gpro_t.gtmep_value % 10;
+
+         // TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
        }
 
-       
+       if(run_t.gMouse == 0) LED_MOUSE_OFF();
+       else  LED_MOUSE_ON();
        power_on_run_handler();
              
        Display_TimeColon_Blink_Fun();
@@ -301,7 +318,7 @@ static void vTaskRunPro(void *pvParameters)
    
       send_cmd_ack_hanlder();
 
-	  vTaskDelay(10);
+	  vTaskDelay(20);
      
 
        } //wihile(1) ---end
@@ -363,14 +380,7 @@ static void vTaskStart(void *pvParameters)
 
 
             }
-            else if((ulValue & MOUSE_BIT_4 ) != 0){   /* 接收到消息，检测那个位被按下 */
-            	 if(run_t.gPower_On == power_on){
-            	                      key_t.key_mouse_flag =1;
-            	                  //keyvalue = KEY_MOUSE_DOWN;
-            	                  //bsp_PutKey(keyvalue);
-            	                     }
-                
-             }
+           
             else if((ulValue & PLASMA_BIT_5 ) != 0){   /* 接收到消息，检测那个位被按下 */
             	  if(run_t.gPower_On == power_on){
             	                       key_t.key_plasma_flag =1;
@@ -391,13 +401,22 @@ static void vTaskStart(void *pvParameters)
         	                        //keyvalue = KEY_AI_DOWN;
         	                        //bsp_PutKey(keyvalue);
         	                    }
+            }
+            else if((ulValue & MOUSE_BIT_4 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	 if(run_t.gPower_On == power_on){
+                   
+            	      key_t.key_mouse_flag =1;
+                     }
+            	                 
+            	  }
+                
              }
            
         }
       
 
       }
- }
+ 
 
 
 /**********************************************************************************************************

@@ -39,7 +39,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0;
 //  static uint8_t tm1;
-    if(htim->Instance==TIM3){  
+    if(htim->Instance==TIM17){  
     tm0++;
 	
     run_t.gTimer_smg_blink_times++;

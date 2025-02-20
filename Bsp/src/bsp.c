@@ -306,7 +306,7 @@ void key_add_fun(void)
         gpro_t.manual_turn_off_dry_flag =0; //after set temperature allow shut off dry .
       
         
-      //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
+      TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
     break;
     
@@ -396,7 +396,7 @@ void key_dec_fun(void)
 
      //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
         
-
+        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
     break;
 
     case 1: //set timer timing value

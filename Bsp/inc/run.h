@@ -139,7 +139,7 @@ typedef struct __RUN{
 
   
 	
-   uint8_t gReal_humtemp[2];
+   uint8_t gReal_humtemp[1];
    uint8_t rx_mb_data_tag;
  
    /***/
@@ -220,7 +220,7 @@ void Power_Off_Fun(void);
 
 
 
-void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t cmd,uint8_t data);
+
 void Power_On_Fun(void);
 
 

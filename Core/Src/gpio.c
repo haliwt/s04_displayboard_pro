@@ -49,7 +49,7 @@ void MX_GPIO_Init(void)
                           |PLASMA_LED_EN_Pin|DRY_LED_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LED_POWER_Pin|TIME_LED_EN_Pin|FAN_LED_EN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LED_POWER_Pin|TIME_LED_EN_Pin|MOUSE_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(WIFI_LED_EN_GPIO_Port, WIFI_LED_EN_Pin, GPIO_PIN_RESET);
@@ -59,16 +59,16 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pin = SMG_POWER_Pin|TM1639_STB_Pin|M1639_DIO_Pin|TM1639_SCLK_Pin
                           |PLASMA_LED_EN_Pin|DRY_LED_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;//GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = LED_POWER_Pin|TIME_LED_EN_Pin|FAN_LED_EN_Pin;
+   GPIO_InitStruct.Pin =MOUSE_LED_Pin|LED_POWER_Pin|TIME_LED_EN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN ;//GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -101,12 +101,12 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PBPin PBPin PBPin */
 
   /*Configure GPIO pin : PtPin */
-//   GPIO_InitStruct.Pin = AI_KEY_Pin;
-//   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-//   GPIO_InitStruct.Pull = GPIO_PULLDOWN;//PULLDOWN;
-//   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+   GPIO_InitStruct.Pin = AI_KEY_Pin;
+   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+   GPIO_InitStruct.Pull = GPIO_PULLDOWN;//PULLDOWN;
+   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin|MOUSE_KEY_Pin|AI_KEY_Pin;
+  GPIO_InitStruct.Pin = PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin|MOUSE_KEY_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);

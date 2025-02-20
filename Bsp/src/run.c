@@ -26,77 +26,7 @@ void Power_Off(void)
 			
 }
 
-/**********************************************************************
-*
-*Functin Name: void Receive_MainBoard_Data_Handler(run_t.single_data)
-*Function : run order from main command 
-*Input Ref:  run_t.single_dat is command 
-*Return Ref: NO
-*
-**********************************************************************/
-void Receive_MainBoard_Data_Handler(uint8_t ulid,uint8_t data1,uint8_t data2)
-{
-	
-	
 
-   switch(ulid){
-
-     case ORDER_DATA:
-
-	   switch(data1){
-
-         case PTC_WARNING:
-		 	run_t.ptc_warning =1;
-		 	run_t.gDry =0;
-           //SendData_Set_Command(DRY_OFF_NO_BUZZER); 
-
-	     break;
-
-		 case FAN_WARNING:
-		 	run_t.fan_warning =1;
-            run_t.gDry = 0;
-            gpro_t.gmouse = 1;
-            run_t.gPlasma = 1;
-           // SendData_Set_Command(DRY_OFF_NO_BUZZER); //main board shuld be shut down DRY AND PLASMA
-		 	
-
-		 break;
-
-		
-         }
-    break;
-
-
-    case PANEL_DATA:
-    
-	    run_t.gReal_humtemp[0] = data1 ;  //Humidity 
-        run_t.gReal_humtemp[1] = data2;  // temperature
-	   
-      
-       break;
-
-	  case ANSWER_DATA:
-          
-//        if(data1 == 'P' && data2 == 0x01){
-//
-//           gpro_t.answer_signal_flag = power_on;
-//
-//
-//        }
-//        else if(data1 == 'P' && data2 == 0){
-//           gpro_t.answer_signal_flag = power_off;
-//
-//
-//        }
-     
-
-	  break;
-
-	
-
-   }
-
-}
 /**********************************************************************
 *
 *Functin Name: void Receive_ManiBoard_Cmd(uint8_t cmd)

@@ -19,8 +19,8 @@ typedef enum ack_sig{
   ack_ptc_off,
   ack_plasma_on,
   ack_plasma_off,
-  ack_ultra_on,
-  ack_ultra_off,
+  ack_mouse_on,
+  ack_mouse_off=0x09,
   ack_ai_on,
   ack_ai_off,
   ack_buzzer_sound

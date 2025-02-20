@@ -87,8 +87,8 @@ void Error_Handler(void);
 //FAN GPIO
 
 
-#define FAN_LED_EN_Pin                  GPIO_PIN_15
-#define FAN_LED_EN_GPIO_Port            GPIOB
+#define MOUSE_LED_Pin                 GPIO_PIN_15
+#define MOUSE_LED_GPIO_Port            GPIOB
 
 
 

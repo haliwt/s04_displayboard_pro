@@ -23,8 +23,8 @@
 #define LED_PLASMA_OFF()            HAL_GPIO_WritePin(PLASMA_LED_EN_GPIO_Port, PLASMA_LED_EN_Pin,GPIO_PIN_RESET)
 
 
-#define LED_MOUSE_ON()  			HAL_GPIO_WritePin(FAN_LED_EN_GPIO_Port, FAN_LED_EN_Pin,GPIO_PIN_SET)
-#define LED_MOUSE_OFF()				HAL_GPIO_WritePin(FAN_LED_EN_GPIO_Port, FAN_LED_EN_Pin,GPIO_PIN_RESET)
+#define LED_MOUSE_ON()  			HAL_GPIO_WritePin(GPIOB, MOUSE_LED_Pin,GPIO_PIN_SET)
+#define LED_MOUSE_OFF()				HAL_GPIO_WritePin(GPIOB, MOUSE_LED_Pin,GPIO_PIN_RESET)
 
 
 //control SMG supply power 

@@ -108,8 +108,8 @@ void send_cmd_ack_hanlder(void)
     }
     break;
 
-    case ack_ultra_on:
-    if(gpro_t.receive_copy_cmd == ack_ultra_on){
+    case ack_mouse_on:
+    if(gpro_t.receive_copy_cmd == ack_mouse_on){
 			gpro_t.receive_copy_cmd =0;
 			 gpro_t.send_ack_cmd = 0;
     }
@@ -119,8 +119,8 @@ void send_cmd_ack_hanlder(void)
     }
     break;
 
-    case ack_ultra_off:
-    if(gpro_t.receive_copy_cmd == ack_ultra_off){
+    case ack_mouse_off:
+    if(gpro_t.receive_copy_cmd == ack_mouse_off){
 			gpro_t.receive_copy_cmd =0;
 			 gpro_t.send_ack_cmd = 0;
     }
@@ -298,7 +298,7 @@ void receive_data_fromm_mainboard(uint8_t *pdata)
             
              //gpro_t.temp_real_value = pdata[6];
             
-             run_t.gReal_humtemp[1] = pdata[6] ;// temperature value 
+            gpro_t.gtmep_value = pdata[6] ;// temperature value 
            
 
             

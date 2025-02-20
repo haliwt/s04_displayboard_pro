@@ -73,6 +73,7 @@ typedef struct _pro_t{
 
    uint8_t send_ack_cmd;
    uint8_t receive_copy_cmd;
+   uint8_t gtmep_value;
 
 
    

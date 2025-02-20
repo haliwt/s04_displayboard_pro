@@ -1,10 +1,5 @@
-#include "display.h"
-#include "smg.h"
-#include "cmd_link.h"
-#include "run.h"
-#include "key.h"
-#include "led.h"
-#include "bsp_display_dynamic.h"
+#include "bsp.h"
+
 
 
 
@@ -28,8 +23,8 @@ void Display_DHT11_Value(void)
 	hum1 =  run_t.gReal_humtemp[0]/10;  //Humidity 
 	hum2 =  run_t.gReal_humtemp[0]%10;
 
-	temp1 = run_t.gReal_humtemp[1]/10 ;  // temperature
-	temp2 = run_t.gReal_humtemp[1]%10;
+	temp1 = gpro_t.gtmep_value /10;//run_t.gReal_humtemp[1]/10 ;  // temperature
+	temp2 = gpro_t.gtmep_value % 10;//run_t.gReal_humtemp[1]%10;
 
  
 	TM1639_Write_2bit_TempData(temp1,temp2);
