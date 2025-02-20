@@ -14,7 +14,7 @@
 #define ADD_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOA,ADD_KEY_Pin)
 
 
-#define MOUSE_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOB,FAN_KEY_Pin)
+#define MOUSE_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOB,MOUSE_KEY_Pin)
 #define PLASMA_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOB,PLASMA_KEY_Pin)
 #define DRY_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOB,DRY_KEY_Pin)
 #define AI_KEY_VALUE()              HAL_GPIO_ReadPin(GPIOB,AI_KEY_Pin)

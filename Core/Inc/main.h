@@ -92,6 +92,7 @@ void Error_Handler(void);
 
 
 
+#if 0
 //KEY GPIO
 
 #define AI_KEY_Pin 					        GPIO_PIN_10
@@ -116,8 +117,47 @@ void Error_Handler(void);
 #define PLASMA_KEY_GPIO_Port 			     GPIOB
 
 
-#define FAN_KEY_Pin 					        GPIO_PIN_0
-#define FAN_KEY_GPIO_Port 				        GPIOB
+#define MOUSE_KEY_Pin 					        GPIO_PIN_0
+#define MOUSE_KEY_GPIO_Port 				        GPIOB
+#endif 
+
+//KEY INPUT GPIO
+
+#define MOUSE_KEY_Pin                       GPIO_PIN_0
+#define MOUSE_KEY_GPIO_Port                 GPIOB
+#define MOUSE_KEY_EXTI_IRQn                 EXTI0_1_IRQn
+
+#define PLASMA_KEY_Pin                      GPIO_PIN_1
+#define PLASMA_KEY_GPIO_Port                GPIOB
+#define PLASMA_KEY_EXTI_IRQn                EXTI0_1_IRQn
+
+#define DRY_KEY_Pin                         GPIO_PIN_2
+#define DRY_KEY_GPIO_Port                   GPIOB
+#define DRY_KEY_EXTI_IRQn                   EXTI2_3_IRQn
+
+
+#define AI_KEY_Pin                          GPIO_PIN_10
+#define AI_KEY_GPIO_Port                    GPIOB
+#define AI_KEY_EXTI_IRQn                    EXTI4_15_IRQn
+
+
+
+#define POWER_KEY_Pin                       GPIO_PIN_7
+#define POWER_KEY_GPIO_Port                 GPIOC
+#define POWER_KEY_EXTI_IRQn                 EXTI4_15_IRQn
+
+
+#define MODEL_KEY_Pin                       GPIO_PIN_10
+#define MODEL_KEY_GPIO_Port                 GPIOA
+#define MODEL_KEY_EXTI_IRQn                 EXTI4_15_IRQn
+
+#define DEC_KEY_Pin                         GPIO_PIN_11
+#define DEC_KEY_GPIO_Port                   GPIOA
+#define DEC_KEY_EXTI_IRQn                   EXTI4_15_IRQn
+
+#define ADD_KEY_Pin                         GPIO_PIN_12
+#define ADD_KEY_GPIO_Port                   GPIOA
+#define ADD_KEY_EXTI_IRQn                   EXTI4_15_IRQn
 
 
 

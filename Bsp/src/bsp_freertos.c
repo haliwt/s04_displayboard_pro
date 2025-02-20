@@ -6,15 +6,15 @@
 #include "cmsis_os.h"
 
 
-#define POWER_KEY_0	        (1 << 0)
-#define MODE_KEY_1	        (1 << 1)
-#define DEC_KEY_2           (1 << 2)
-#define ADD_KEY_3           (1 << 3)
+#define POWER_BIT_0	        (1 << 0)
+#define MODE_BIT_1	        (1 << 1)
+#define DEC_BIT_2           (1 << 2)
+#define ADD_BIT_3           (1 << 3)
 
-#define FAN_KEY_4           (1 << 4)
-#define PLASMA_KEY_5        (1 << 5)
-#define DRY_KEY_6           (1<< 6)
-#define AI_KEY_7            ( 1<< 7)
+#define MOUSE_BIT_4           (1 << 4)
+#define PLASMA_BIT_5        (1 << 5)
+#define DRY_BIT_6           (1<< 6)
+#define AI_BIT_7            ( 1<< 7)
 
 #define MODE_LONG_KEY_8         (1 << 8)
 #define DECODER_BIT_9          (1<< 9)
@@ -327,7 +327,7 @@ static void vTaskRunPro(void *pvParameters)
 
 		}
 		else{
-			if(key_t.key_power_flag ==1 && POWER_KEY_VALUE() ==KEY_UP){
+			if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
 					key_t.key_power_flag ++;
 
 					if(run_t.gPower_On == power_off){
@@ -342,14 +342,14 @@ static void vTaskRunPro(void *pvParameters)
 
 				}
 			}
-			else if(key_t.key_mode_flag ==1 && MODEL_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_mode_flag ==1){ //&& MODEL_KEY_VALUE()==KEY_UP){
 				 key_t.key_mode_flag ++;
 				 SendData_Buzzer();//SendData_Buzzer_Has_Ack();
 				//gpro_t.send_ack_cmd = ack_buzzer_sound;
 				//gpro_t.gTimer_again_send_power_on_off =0;
 				mode_key_fun();
 			}
-			else if(key_t.key_dec_flag ==1 && DEC_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_dec_flag ==1){// && DEC_KEY_VALUE()==KEY_UP){
 				 key_t.key_dec_flag ++;
 				SendData_Buzzer_Has_Ack();
 				gpro_t.send_ack_cmd = ack_buzzer_sound;
@@ -363,7 +363,7 @@ static void vTaskRunPro(void *pvParameters)
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_add_fun();
 			}
-			else if(key_t.key_ai_flag ==1 && AI_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_ai_flag ==1){ // && AI_KEY_VALUE()==KEY_UP){
 				 key_t.key_ai_flag ++;
 				if(run_t.ai_model_flag == AI_MODE){
         		  run_t.ai_model_flag = NO_AI_MODE;
@@ -382,7 +382,7 @@ static void vTaskRunPro(void *pvParameters)
 				   //gpro_t.gTimer_again_send_power_on_off =0;
         		}
 			}
-			else if(key_t.key_plasma_flag ==1 && PLASMA_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_plasma_flag ==1){// && PLASMA_KEY_VALUE()==KEY_UP){
 				 key_t.key_plasma_flag ++;
 				 if(run_t.gPlasma == 1){
         			 run_t.gPlasma = 0;
@@ -489,77 +489,81 @@ static void vTaskRunPro(void *pvParameters)
 **********************************************************************************************************/
 static void vTaskStart(void *pvParameters)
 {
-	
-  // const TickType_t xMaxBlockTime = pdMS_TO_TICKS(20); /* 设置最大等待时间为30ms */
+	BaseType_t xResult;
+   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
+	uint32_t ulValue;
     while(1)
     {
       
       //bsp_KeyScan();
-      
-     if(POWER_KEY_VALUE()  ==KEY_DOWN){
-     
-           key_t.key_power_flag =1;
-            // bsp_PutKey(keyvalue);
-            // key_t.key_power_flag =1;
-             
-          }
-          else if( MODEL_KEY_VALUE() ==KEY_DOWN){
-              if(run_t.gPower_On == power_on){
-              key_t.key_mode_flag = 1;
-             // keyvalue = KEY_MODE_DOWN;
-             // bsp_PutKey(keyvalue);
-             }
-     
-           }
-            else if(DEC_KEY_VALUE() == KEY_DOWN){
-                if(run_t.gPower_On == power_on){
-                key_t.key_dec_flag =1;
-               // keyvalue = KEY_DEC_DOWN;
-                // bsp_PutKey(keyvalue);
-                 }
-              }
-              else if(ADD_KEY_VALUE() ==KEY_DOWN){
-                  if(run_t.gPower_On == power_on){
-                   key_t.key_add_flag =1;
-                  //keyvalue = KEY_ADD_DOWN;
-                  //bsp_PutKey(keyvalue);
-                   }
-     
-     
-             }
-              else if(AI_KEY_VALUE()==KEY_DOWN){
-                  if(run_t.gPower_On == power_on){
-                      key_t.key_ai_flag = 1;
-                      //keyvalue = KEY_AI_DOWN;
-                      //bsp_PutKey(keyvalue);
-                  }
-     
-              }
-              else if(PLASMA_KEY_VALUE()==KEY_DOWN){
-                   if(run_t.gPower_On == power_on){
-                       key_t.key_plasma_flag =1;
-                  //keyvalue = KEY_PLASMA_DOWN;
-                   //bsp_PutKey(keyvalue);
-                   }
-              }
-              else if(DRY_KEY_VALUE()==KEY_DOWN){
-                  if(run_t.gPower_On == power_on){
-                      key_t.key_dry_flag =1;
-                 // keyvalue = KEY_DRY_DOWN;
-                  //bsp_PutKey(keyvalue);
-                     }
-     
-              }
-              else if(MOUSE_KEY_VALUE() == KEY_DOWN){
-                  if(run_t.gPower_On == power_on){
-                      key_t.key_mouse_flag =1;
-                  //keyvalue = KEY_MOUSE_DOWN;
-                  //bsp_PutKey(keyvalue);
-                     }
-     
-              }
 
-     vTaskDelay(10);//
+       xResult = xTaskNotifyWait(0x00000000,      
+						           0xFFFFFFFF,      
+						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
+						          xMaxBlockTime);  /* 最大允许延迟时间 */
+        if( xResult == pdPASS ){
+		    
+            /* 接收到消息，检测那个位被按下 */
+            if((ulValue & POWER_BIT_0 ) != 0)
+            {
+            	key_t.key_power_flag =1;
+            }
+            else if((ulValue & MODE_BIT_1 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	 if(run_t.gPower_On == power_on){
+            	              key_t.key_mode_flag = 1;
+
+            	      }
+               
+             }
+            else if((ulValue & DEC_BIT_2 ) != 0){
+            	  if(run_t.gPower_On == power_on){
+            	                key_t.key_dec_flag =1;
+            	               // keyvalue = KEY_DEC_DOWN;
+            	                // bsp_PutKey(keyvalue);
+            	                 }
+               
+            }
+            else if((ulValue & ADD_BIT_3 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	 if(run_t.gPower_On == power_on){
+            	                   key_t.key_add_flag =1;
+            	                  //keyvalue = KEY_ADD_DOWN;
+            	                  //bsp_PutKey(keyvalue);
+            	                   }
+
+
+            }
+            else if((ulValue & MOUSE_BIT_4 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	 if(run_t.gPower_On == power_on){
+            	                      key_t.key_mouse_flag =1;
+            	                  //keyvalue = KEY_MOUSE_DOWN;
+            	                  //bsp_PutKey(keyvalue);
+            	                     }
+                
+             }
+            else if((ulValue & PLASMA_BIT_5 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	  if(run_t.gPower_On == power_on){
+            	                       key_t.key_plasma_flag =1;
+            	                  //keyvalue = KEY_PLASMA_DOWN;
+            	                   //bsp_PutKey(keyvalue);
+            	                   }
+            }
+            else if((ulValue & DRY_BIT_6 ) != 0){   /* 接收到消息，检测那个位被按下 */
+            	   if(run_t.gPower_On == power_on){
+            	                      key_t.key_dry_flag =1;
+            	                 // keyvalue = KEY_DRY_DOWN;
+            	                  //bsp_PutKey(keyvalue);
+            	                     }
+             }
+           else if((ulValue & AI_BIT_7 ) != 0){   /* 接收到消息，检测那个位被按下 */
+        	   if(run_t.gPower_On == power_on){
+        	                        key_t.key_ai_flag = 1;
+        	                        //keyvalue = KEY_AI_DOWN;
+        	                        //bsp_PutKey(keyvalue);
+        	                    }
+             }
+        }
+      
+
      
     }
 
@@ -677,188 +681,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
    }
 }
 
+
 #if 0
-
-
-    if(huart==&huart1) // Motor Board receive data (filter)
-	{
-
-       DISABLE_INT();
-       switch(state)
-		{
-		case 0:  //#0
-			if(inputBuf[0]=='M' ||inputBuf[0]==0x55)  {//hex :4D - "M" -fixed mainboard
-               
-             
-				state=1; 
-		    }
-			else{
-			    state=0; //=1
-              
-
-			}
-			break;
-		case 1: //#1
-			if(inputBuf[0]=='A' || inputBuf[0]==0x42) //hex : 41 -'A'  -fixed master
-			{
-				
-               state=2; 
-			}
-			else{
-				
-				state=0;
-		
-
-
-				}
-			break;
-		case 2://#2
-			if(inputBuf[0]=='D'||inputBuf[0]==0x4B || inputBuf[0]=='E'){
-				if(inputBuf[0]=='D'){
-                    rx_mb_data_tag=PANEL_DATA;
-                    state = 3;
-
-                }
-                else if(inputBuf[0]=='E'){
-                  rx_mb_data_tag=ORDER_DATA;
-                  state=3;
-                }
-                else if(inputBuf[0]==0x4B){
-                    state = 5;
-
-                }
-				
-			}
-            else{
-				state=0;
-				
-
-
-				}
-			break;
-            
-        case 3:
-
-            if(rx_mb_data_tag==PANEL_DATA){
-            
-                // run_t.gReal_humtemp[0]=inputBuf[0]; //Humidity value 
-                  rxcmd[0]=inputBuf[0];
-                  state = 4; 
-                
-             }
-			else if(rx_mb_data_tag==ORDER_DATA){
-
-                rxcmd[0]=  inputBuf[0];  
-                /* 初始化结构体指针 */
-                ptMsg = &g_tMsg;
-                ptMsg->ucMessageID=ORDER_DATA;
-    		    ptMsg->ulData[0] = inputBuf[0]; //rxcmd[0];
-                ptMsg ->usData[0] = 0;
-               
-               
-
-                 /* 向消息队列发数据 */
-            	xQueueSendFromISR(xQueue2,
-            				      (void *)&ptMsg,
-            				      &xHigherPriorityTaskWoken);
-
-            	/* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
-            	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-
-             
-           
-
-                state=0;
-
-			}
-            else {
-               state = 0; 
-          
-            }
-	    break;
-        
-		case 4: //
-
-		 if(rx_mb_data_tag==PANEL_DATA){
-              //run_t.gReal_humtemp[1]=inputBuf[0]; //temperature value
-              
-               /* 初始化结构体指针 */
-                ptMsg = &g_tMsg;
-                ptMsg->ucMessageID = PANEL_DATA;
-    		    ptMsg->ulData[0] =  rxcmd[0];
-                ptMsg ->usData[0] = inputBuf[0];
-               
-                /* 向消息队列发数据 */
-            	xQueueSendFromISR(xQueue2,
-            				      (void *)&ptMsg,
-            				      &xHigherPriorityTaskWoken);
-
-            	/* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
-            	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-			
-		     state=0;
-		    
-		
-              
-          }
-         else {
-
-		
-			state =0;
-
-         }
-		
-		 
-		 break;
-
-         case 5:
-
-           rxcmd[0]=inputBuf[0];
-
-           state = 6;
-
-
-         break;
-
-
-		 case 6:
-
-            /* 初始化结构体指针 */
-            ptMsg = &g_tMsg;
-            ptMsg->ucMessageID=ANSWER_DATA;
-		    ptMsg->ulData[0] = rxcmd[0];
-            ptMsg ->usData[0] =  inputBuf[0];
-           
-           
-
-             /* 向消息队列发数据 */
-        	xQueueSendFromISR(xQueue2,
-        				      (void *)&ptMsg,
-        				      &xHigherPriorityTaskWoken);
-
-        	/* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
-        	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-	       
-		 
-             state=0;
-        break;
-           
-       
-		
-		
-		default:
-			
-		break;
-		}
-
-
-          ENABLE_INT();
-       __HAL_UART_CLEAR_OREFLAG(&huart1);
-		HAL_UART_Receive_IT(&huart1,inputBuf,1);//UART receive data interrupt 1 byte
-	}
-}
-#endif 
-
 void USART1_Cmd_Error_Handler(void)
 {
    uint32_t temp;
@@ -875,6 +699,123 @@ void USART1_Cmd_Error_Handler(void)
     
   
  }
+#endif 
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+{
+
+ 
+   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    __HAL_GPIO_EXTI_CLEAR_RISING_IT(GPIO_Pin);
+ 
+   switch(GPIO_Pin){
+
+   case POWER_KEY_Pin:
+       // DISABLE_INT(); //WT.EDIT 2024.08.15 modify.
+        if(POWER_KEY_VALUE()  ==KEY_DOWN){
+
+     
+
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+        POWER_BIT_0,      /* 设置目标任务事件标志位bit0  */
+        eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+        &xHigherPriorityTaskWoken);
+
+
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+
+        }
+            
+     //  ENABLE_INT();
+   break;
+
+   case MODEL_KEY_Pin:
+     // DISABLE_INT();
+      if(MODEL_KEY_VALUE() == KEY_DOWN){
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+               MODE_BIT_1,     /* 设置目标任务事件标志位bit0  */
+               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+               &xHigherPriorityTaskWoken);
+
+        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+
+       }
+       else if(AI_KEY_VALUE() == KEY_DOWN){
+             xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+               AI_BIT_7,     /* 设置目标任务事件标志位bit0  */
+               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+               &xHigherPriorityTaskWoken);
+
+        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+
+       }
+     // ENABLE_INT();
+   
+   break;
+
+
+   case DEC_KEY_Pin:
+      // DISABLE_INT();
+       if(DEC_KEY_VALUE() == KEY_DOWN){
+         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+                DEC_BIT_2,     /* 设置目标任务事件标志位bit0  */
+                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+                &xHigherPriorityTaskWoken);
+   
+         /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        }
+     ///  ENABLE_INT();
+   break;
+
+   case ADD_KEY_Pin:
+      ///   DISABLE_INT();
+        if(ADD_KEY_VALUE() == KEY_DOWN){
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+                ADD_BIT_3,     /* 设置目标任务事件标志位bit0  */
+                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+                &xHigherPriorityTaskWoken);
+   
+         /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+    ///    ENABLE_INT();
+   break;
+
+     case DRY_KEY_Pin:
+      ///   DISABLE_INT();
+        if(DEC_KEY_VALUE() == KEY_DOWN){
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+                DRY_BIT_6,     /* 设置目标任务事件标志位bit0  */
+                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+                &xHigherPriorityTaskWoken);
+   
+         /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+    ///    ENABLE_INT();
+   break;
+
+   case PLASMA_KEY_Pin:
+      ///   DISABLE_INT();
+        if(PLASMA_KEY_VALUE() == KEY_DOWN){
+        xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+                PLASMA_BIT_5,     /* 设置目标任务事件标志位bit0  */
+                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+                &xHigherPriorityTaskWoken);
+   
+         /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+            }
+    ///    ENABLE_INT();
+   break;
+        
+    }
+}
 
 
 

@@ -63,11 +63,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PBPin PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = FAN_KEY_Pin|PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
   GPIO_InitStruct.Pin = LED_POWER_Pin|TIME_LED_EN_Pin|FAN_LED_EN_Pin;
@@ -83,17 +79,61 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(WIFI_LED_EN_GPIO_Port, &GPIO_InitStruct);
 
+//
+//   /*Configure GPIO pins : PBPin PBPin PBPin PBPin */
+//  GPIO_InitStruct.Pin = MOUSE_KEY_Pin|PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+//  /*Configure GPIO pin : PtPin */
+//  GPIO_InitStruct.Pin = POWER_KEY_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_PULLDOWN; //GPIO_NOPULL; //WT.EDIT 2024.08.08
+//  HAL_GPIO_Init(POWER_KEY_GPIO_Port, &GPIO_InitStruct);
+//
+//  /*Configure GPIO pins : PAPin PAPin PAPin */
+//  GPIO_InitStruct.Pin = MODEL_KEY_Pin|DEC_KEY_Pin|ADD_KEY_Pin;
+//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+//  GPIO_InitStruct.Pull = GPIO_PULLDOWN ;//GPIO_NOPULL; //WT.EDIT 2024.08.08
+//  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PBPin PBPin PBPin */
+
+  /*Configure GPIO pin : PtPin */
+   GPIO_InitStruct.Pin = AI_KEY_Pin;
+   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+   HAL_GPIO_Init(AI_KEY_GPIO_Port, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = PLASMA_KEY_Pin|DRY_KEY_Pin|AI_KEY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = POWER_KEY_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN; //GPIO_NOPULL; //WT.EDIT 2024.08.08
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(POWER_KEY_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin */
+  /*Configure GPIO pins : PAPin PAPin */
   GPIO_InitStruct.Pin = MODEL_KEY_Pin|DEC_KEY_Pin|ADD_KEY_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN ;//GPIO_NOPULL; //WT.EDIT 2024.08.08
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI2_3_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
 
 }
 

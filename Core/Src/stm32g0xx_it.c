@@ -69,6 +69,51 @@ extern UART_HandleTypeDef huart1;
 /*           Cortex-M0+ Processor Interruption and Exception Handlers          */
 /******************************************************************************/
 /**
+  * @brief This function handles EXTI line 0 and line 1 interrupts.
+  */
+void EXTI0_1_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_1_IRQn 0 */
+
+  /* USER CODE END EXTI0_1_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(PLASMA_KEY_Pin);
+  /* USER CODE BEGIN EXTI0_1_IRQn 1 */
+
+  /* USER CODE END EXTI0_1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line 2 and line 3 interrupts.
+  */
+void EXTI2_3_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI2_3_IRQn 0 */
+
+  /* USER CODE END EXTI2_3_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(DRY_KEY_Pin);
+  /* USER CODE BEGIN EXTI2_3_IRQn 1 */
+
+  /* USER CODE END EXTI2_3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line 4 to 15 interrupts.
+  */
+void EXTI4_15_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI4_15_IRQn 0 */
+
+  /* USER CODE END EXTI4_15_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(POWER_KEY_Pin);
+  HAL_GPIO_EXTI_IRQHandler(MODEL_KEY_Pin);
+  HAL_GPIO_EXTI_IRQHandler(DEC_KEY_Pin);
+  HAL_GPIO_EXTI_IRQHandler(ADD_KEY_Pin);
+  /* USER CODE BEGIN EXTI4_15_IRQn 1 */
+
+  /* USER CODE END EXTI4_15_IRQn 1 */
+}
+
+/**
   * @brief This function handles Non maskable interrupt.
   */
 void NMI_Handler(void)
@@ -159,26 +204,5 @@ void USART1_IRQHandler(void)
 /**
   * @brief This function handles EXTI line 4 to 15 interrupts.
   */
-void EXTI4_15_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI4_15_IRQn 0 */
 
-  /* USER CODE END EXTI4_15_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(POWER_KEY_Pin);
- 
-  HAL_GPIO_EXTI_IRQHandler(MODEL_KEY_Pin);
-  HAL_GPIO_EXTI_IRQHandler(DEC_KEY_Pin);
-  HAL_GPIO_EXTI_IRQHandler(ADD_KEY_Pin);
- 
-  /* USER CODE BEGIN EXTI4_15_IRQn 1 */
-
-  /* USER CODE END EXTI4_15_IRQn 1 */
-}
-
-void EXTI0_1_IRQHandler(void)
-{
-   HAL_GPIO_EXTI_IRQHandler(FAN_KEY_Pin);
- 
-   //run_t.keyvalue = FAN_KEY_ID;
-}
 /* USER CODE END 1 */
