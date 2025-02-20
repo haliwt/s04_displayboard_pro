@@ -155,29 +155,8 @@ static void vTaskRunPro(void *pvParameters)
 	
     while(1)
     {
-//		xResult = xTaskNotifyWait(0x00000000,
-//								  0xFFFFFFFF,     /* Reset the notification value to 0 on */
-//								&ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-//							  xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
-//
-//		if( xResult == pdPASS )
-//		{
-//			/* 接收到消息，检测那个位被按下 */
-//
-//			if((ulValue & DECODER_BIT_9) != 0){
-//				gl_tMsg.disp_rx_cmd_done_flag = 0;
-//
-//				check_code =  bcc_check(gl_tMsg.usData,gl_tMsg.ulid);
-//
-//				if(check_code == gl_tMsg.bcc_check_code ){
-//
-//				receive_data_fromm_mainboard(gl_tMsg.usData);
-//				}
-//			}
-//
-//		}
-//		else{
-			if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
+
+	if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
 					key_t.key_power_flag ++;
 
 					if(run_t.gPower_On == power_off){
@@ -325,7 +304,7 @@ static void vTaskRunPro(void *pvParameters)
 	  vTaskDelay(10);
      
 
-        } //wihile(1) ---end
+       } //wihile(1) ---end
   }
 //}
 
