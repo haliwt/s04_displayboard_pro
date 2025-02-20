@@ -26,7 +26,7 @@
 											函数声明
 ***********************************************************************************************************/
 static void vTaskRunPro(void *pvParameters);
-//static void vTaskDecoderPro(void *pvParameters);
+static void vTaskDecoderPro(void *pvParameters);
 static void vTaskStart(void *pvParameters);
 static void AppTaskCreate (void);
 
@@ -40,7 +40,7 @@ static void AppTaskCreate (void);
 											变量声明
 ***********************************************************************************************************/
 static TaskHandle_t xHandleTaskRunPro = NULL;
-//static TaskHandle_t xHandleTaskDecoderPro= NULL;
+static TaskHandle_t xHandleTaskDecoderPro= NULL;
 static TaskHandle_t xHandleTaskStart = NULL;
 
 //static QueueHandle_t xQueue1 = NULL;
@@ -71,7 +71,7 @@ typedef struct Msg
 MSG_T   gl_tMsg; /* 定义丢�个结构体用于消息队列 */
 uint8_t ucKeyCode;
 uint8_t uckey_number;
-uint8_t key_power_flag;
+uint8_t key_power_flag,decoder_flag ;
 /**********************************************************************************************************
 *	凄1�7 敄1�7 各1�7: vTaskTaskUserIF
 *	功能说明: 接口消息处理〄1�7
@@ -92,7 +92,7 @@ void freeRTOS_Handler(void)
 
 
 }
-#if 0
+#if 1
 /**********************************************************************************************************
 *   FunctionName: static void vTaskRunPro(void *pvParameters)
 *	功能说明: 使用函数xTaskNotifyWait接收任务vTaskTaskUserIF发送的事件标志位设置
@@ -102,213 +102,19 @@ void freeRTOS_Handler(void)
 
 *   priority : 1  (数值越小优先级越低，这个跟uCOS相反)
 **********************************************************************************************************/
-static void vTaskRunPro(void *pvParameters)
+static void vTaskDecoderPro(void *pvParameters)
 {
-
- //   uint8_t ucKeyCode;
-    while(1)
-    {
-		
-        ucKeyCode =  bsp_GetKey();
-
-        if(key_t.key_power_flag ==1 && POWER_KEY_VALUE() ==KEY_UP){
-           key_t.key_power_flag ++;
-
-                  
-        if(run_t.gPower_On == power_off){
-                       gpro_t.send_ack_cmd = ack_power_on;
-                       gpro_t.gTimer_again_send_power_on_off =0;
-                        SendData_PowerOnOff(1);//power on
-                     }
-                     else{
-                         gpro_t.send_ack_cmd = ack_power_off;
-                         gpro_t.gTimer_again_send_power_on_off =0;
-                         SendData_PowerOnOff(0);//power on
-        
-                     }
-
-
-
-        }
-
-     
-         if(ucKeyCode != KEY_NONE){
-
-           switch(ucKeyCode){
-
-
-       
-              case KEY_POWER_DOWN:
-        	  if(run_t.gPower_On == power_off){
-        		gpro_t.send_ack_cmd = ack_power_on;
-        		gpro_t.gTimer_again_send_power_on_off =0;
-        		 SendData_PowerOnOff(1);//power on
-        	  }
-        	  else{
-        		  gpro_t.send_ack_cmd = ack_power_off;
-        		  gpro_t.gTimer_again_send_power_on_off =0;
-        		  SendData_PowerOnOff(0);//power on
-
-        	  }
-
-            bsp_ClearKey();
-
-        	break;
-
-        	case KEY_MODE_DOWN:
-        	mode_key_fun();
-            bsp_ClearKey();
-        	break;
-
-        	case KEY_DEC_DOWN:
-        		key_dec_fun();
-        		bsp_ClearKey();
-        	break;
-
-        	case KEY_ADD_DOWN:
-        		 key_add_fun();
-        		bsp_ClearKey();
-
-        	break;
-
-        	case KEY_AI_DOWN:
-
-        		if(run_t.ai_model_flag == AI_MODE){
-        		  run_t.ai_model_flag = NO_AI_MODE;
-        		  LED_AI_OFF();
-        		}
-        		else{
-        		   run_t.ai_model_flag = AI_MODE;
-        		   LED_AI_ON();
-        		   SendData_Set_Command(ai_cmd,0x01); //
-        		}
-        		//ai_key_fun(run_t.ai_model_flag);
-        		bsp_ClearKey();
-
-        	break;
-
-        	case KEY_PLASMA_DOWN:
-
-        		 if(run_t.gPlasma == 1){
-        			 run_t.gPlasma = 0;
-        			 LED_PLASMA_OFF();
-        			 SendData_Set_Command(plasma_cmd,0x0); //
-        		 }
-        		 else{
-        			 run_t.gPlasma = 1;
-        			 LED_PLASMA_ON();
-        			 SendData_Set_Command(plasma_cmd,0x01); //
-        	     }
-
-
-
-        		bsp_ClearKey();
-
-           break;
-
-           case KEY_DRY_DOWN:
-
-        	   if(run_t.gDry ==0){
-        		   run_t.gDry =1;
-        		   LED_DRY_ON();
-        		   gpro_t.send_ack_cmd = ack_ptc_on;
-        		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(dry_cmd,0x01); //
-        	   }
-        	   else{
-        		   run_t.gDry = 0;
-        		   LED_DRY_OFF();
-        		   gpro_t.send_ack_cmd = ack_ptc_off;
-        		   gpro_t.gTimer_again_send_power_on_off =0;
-        		   SendData_Set_Command(dry_cmd,0x00); //
-        	   }
-
-
-        	   gpro_t.manual_turn_off_dry_flag =1;
-
-
-        	   bsp_ClearKey();
-
-           break;
-           
-           case KEY_MOUSE_DOWN:
-        	   if(run_t.gMouse ==0){
-        		   run_t.gMouse = 1;
-        		   LED_MOUSE_ON();
-                   SendData_Set_Command(mouse_cmd,0x01); //
-        	   }
-        	   else{
-        		   run_t.gMouse = 0;
-        		   LED_MOUSE_OFF();
-                   SendData_Set_Command(mouse_cmd,0); //
-        	   }
-        	  
-        	   bsp_ClearKey();
-
-           break;
-
-           }
-       }
-       else if(run_t.gPower_On == power_on){
-
-      
-       if(gpro_t.set_timer_timing_doing_value==1){
-
-
-         ai_ico_fast_blink();
-         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
-
-       }
-       else if(gpro_t.set_timer_timing_doing_value==0){
-
-          TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
-
-       }
-
-       
-       power_on_run_handler();
-             
-       Display_TimeColon_Blink_Fun();
-       set_timer_fun_led_blink();
-
-       works_run_two_hours_handler();
-
-      }
-      else if(run_t.gPower_On == power_off){
-
-          power_off_run_handler();
-
-       }
-
-      send_cmd_ack_hanlder();
-      uckey_number++;
-      vTaskDelay(20);
-
-    }
-
- }
-#endif
-/**********************************************************************************************************
-*	Function Name: static void vTaskRunPro(void *pvParameters)
-*	Function: 
-*	Input Ref: pvParameters 是在创建该任务时传��的形参
-*	Return Ref:
-*   priority: 2  (数值越小优先级越低，这个跟uCOS相反)
-**********************************************************************************************************/
-static void vTaskRunPro(void *pvParameters)
-{
-
-	BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(30); /* 设置最大等待时间为30ms */
+    BaseType_t xResult;
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
 	uint8_t check_code;
-	
+
     while(1)
     {
-		xResult = xTaskNotifyWait(0x00000000,
+	xResult = xTaskNotifyWait(0x00000000,
 								  0xFFFFFFFF,     /* Reset the notification value to 0 on */
 								&ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-							  xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
+							     portMAX_DELAY);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
 
 		if( xResult == pdPASS )
 		{
@@ -326,7 +132,51 @@ static void vTaskRunPro(void *pvParameters)
 			}
 
 		}
-		else{
+       
+
+    }
+
+ }
+#endif
+/**********************************************************************************************************
+*	Function Name: static void vTaskRunPro(void *pvParameters)
+*	Function: 
+*	Input Ref: pvParameters 是在创建该任务时传��的形参
+*	Return Ref:
+*   priority: 2  (数值越小优先级越低，这个跟uCOS相反)
+**********************************************************************************************************/
+static void vTaskRunPro(void *pvParameters)
+{
+
+	BaseType_t xResult;
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为30ms */
+	uint32_t ulValue;
+	uint8_t check_code;
+	
+    while(1)
+    {
+//		xResult = xTaskNotifyWait(0x00000000,
+//								  0xFFFFFFFF,     /* Reset the notification value to 0 on */
+//								&ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
+//							  xMaxBlockTime);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
+//
+//		if( xResult == pdPASS )
+//		{
+//			/* 接收到消息，检测那个位被按下 */
+//
+//			if((ulValue & DECODER_BIT_9) != 0){
+//				gl_tMsg.disp_rx_cmd_done_flag = 0;
+//
+//				check_code =  bcc_check(gl_tMsg.usData,gl_tMsg.ulid);
+//
+//				if(check_code == gl_tMsg.bcc_check_code ){
+//
+//				receive_data_fromm_mainboard(gl_tMsg.usData);
+//				}
+//			}
+//
+//		}
+//		else{
 			if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
 					key_t.key_power_flag ++;
 
@@ -469,14 +319,15 @@ static void vTaskRunPro(void *pvParameters)
 
        }
 
+   
       send_cmd_ack_hanlder();
-			
 
-	} //else endf
+	  vTaskDelay(10);
      
 
-    } //wihile(1) ---end
+        } //wihile(1) ---end
   }
+//}
 
 /**********************************************************************************************************
 *
@@ -490,8 +341,9 @@ static void vTaskRunPro(void *pvParameters)
 static void vTaskStart(void *pvParameters)
 {
 	BaseType_t xResult;
-   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
+   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
+    uint8_t check_code;
     while(1)
     {
       
@@ -500,7 +352,7 @@ static void vTaskStart(void *pvParameters)
        xResult = xTaskNotifyWait(0x00000000,      
 						           0xFFFFFFFF,      
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          xMaxBlockTime);  /* 最大允许延迟时间 */
+						          portMAX_DELAY);  /* 最大允许延迟时间 */
         if( xResult == pdPASS ){
 		    
             /* 接收到消息，检测那个位被按下 */
@@ -561,13 +413,14 @@ static void vTaskStart(void *pvParameters)
         	                        //bsp_PutKey(keyvalue);
         	                    }
              }
+           
         }
       
 
-     
-    }
+      }
+ }
 
-}
+
 /**********************************************************************************************************
 *	凄1�7 敄1�7 各1�7: AppTaskCreate
 *	功能说明: 创建应用任务
@@ -577,7 +430,17 @@ static void vTaskStart(void *pvParameters)
 void AppTaskCreate (void)
 {
 
-	xTaskCreate( vTaskRunPro,    		/* 任务函数  */
+  xTaskCreate( vTaskDecoderPro,    		/* 任务函数  */
+                 "vTaskRunPro",  		/* 任务各1�7    */
+                 128,         		/* stack大小，单位word，也就是4字节 */
+                 NULL,        		/* 任务参数  */
+                 2,           		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
+                 &xHandleTaskDecoderPro); /* 任务句柄  */
+
+
+
+
+    xTaskCreate( vTaskRunPro,    		/* 任务函数  */
                  "vTaskRunPro",  		/* 任务各1�7    */
                  128,         		/* stack大小，单位word，也就是4字节 */
                  NULL,        		/* 任务参数  */
@@ -588,7 +451,7 @@ void AppTaskCreate (void)
                  "vTaskStart",   		/* 任务各1�7    */
                  128,            		/* 任务栈大小，单位word，也就是4字节 */
                  NULL,           		/* 任务参数  */
-                 2,              		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
+                 3,              		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
                  &xHandleTaskStart );   /* 任务句柄  */
 }
 
@@ -650,7 +513,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 gl_tMsg.bcc_check_code=inputBuf[0];
 
               
-                xTaskNotifyFromISR(xHandleTaskRunPro,  /* 目标任务 */
+                xTaskNotifyFromISR(xHandleTaskDecoderPro,  /* 目标任务 */
                                     DECODER_BIT_9,     /* 设置目标任务事件标志位bit0  */
                                     eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
                                     &xHigherPriorityTaskWoken);
