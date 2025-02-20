@@ -157,7 +157,7 @@ static void vTaskRunPro(void *pvParameters)
     {
 
 	if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
-					key_t.key_power_flag ++;
+			key_t.key_power_flag ++;
 
 					if(run_t.gPower_On == power_off){
 					gpro_t.send_ack_cmd = ack_power_on;
@@ -339,7 +339,8 @@ static void vTaskStart(void *pvParameters)
 	BaseType_t xResult;
    const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
-    uint8_t check_code;
+    static  uint8_t power_on_times;
+    
     while(1)
     {
       
@@ -354,7 +355,15 @@ static void vTaskStart(void *pvParameters)
             /* 接收到消息，检测那个位被按下 */
             if((ulValue & POWER_BIT_0 ) != 0)
             {
-            	key_t.key_power_flag =1;
+                if(power_on_times == 0){
+                  power_on_times ++;
+                  run_t.gPower_On = power_off;
+                  
+
+                }
+                else
+                  key_t.key_power_flag =1;
+                
             }
             else if((ulValue & MODE_BIT_1 ) != 0){   /* 接收到消息，检测那个位被按下 */
             	 if(run_t.gPower_On == power_on){
