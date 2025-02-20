@@ -8,24 +8,27 @@
 #include "bsp.h"
 
 key_id_state key_t;
-
+uint8_t keyvalue;
 //static KEY_T s_tBtn[KEY_COUNT];
-static KEY_FIFO_T s_tKey;		/* 按键FIFO变量,结构体 */
+ KEY_FIFO_T s_tKey;		/* 按键FIFO变量,结构体 */
 
 static void bsp_PutKey(uint8_t _KeyCode);
 /* 按键扫描 */
 void bsp_KeyScan(void)
 {
 
-	uint8_t keyvalue;
+	
 
 	if(POWER_KEY_VALUE()  ==KEY_DOWN){
 
 		keyvalue = KEY_POWER_DOWN;
 		bsp_PutKey(keyvalue);
+		key_t.key_power_flag =1;
+		
 	 }
 	 else if( MODEL_KEY_VALUE() ==KEY_DOWN){
          if(run_t.gPower_On == power_on){
+         key_t.key_mode_flag = 1;
 		 keyvalue = KEY_MODE_DOWN;
 		 bsp_PutKey(keyvalue);
         }
@@ -33,13 +36,14 @@ void bsp_KeyScan(void)
 	  }
 	   else if(DEC_KEY_VALUE() == KEY_DOWN){
            if(run_t.gPower_On == power_on){
-
+           key_t.key_dec_flag =1;
 		   keyvalue = KEY_DEC_DOWN;
 		    bsp_PutKey(keyvalue);
             }
 	     }
 	     else if(ADD_KEY_VALUE() ==KEY_DOWN){
              if(run_t.gPower_On == power_on){
+              key_t.key_add_flag =1;
 	    	 keyvalue = KEY_ADD_DOWN;
 	    	 bsp_PutKey(keyvalue);
                 }
@@ -48,6 +52,7 @@ void bsp_KeyScan(void)
 	    }
 	     else if(AI_KEY_VALUE()==KEY_DOWN){
              if(run_t.gPower_On == power_on){
+            	 key_t.key_ai_flag = 1;
     	    	 keyvalue = KEY_AI_DOWN;
     	    	 bsp_PutKey(keyvalue);
              }
@@ -55,12 +60,14 @@ void bsp_KeyScan(void)
 	     }
 	     else if(PLASMA_KEY_VALUE()==KEY_DOWN){
               if(run_t.gPower_On == power_on){
+            	  key_t.key_plasma_flag =1;
 	    	 keyvalue = KEY_PLASMA_DOWN;
 	    	  bsp_PutKey(keyvalue);
                 }
 	     }
 	     else if(DRY_KEY_VALUE()==KEY_DOWN){
              if(run_t.gPower_On == power_on){
+            	 key_t.key_dry_flag =1;
 	    	 keyvalue = KEY_DRY_DOWN;
 	    	 bsp_PutKey(keyvalue);
                 }
@@ -68,6 +75,7 @@ void bsp_KeyScan(void)
 	     }
 	     else if(MOUSE_KEY_VALUE() == KEY_DOWN){
              if(run_t.gPower_On == power_on){
+            	 key_t.key_mouse_flag =1;
 	    	 keyvalue = KEY_MOUSE_DOWN;
 	    	 bsp_PutKey(keyvalue);
                 }
@@ -86,10 +94,10 @@ static void bsp_PutKey(uint8_t _KeyCode)
 {
 	s_tKey.Buf[0] = _KeyCode;
 
-	if (++s_tKey.Write  >= KEY_FIFO_SIZE)
-	{
-		s_tKey.Write = 0;
-	}
+//	if (++s_tKey.Write  >= KEY_FIFO_SIZE)
+//	{
+//		s_tKey.Write = 0;
+//	}
 }
 
 /**********************************************************************************************************
@@ -110,7 +118,7 @@ uint8_t bsp_GetKey(void)
 	}
 	else
 	{
-		ret = s_tKey.Buf[s_tKey.Read];
+		ret = s_tKey.Buf[0];
 
 //		if (++s_tKey.Read >= KEY_FIFO_SIZE)
 //		{
@@ -130,7 +138,7 @@ uint8_t bsp_GetKey(void)
 */
 void bsp_ClearKey(void)
 {
-	s_tKey.Read = s_tKey.Write;
+	 s_tKey.Write = s_tKey.Read;
 }
 
 
