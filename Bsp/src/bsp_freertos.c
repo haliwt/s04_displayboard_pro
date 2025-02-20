@@ -206,7 +206,7 @@ static void vTaskRunPro(void *pvParameters)
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_dec_fun();
 			}
-			else if(key_t.key_add_flag ==1 && ADD_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_add_flag ==1){ // && ADD_KEY_VALUE()==KEY_UP){
 				 key_t.key_add_flag ++;
 				 SendData_Buzzer_Has_Ack();
 				gpro_t.send_ack_cmd = ack_buzzer_sound;
@@ -250,7 +250,7 @@ static void vTaskRunPro(void *pvParameters)
         	     }
 
 			}
-			else if(key_t.key_dry_flag ==1 && DRY_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_dry_flag ==1){ // && DRY_KEY_VALUE()==KEY_UP){
 				 key_t.key_dry_flag ++;
 				 if(run_t.gDry ==0){
         		   run_t.gDry =1;
@@ -269,7 +269,7 @@ static void vTaskRunPro(void *pvParameters)
 
 				
 			}
-			else if(key_t.key_mouse_flag ==1 && MOUSE_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_mouse_flag ==1){// && MOUSE_KEY_VALUE()==KEY_UP){
 				 key_t.key_mouse_flag ++;
 				 if(run_t.gMouse ==0){
         		   run_t.gMouse =1;
