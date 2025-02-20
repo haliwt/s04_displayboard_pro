@@ -731,7 +731,18 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
    case MODEL_KEY_Pin:
      // DISABLE_INT();
-      if(MODEL_KEY_VALUE() == KEY_DOWN){
+      if(AI_KEY_VALUE() == KEY_DOWN){
+             xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+               AI_BIT_7,     /* 设置目标任务事件标志位bit0  */
+               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+               &xHigherPriorityTaskWoken);
+
+        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+
+      }
+      else if(MODEL_KEY_VALUE() == KEY_DOWN){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                MODE_BIT_1,     /* 设置目标任务事件标志位bit0  */
                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -742,17 +753,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 
        }
-       else if(AI_KEY_VALUE() == KEY_DOWN){
-             xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
-               AI_BIT_7,     /* 设置目标任务事件标志位bit0  */
-               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
-               &xHigherPriorityTaskWoken);
-
-        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-
-
-       }
+    
      // ENABLE_INT();
    
    break;
