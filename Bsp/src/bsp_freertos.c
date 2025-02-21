@@ -105,16 +105,18 @@ void freeRTOS_Handler(void)
 static void vTaskDecoderPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); /* 设置最大等待时间为30ms */
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
 	uint8_t check_code;
 
     while(1)
     {
+
+
 	xResult = xTaskNotifyWait(0x00000000,
 								  0xFFFFFFFF,     /* Reset the notification value to 0 on */
 								&ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-							     portMAX_DELAY);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
+								portMAX_DELAY);//portMAX_DELAY);  /* 阻塞时间30ms，释放CUP控制权,给其它任务执行的权限*/
 
 		if( xResult == pdPASS )
 		{
@@ -132,7 +134,7 @@ static void vTaskDecoderPro(void *pvParameters)
 			}
 
 		}
-       
+
 
     }
 
@@ -156,7 +158,31 @@ static void vTaskRunPro(void *pvParameters)
     while(1)
     {
 
-	if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
+        if(AI_KEY_VALUE() == KEY_DOWN &&   key_t.key_ai_flag < 10 && run_t.gPower_On == power_on){
+        	key_t.key_ai_flag =20 ;
+            SendData_Buzzer();
+//         
+        
+         if(run_t.ai_model_flag == AI_MODE){
+   		  run_t.ai_model_flag = NO_AI_MODE;
+
+
+   		}
+   		else{
+   		   run_t.ai_model_flag = AI_MODE;
+
+
+   		}
+                // osDelay(50);
+                // key_t.key_ai_flag =0;
+         //key_t.key_ai_flag =30;
+        }
+        else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==20) key_t.key_ai_flag =0;
+
+
+
+
+     if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
 			key_t.key_power_flag ++;
 
 					if(run_t.gPower_On == power_off){
@@ -192,25 +218,25 @@ static void vTaskRunPro(void *pvParameters)
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_add_fun();
 			}
-			else if(key_t.key_ai_flag ==1){ // && AI_KEY_VALUE()==KEY_UP){
-				 key_t.key_ai_flag ++;
-				if(run_t.ai_model_flag == AI_MODE){
-        		  run_t.ai_model_flag = NO_AI_MODE;
-                  SendData_Buzzer();
-        		  LED_AI_OFF();
-				   ///gpro_t.send_ack_cmd = ack_ai_off;
-				   //gpro_t.gTimer_again_send_power_on_off =0;
-				  //SendData_Set_Command(ai_cmd,0x0); //
-        		}
-        		else{
-        		   run_t.ai_model_flag = AI_MODE;
-                   SendData_Buzzer();
-        		   LED_AI_ON();
-        		   //SendData_Set_Command(ai_cmd,0x01); //
-				   //gpro_t.send_ack_cmd = ack_ai_on;
-				   //gpro_t.gTimer_again_send_power_on_off =0;
-        		}
-			}
+//			else if(key_t.key_ai_flag ==1){ // && AI_KEY_VALUE()==KEY_UP){
+//				 key_t.key_ai_flag =0;
+//				if(run_t.ai_model_flag == AI_MODE){
+//        		  run_t.ai_model_flag = NO_AI_MODE;
+//                  SendData_Buzzer();
+//        		  LED_AI_OFF();
+//				   ///gpro_t.send_ack_cmd = ack_ai_off;
+//				   //gpro_t.gTimer_again_send_power_on_off =0;
+//				  //SendData_Set_Command(ai_cmd,0x0); //
+//        		}
+//        		else{
+//        		   run_t.ai_model_flag = AI_MODE;
+//                   SendData_Buzzer();
+//        		   LED_AI_ON();
+//        		   //SendData_Set_Command(ai_cmd,0x01); //
+//				   //gpro_t.send_ack_cmd = ack_ai_on;
+//				   //gpro_t.gTimer_again_send_power_on_off =0;
+//        		}
+//			}
 			else if(key_t.key_plasma_flag ==1){// && PLASMA_KEY_VALUE()==KEY_UP){
 				 key_t.key_plasma_flag ++;
 				 if(run_t.gPlasma == 1){
@@ -253,7 +279,7 @@ static void vTaskRunPro(void *pvParameters)
 
 				
 			}
-			else if(key_t.key_mouse_flag ==1 && MOUSE_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_mouse_flag ==1){
 				 key_t.key_mouse_flag ++;
                
 				 if(run_t.gMouse ==0){
@@ -299,8 +325,8 @@ static void vTaskRunPro(void *pvParameters)
 
        }
 
-       if(run_t.gMouse == 0) LED_MOUSE_OFF();
-       else  LED_MOUSE_ON();
+       if(run_t.ai_model_flag == NO_AI_MODE) LED_AI_OFF();
+       else  LED_AI_ON();
        
        power_on_run_handler();
              
@@ -319,7 +345,7 @@ static void vTaskRunPro(void *pvParameters)
    
       send_cmd_ack_hanlder();
 
-	  vTaskDelay(20);
+	  vTaskDelay(5);
      
 
        } //wihile(1) ---end
@@ -338,19 +364,21 @@ static void vTaskRunPro(void *pvParameters)
 static void vTaskStart(void *pvParameters)
 {
 	BaseType_t xResult;
-   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); /* 设置最大等待时间为30ms */
+   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(1000); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
     static  uint8_t power_on_times;
-    
+
     while(1)
     {
       
       //bsp_KeyScan();
 
+
+
        xResult = xTaskNotifyWait(0x00000000,      
 						           0xFFFFFFFF,      
 						          &ulValue,        /* 保存ulNotifiedValue到变量ulValue中 */
-						          portMAX_DELAY);  /* 最大允许延迟时间 */
+								  portMAX_DELAY);  /* 最大允许延迟时间 */
         if( xResult == pdPASS ){
 		    
             /* 接收到消息，检测那个位被按下 */
@@ -418,14 +446,16 @@ static void vTaskStart(void *pvParameters)
             	      key_t.key_mouse_flag =1;
                      }
             	                 
-            	  }
-                
-             }
+            }
+
+
+
+            }
            
         }
       
 
-      }
+}
  
 
 
@@ -439,16 +469,13 @@ void AppTaskCreate (void)
 {
 
   xTaskCreate( vTaskDecoderPro,    		/* 任务函数  */
-                 "vTaskRunPro",  		/* 任务各1�7    */
+                 "vTaskDecoderPro",  		/* 任务各1�7    */
                  128,         		/* stack大小，单位word，也就是4字节 */
                  NULL,        		/* 任务参数  */
                  2,           		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
                  &xHandleTaskDecoderPro); /* 任务句柄  */
 
-
-
-
-    xTaskCreate( vTaskRunPro,    		/* 任务函数  */
+  xTaskCreate( vTaskRunPro,    		/* 任务函数  */
                  "vTaskRunPro",  		/* 任务各1�7    */
                  128,         		/* stack大小，单位word，也就是4字节 */
                  NULL,        		/* 任务参数  */
@@ -601,19 +628,19 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    break;
 
    case MODEL_KEY_Pin:
-     // DISABLE_INT();
-      if(AI_KEY_VALUE() == KEY_DOWN){
-             xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
-               AI_BIT_7,     /* 设置目标任务事件标志位bit0  */
-               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
-               &xHigherPriorityTaskWoken);
-
-        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
-        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-
-
-      }
-      else if(MODEL_KEY_VALUE() == KEY_DOWN){
+     
+//      if(AI_KEY_VALUE() == KEY_DOWN){
+//             xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
+//               AI_BIT_7,     /* 设置目标任务事件标志位bit0  */
+//               eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
+//               &xHigherPriorityTaskWoken);
+//
+//        /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
+//        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+//
+//
+//      }
+       if(MODEL_KEY_VALUE() == KEY_DOWN){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                MODE_BIT_1,     /* 设置目标任务事件标志位bit0  */
                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -625,7 +652,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
        }
     
-     // ENABLE_INT();
+     
    
    break;
 

@@ -137,8 +137,8 @@ typedef enum{
 
 typedef enum{
 
-   AI_MODE,
    NO_AI_MODE,
+   AI_MODE,
 
 }ai_mode_state;
 
