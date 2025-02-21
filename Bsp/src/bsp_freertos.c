@@ -160,22 +160,18 @@ static void vTaskRunPro(void *pvParameters)
 
         if(AI_KEY_VALUE() == KEY_DOWN &&   key_t.key_ai_flag < 10 && run_t.gPower_On == power_on){
         	key_t.key_ai_flag =20 ;
-            SendData_Buzzer();
-//         
+            SendData_Buzzer();        
         
          if(run_t.ai_model_flag == AI_MODE){
    		  run_t.ai_model_flag = NO_AI_MODE;
-
+           LED_AI_OFF();
 
    		}
    		else{
    		   run_t.ai_model_flag = AI_MODE;
-
-
-   		}
-                // osDelay(50);
-                // key_t.key_ai_flag =0;
-         //key_t.key_ai_flag =30;
+            LED_AI_ON();
+            }
+             
         }
         else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==20) key_t.key_ai_flag =0;
 
@@ -316,17 +312,8 @@ static void vTaskRunPro(void *pvParameters)
          TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
 
        }
-       else if(gpro_t.set_timer_timing_doing_value==0){
 
-          //run_t.set_temperature_decade_value = gpro_t.gtmep_value /10;
-          //run_t.set_temperature_unit_value = gpro_t.gtmep_value % 10;
-
-         // TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
-
-       }
-
-       if(run_t.ai_model_flag == NO_AI_MODE) LED_AI_OFF();
-       else  LED_AI_ON();
+       
        
        power_on_run_handler();
              
@@ -641,6 +628,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 //
 //      }
        if(MODEL_KEY_VALUE() == KEY_DOWN){
+        if(run_t.gPower_On == power_on){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                MODE_BIT_1,     /* 设置目标任务事件标志位bit0  */
                eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -652,7 +640,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
        }
     
-     
+      }
    
    break;
 
@@ -660,6 +648,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    case DEC_KEY_Pin:
       // DISABLE_INT();
        if(DEC_KEY_VALUE() == KEY_DOWN){
+        if(run_t.gPower_On == power_on){
          xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 DEC_BIT_2,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -668,12 +657,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
          /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
         }
+        }
      ///  ENABLE_INT();
    break;
 
    case ADD_KEY_Pin:
       ///   DISABLE_INT();
         if(ADD_KEY_VALUE() == KEY_DOWN){
+        if(run_t.gPower_On == power_on){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 ADD_BIT_3,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -682,12 +673,15 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
          /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             }
+        }
     ///    ENABLE_INT();
    break;
 
      case DRY_KEY_Pin:
       ///   DISABLE_INT();
         if(DRY_KEY_VALUE() == KEY_DOWN){
+
+       if(run_t.ai_model_flag ==NO_AI_MODE && run_t.gPower_On == power_on){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 DRY_BIT_6,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -696,12 +690,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
          /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             }
+        }
     ///    ENABLE_INT();
    break;
 
    case PLASMA_KEY_Pin:
       ///   DISABLE_INT();
-        if(PLASMA_KEY_VALUE() == KEY_DOWN){
+       if(PLASMA_KEY_VALUE() == KEY_DOWN){
+        if(run_t.ai_model_flag ==NO_AI_MODE && run_t.gPower_On == power_on){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 PLASMA_BIT_5,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -709,13 +705,15 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    
          /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-            }
+        }
+        }
     ///    ENABLE_INT();
    break;
 
    case MOUSE_KEY_Pin:
       ///   DISABLE_INT();
         if(MOUSE_KEY_VALUE() == KEY_DOWN){
+        if(run_t.ai_model_flag ==NO_AI_MODE && run_t.gPower_On == power_on){
         xTaskNotifyFromISR(xHandleTaskStart,  /* 目标任务 */
                 MOUSE_BIT_4,     /* 设置目标任务事件标志位bit0  */
                 eSetBits,  /* 将目标任务的事件标志位与BIT_0进行或操作， 将结果赋值给事件标志位 */
@@ -724,6 +722,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
          /* 如果xHigherPriorityTaskWoken = pdTRUE，那么退出中断后切到当前最高优先级任务执行 */
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             }
+         }
     ///    ENABLE_INT();
    break;
         
