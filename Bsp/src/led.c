@@ -182,20 +182,20 @@ static uint8_t  Delay(int16_t count)
 static void Power_Breath_Two(void)
 
 {
- 
-     static uint8_t flag,switch_flag,dec_led_flag;
-        static uint8_t i,j;
+   
+     static uint16_t flag,switch_flag,dec_led_flag;
+        static uint16_t i,j;
         led_k++;
         
         
-        if(led_k <50 && dec_led_flag==1){
+        if(led_k <500 && dec_led_flag==1){
             i++;
-         if(switch_flag ==1 || i > 4){
+         if(switch_flag ==1 || i > 40){
             switch_flag =0;
           
             //LED_POWER_OFF();
             LED_POWER_OFF();
-            flag = Delay(49-i);
+            flag = Delay(490-i);
            
           }
           if(flag ==1){
@@ -212,9 +212,9 @@ static void Power_Breath_Two(void)
             }
           
         }
-        else if(led_k < 50 && dec_led_flag==0){
+        else if(led_k < 500 && dec_led_flag==0){
             i++;
-         if(switch_flag ==1 || i < 10){
+         if(switch_flag ==1 || i < 100){
             switch_flag =0;
         #if 0
             LED_POWER_OFF();
@@ -223,7 +223,7 @@ static void Power_Breath_Two(void)
             flag = Delay(30-i);
         #endif 
             LED_POWER_ON();
-            flag = Delay(49-i);
+            flag = Delay(490-i);
             
     
           }
@@ -254,7 +254,7 @@ static void Power_Breath_Two(void)
             }
          }
         
-        if(led_k > 49 && dec_led_flag==0){
+        if(led_k > 490 && dec_led_flag==0){
     
         
     
@@ -273,7 +273,7 @@ static void Power_Breath_Two(void)
          //  }
             
           }
-          else if(led_k>49 && dec_led_flag==1){
+          else if(led_k>490 && dec_led_flag==1){
             
          
            
@@ -294,6 +294,12 @@ static void Power_Breath_Two(void)
     //         dec_led_flag=0;
     //        }
         }
+   
+
+    
+      
+
+     
 
 }
 
