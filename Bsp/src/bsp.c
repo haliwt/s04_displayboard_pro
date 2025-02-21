@@ -173,6 +173,7 @@ void mode_key_fun(void)
          run_t.timer_dispTime_minutes = run_t.temporary_timer_dispTime_minutes ;
 
          run_t.ai_model_flag =NO_AI_MODE;
+         gpro_t.ai_mode_set_flag=2;
 
           Display_Timing(run_t.timer_dispTime_hours,run_t.timer_dispTime_minutes);
          
@@ -182,6 +183,7 @@ void mode_key_fun(void)
             run_t.ai_model_flag =AI_MODE;
             gpro_t.set_timer_timing_value_success  = 0;
             LED_AI_ON();
+            gpro_t.ai_mode_set_flag=1;
 
          }
    	   }

@@ -74,6 +74,7 @@ typedef struct _pro_t{
    uint8_t send_ack_cmd;
    uint8_t receive_copy_cmd;
    uint8_t key_set_dry_flag;
+   uint8_t ai_mode_set_flag;
 
 
 

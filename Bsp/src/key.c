@@ -156,7 +156,7 @@ void Set_TimerTiming_Number_Value(void)
 
 void set_timer_fun_led_blink(void)
 {
-  //  static uint8_t smg_blink;
+   static uint8_t time_smg_blink;
  
    if(gpro_t.set_timer_timing_doing_value==1){
 
@@ -173,31 +173,28 @@ void set_timer_fun_led_blink(void)
     }
     else{
    
-    if(gpro_t.gTimer_4bitsmg_blink_times < 200 ){// //180ms
-       
+    if(gpro_t.gTimer_4bitsmg_blink_times  > 200 ){// //180ms
+       gpro_t.gTimer_4bitsmg_blink_times =0;
+
+       time_smg_blink++;
+
+       if(time_smg_blink==1){
        
        TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
        LED_AI_ON();
         
-    }
-    else if(gpro_t.gTimer_4bitsmg_blink_times > 199 && gpro_t.gTimer_4bitsmg_blink_times < 401 ){//120
+      }
+      else{
        
-      
-      // if(smg_blink == 1){
-        //  smg_blink ++;
+         time_smg_blink=0;
+    
           
-          TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
-      // }
-          //Display_DHT11_Value();
+         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
+   
          LED_AI_OFF();
 
     }
-    else{
-    gpro_t.gTimer_4bitsmg_blink_times=0;
-   //  smg_blink =0;
-   //  TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
-        
-
+  
     }
     }
    // RunLocal_Dht11_Data_Process();
@@ -220,32 +217,32 @@ void set_timer_fun_led_blink(void)
 
    //input set timer timing numbers is blink.
 
-   
-
-   
-}
+ }
 
 void  ai_ico_fast_blink(void)
 {
 
+   static uint8_t ai_led_blink;
     if(gpro_t.set_timer_timing_doing_value==1){
-    if(run_t.gTimer_smg_blink_times < 100){
+    if(run_t.gTimer_smg_blink_times > 100){
+
+        run_t.gTimer_smg_blink_times=0;
+        ai_led_blink ++;
+
+        if(ai_led_blink ==1){
+        
               LED_AI_ON();
-            }
-            else if(run_t.gTimer_smg_blink_times > 99 && run_t.gTimer_smg_blink_times< 201){
+         }
+          else{
+            ai_led_blink =0;
             LED_AI_OFF();
        
            }
-           else {
-           
-            run_t.gTimer_smg_blink_times=0;  
-            
-          }
-    
-        }
+          
+       }
   }
 
-
+}
 
 /****************************************************************
 	*

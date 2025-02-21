@@ -152,7 +152,7 @@ static void vTaskRunPro(void *pvParameters)
 	//BaseType_t xResult;
 	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为30ms */
 	//uint32_t ulValue;
-	static uint8_t ai_mode_set_flag;
+	
     
 	
     while(1)
@@ -164,20 +164,20 @@ static void vTaskRunPro(void *pvParameters)
         
          if(run_t.ai_model_flag == AI_MODE){
    		  run_t.ai_model_flag = NO_AI_MODE;
-          ai_mode_set_flag= 2;
+          gpro_t.ai_mode_set_flag= 2;
            LED_AI_OFF();
 
    		}
    		else{
    		   run_t.ai_model_flag = AI_MODE;
             LED_AI_ON();
-            ai_mode_set_flag= 1;
+            gpro_t.ai_mode_set_flag= 1;
             }
              
         }
         else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==21) key_t.key_ai_flag =0;
 
-         if(key_t.key_ai_flag ==20){
+        if(key_t.key_ai_flag ==20){
             //SendData_Buzzer(); 
             SendData_Buzzer_Has_Ack();
 		     gpro_t.send_ack_cmd = ack_buzzer_sound;
@@ -330,8 +330,8 @@ static void vTaskRunPro(void *pvParameters)
 
        }
 
-       if(run_t.ai_model_flag == AI_MODE && ai_mode_set_flag==1){
-          ai_mode_set_flag=20;
+       if(run_t.ai_model_flag == AI_MODE && gpro_t.ai_mode_set_flag==1){
+          gpro_t.ai_mode_set_flag=20;
 
           run_t.gMouse =1;
           run_t.gDry =1;
