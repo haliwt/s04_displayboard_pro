@@ -105,7 +105,7 @@ void freeRTOS_Handler(void)
 static void vTaskDecoderPro(void *pvParameters)
 {
     BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
+	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
 	uint8_t check_code;
 
@@ -245,6 +245,8 @@ static void vTaskRunPro(void *pvParameters)
 //			}
 			else if(key_t.key_plasma_flag ==1){// && PLASMA_KEY_VALUE()==KEY_UP){
 				 key_t.key_plasma_flag ++;
+
+             if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gPlasma == 1){
         			 run_t.gPlasma = 0;
                      SendData_Set_Command(plasma_cmd,0x0); //
@@ -262,10 +264,13 @@ static void vTaskRunPro(void *pvParameters)
 				     gpro_t.gTimer_again_send_power_on_off =0;
         			
         	     }
+                }
 
 			}
 			else if(key_t.key_dry_flag ==1){ // && DRY_KEY_VALUE()==KEY_UP){
 				 key_t.key_dry_flag ++;
+
+             if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gDry ==0){
                     SendData_Set_Command(dry_cmd,0x01); //
         		   run_t.gDry =1;
@@ -284,12 +289,12 @@ static void vTaskRunPro(void *pvParameters)
         		   gpro_t.gTimer_again_send_power_on_off =0;
         		  
         	   }
-
+                }
 				
 			}
 			else if(key_t.key_mouse_flag ==1){
 				 key_t.key_mouse_flag ++;
-               
+                if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gMouse ==0){
         		   
                    SendData_Set_Command(mouse_cmd,0x01); //
@@ -307,7 +312,7 @@ static void vTaskRunPro(void *pvParameters)
         		   LED_MOUSE_OFF();
         		   //gpro_t.send_ack_cmd = ack_mouse_off;
         		   //gpro_t.gTimer_again_send_power_on_off =0;
-                 
+                   }
                   
         		   
 				}
