@@ -324,7 +324,7 @@ static void vTaskRunPro(void *pvParameters)
           run_t.gPlasma = 1;
           LED_MOUSE_ON();
           LED_DRY_ON();
-          LED_MOUSE_ON();
+          LED_PLASMA_ON();
           SendData_Set_Command(ai_cmd,0x01); 
 
 
@@ -347,7 +347,7 @@ static void vTaskRunPro(void *pvParameters)
    
       send_cmd_ack_hanlder();
 
-	  vTaskDelay(5);
+	  vTaskDelay(10);
      
 
        } //wihile(1) ---end
