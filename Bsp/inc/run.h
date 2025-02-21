@@ -139,7 +139,7 @@ typedef struct __RUN{
 
   
 	
-   uint8_t gReal_humtemp[1];
+   uint8_t gReal_humtemp[2];
    uint8_t rx_mb_data_tag;
  
    /***/

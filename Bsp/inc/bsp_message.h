@@ -23,10 +23,13 @@ typedef enum ack_sig{
   ack_mouse_off=0x09,
   ack_ai_on,
   ack_ai_off,
+  ack_dry_notice_on,
+  ack_dry_notice_off,
   ack_buzzer_sound
 
 
 }ack_sit_e;
+
 
 typedef enum{
 
@@ -47,6 +50,7 @@ typedef enum{
 
 
 }message_info;
+
 
 void receive_data_fromm_mainboard(uint8_t *pdata);
 

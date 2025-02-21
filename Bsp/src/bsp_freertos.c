@@ -92,7 +92,7 @@ void freeRTOS_Handler(void)
 
 
 }
-#if 1
+
 /**********************************************************************************************************
 *   FunctionName: static void vTaskRunPro(void *pvParameters)
 *	功能说明: 使用函数xTaskNotifyWait接收任务vTaskTaskUserIF发送的事件标志位设置
@@ -139,7 +139,6 @@ static void vTaskDecoderPro(void *pvParameters)
     }
 
  }
-#endif
 /**********************************************************************************************************
 *	Function Name: static void vTaskRunPro(void *pvParameters)
 *	Function: 

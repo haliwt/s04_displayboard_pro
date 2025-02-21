@@ -467,7 +467,9 @@ void compare_temp_value(void)
     	
         LED_DRY_ON();
        if(gpro_t.interval_works_ten_minutes_flag ==0){
-		SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
+		   SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
+		   gpro_t.send_ack_cmd = ack_dry_notice_on;
+		   gpro_t.gTimer_again_send_power_on_off =0;
 
         }
         
@@ -477,6 +479,8 @@ void compare_temp_value(void)
          LED_DRY_OFF();
       
     	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
+    	 gpro_t.send_ack_cmd = ack_dry_notice_off;
+		 gpro_t.gTimer_again_send_power_on_off =0;
          }
 
    }
@@ -487,6 +491,8 @@ void compare_temp_value(void)
          LED_DRY_OFF();
        
     	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
+    	 gpro_t.send_ack_cmd = ack_dry_notice_off;
+		 gpro_t.gTimer_again_send_power_on_off =0;
         
          first_one_flag =1;
         }
@@ -502,7 +508,9 @@ void compare_temp_value(void)
                 if(gpro_t.interval_works_ten_minutes_flag ==0){
              
         		//SendData_Set_Command(DRY_ON_NO_BUZZER);
-        		SendData_Set_Command(dry_notice_cmd,0x01);
+        		 SendData_Set_Command(dry_notice_cmd,0x01);
+                  gpro_t.send_ack_cmd = ack_dry_notice_on;
+		          gpro_t.gTimer_again_send_power_on_off =0;
 
                 }
                }

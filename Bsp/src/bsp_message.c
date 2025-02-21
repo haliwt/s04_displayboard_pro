@@ -39,7 +39,7 @@ void send_cmd_ack_hanlder(void)
 
     break;
 
-    case ack_power_off :
+    case ack_power_off : //0x02
 
      if(gpro_t.receive_copy_cmd == ack_power_off){
         gpro_t.receive_copy_cmd =0;
@@ -152,6 +152,30 @@ void send_cmd_ack_hanlder(void)
 			  SendData_Set_Command(ai_cmd,0x0); // link wifi of command .
     }
     break;
+
+    case ack_dry_notice_on:
+    if(gpro_t.receive_copy_cmd == ack_dry_notice_on){
+			gpro_t.receive_copy_cmd =0;
+			 gpro_t.send_ack_cmd = 0;   
+    }
+    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+			  gpro_t.gTimer_again_send_power_on_off =0;
+			  SendData_Set_Command(dry_notice_cmd,0x01); // link wifi of command .
+    }
+    break;
+
+    case ack_dry_notice_off:
+    if(gpro_t.receive_copy_cmd == ack_dry_notice_off){
+			gpro_t.receive_copy_cmd =0;
+			 gpro_t.send_ack_cmd = 0;   
+    }
+    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+			  gpro_t.gTimer_again_send_power_on_off =0;
+			  SendData_Set_Command(dry_notice_cmd,0x0); // link wifi of command .
+    }
+    break;
+
+    
 
 
     case ack_buzzer_sound:
@@ -298,10 +322,10 @@ void receive_data_fromm_mainboard(uint8_t *pdata)
             
              //gpro_t.temp_real_value = pdata[6];
             
-            gpro_t.gtmep_value = pdata[6] ;// temperature value 
+            //gpro_t.gtmep_value = pdata[6] ;// temperature value 
            
 
-            
+            run_t.gReal_humtemp[1] = pdata[6];
 
         }
         else if(pdata[4] == 0x01){ //数据)

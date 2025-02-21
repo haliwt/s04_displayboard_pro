@@ -23,8 +23,8 @@ void Display_DHT11_Value(void)
 	hum1 =  run_t.gReal_humtemp[0]/10;  //Humidity 
 	hum2 =  run_t.gReal_humtemp[0]%10;
 
-	temp1 = gpro_t.gtmep_value /10;//run_t.gReal_humtemp[1]/10 ;  // temperature
-	temp2 = gpro_t.gtmep_value % 10;//run_t.gReal_humtemp[1]%10;
+	temp1 = run_t.gReal_humtemp[1] /10;//run_t.gReal_humtemp[1]/10 ;  // temperature
+	temp2 = run_t.gReal_humtemp[1] % 10;//run_t.gReal_humtemp[1]%10;
 
  
 	TM1639_Write_2bit_TempData(temp1,temp2);
@@ -112,7 +112,7 @@ static void TimeColon_Smg_Blink_Fun(void)
 void Display_TimeColon_Blink_Fun(void)
 {
 
-  if(run_t.gTimer_time_colon >160){ //10*20ms=300ms
+  if(run_t.gTimer_time_colon >200){ //160 //10*20ms=300ms
 
 	   run_t.gTimer_time_colon =0;
        
