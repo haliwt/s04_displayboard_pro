@@ -150,9 +150,9 @@ static void vTaskDecoderPro(void *pvParameters)
 static void vTaskRunPro(void *pvParameters)
 {
 
-	BaseType_t xResult;
-	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为30ms */
-	uint32_t ulValue;
+	//BaseType_t xResult;
+	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为30ms */
+	//uint32_t ulValue;
 	static uint8_t ai_mode_set_flag;
     
 	
@@ -161,7 +161,7 @@ static void vTaskRunPro(void *pvParameters)
 
         if(AI_KEY_VALUE() == KEY_DOWN &&   key_t.key_ai_flag < 10 && run_t.gPower_On == power_on){
         	key_t.key_ai_flag =20 ;
-            SendData_Buzzer();        
+          //  SendData_Buzzer();        
         
          if(run_t.ai_model_flag == AI_MODE){
    		  run_t.ai_model_flag = NO_AI_MODE;
@@ -176,9 +176,17 @@ static void vTaskRunPro(void *pvParameters)
             }
              
         }
-        else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==20) key_t.key_ai_flag =0;
+        else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==21) key_t.key_ai_flag =0;
 
+         if(key_t.key_ai_flag ==20){
+            //SendData_Buzzer(); 
+            SendData_Buzzer_Has_Ack();
+		     gpro_t.send_ack_cmd = ack_buzzer_sound;
+		     gpro_t.gTimer_again_send_power_on_off =0;
 
+            key_t.key_ai_flag++;
+
+         }
 
 
      if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
@@ -366,7 +374,7 @@ static void vTaskRunPro(void *pvParameters)
 static void vTaskStart(void *pvParameters)
 {
 	BaseType_t xResult;
-   const TickType_t xMaxBlockTime = pdMS_TO_TICKS(1000); /* 设置最大等待时间为30ms */
+    //const TickType_t xMaxBlockTime = pdMS_TO_TICKS(1000); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
     static  uint8_t power_on_times;
 
@@ -435,13 +443,13 @@ static void vTaskStart(void *pvParameters)
             	                  //bsp_PutKey(keyvalue);
             	                     }
              }
-           else if((ulValue & AI_BIT_7 ) != 0){   /* 接收到消息，检测那个位被按下 */
-        	   if(run_t.gPower_On == power_on){
-        	                        key_t.key_ai_flag = 1;
-        	                        //keyvalue = KEY_AI_DOWN;
-        	                        //bsp_PutKey(keyvalue);
-        	                    }
-            }
+//           else if((ulValue & AI_BIT_7 ) != 0){   /* 接收到消息，检测那个位被按下 */
+//        	   if(run_t.gPower_On == power_on){
+//        	                        key_t.key_ai_flag = 1;
+//        	                        //keyvalue = KEY_AI_DOWN;
+//        	                        //bsp_PutKey(keyvalue);
+//        	                    }
+//            }
             else if((ulValue & MOUSE_BIT_4 ) != 0){   /* 接收到消息，检测那个位被按下 */
             	 if(run_t.gPower_On == power_on){
                    
