@@ -67,13 +67,14 @@ typedef struct _pro_t{
    uint8_t set_timer_timing_doing_value;
    uint8_t set_temp_value_success;
    uint8_t set_up_temperature_value;
-   uint8_t manual_turn_off_dry_flag;
+  
    uint8_t answer_signal_flag;
    uint8_t set_timer_first_smg_blink_flag;
 
    uint8_t send_ack_cmd;
    uint8_t receive_copy_cmd;
-   uint8_t gtmep_value;
+   uint8_t key_set_dry_flag;
+
 
 
    

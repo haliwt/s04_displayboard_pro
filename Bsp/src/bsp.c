@@ -69,9 +69,9 @@ void power_on_run_handler(void)
 			Power_On_Fun();
 			run_t.gTimer_display_dht11 = 20; //at once display temperature and humidity value.
 			gpro_t.set_timer_timing_doing_value = 0;
+            gpro_t.key_set_dry_flag = 0; //allow open dry function .
 			run_t.gRunCommand_label= SPECIAL_DISP;
 
-            break;
 
             
 	  break;
@@ -108,7 +108,7 @@ void power_on_run_handler(void)
 	                    
 				   break;
                     
-                    case 2:
+                    case 2: //display 1:   timing times  2: timer times.
                         if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){ //read main board ptc_warning of ref.
                             Display_SmgTiming_Value();
 
@@ -228,18 +228,13 @@ void power_off_run_handler(void)
 		      }
 			  else if(run_t.gTimer_fan_continue > 59){
                     run_t.gTimer_fan_continue =0;
-				  // LED_FAN_OFF() ;
+				 
 				   run_t.gFan_RunContinue ++;
-                   power_on_off_flag = 1;
+                 
 
 			}
 
-//           if(gpro_t.answer_signal_flag == power_on){
-//
-//                 SendData_PowerOff(0);
-//				
-//            }
-//            
+
 		  
             Breath_Led();
 		 
@@ -303,7 +298,7 @@ void key_add_fun(void)
         run_t.set_temperature_special_value=1;
         run_t.gTimer_key_temp_timing=0;
         run_t.gTimer_time_colon=0;
-        gpro_t.manual_turn_off_dry_flag =0; //after set temperature allow shut off dry .
+        gpro_t.key_set_dry_flag =0; // allow open dry function.WT.2025.02.21
       
         
       TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
@@ -388,11 +383,11 @@ void key_dec_fun(void)
         run_t.set_temperature_unit_value  =gpro_t.set_up_temperature_value % 10; //
 
 
-       //  run_t.set_temperature_flag=set_temperature_value;
+        gpro_t.key_set_dry_flag = 0 ;//  allow open dry function
         run_t.set_temperature_special_value=1;
         run_t.gTimer_key_temp_timing=0;
         run_t.gTimer_time_colon=0;
-        gpro_t.manual_turn_off_dry_flag =0; //after set temperature allow shut off dry .
+        //SendData_Set_Command(DRY_ON_NO_BUZZER); =0; //after set temperature allow shut off dry .
 
      //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
         
@@ -462,7 +457,9 @@ void compare_temp_value(void)
     if(gpro_t.set_temp_value_success ==1){
     
 
-     if(gpro_t.set_up_temperature_value >run_t.gReal_humtemp[1] && gpro_t.manual_turn_off_dry_flag ==0){ //PTC TURN ON
+     if(gpro_t.set_up_temperature_value >run_t.gReal_humtemp[1]){ //PTC TURN ON
+
+      if( gpro_t.key_set_dry_flag == 0){ //allow open dry function 
          run_t.gDry =1;
     	
         LED_DRY_ON();
@@ -473,6 +470,7 @@ void compare_temp_value(void)
 
         }
         
+     }
      }
      else{ //PTC turn off 
          run_t.gDry =0;
@@ -507,8 +505,8 @@ void compare_temp_value(void)
 
                 if(gpro_t.interval_works_ten_minutes_flag ==0){
              
-        		//SendData_Set_Command(DRY_ON_NO_BUZZER);
-        		 SendData_Set_Command(dry_notice_cmd,0x01);
+        		
+        		 SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
                   gpro_t.send_ack_cmd = ack_dry_notice_on;
 		          gpro_t.gTimer_again_send_power_on_off =0;
 

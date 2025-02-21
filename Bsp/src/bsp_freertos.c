@@ -199,7 +199,7 @@ static void vTaskRunPro(void *pvParameters)
 				else{
 					gpro_t.send_ack_cmd = ack_power_off;
 					gpro_t.gTimer_again_send_power_on_off =0;
-					SendData_PowerOnOff(0);//power on
+					SendData_PowerOnOff(0);//power off
 
 				}
 			}
@@ -269,14 +269,16 @@ static void vTaskRunPro(void *pvParameters)
 				 if(run_t.gDry ==0){
                     SendData_Set_Command(dry_cmd,0x01); //
         		   run_t.gDry =1;
+                   gpro_t.key_set_dry_flag = 0;
         		   LED_DRY_ON();
         		   gpro_t.send_ack_cmd = ack_ptc_on;
         		   gpro_t.gTimer_again_send_power_on_off =0;
         		   
         	   }
         	   else{
-                  SendData_Set_Command(dry_cmd,0x00); //
+                   SendData_Set_Command(dry_cmd,0x00); //
         		   run_t.gDry = 0;
+                   gpro_t.key_set_dry_flag = 1; //if gpro_t.key_set_dry_flag ==1,don't again open dry function.
         		   LED_DRY_OFF();
         		   gpro_t.send_ack_cmd = ack_ptc_off;
         		   gpro_t.gTimer_again_send_power_on_off =0;

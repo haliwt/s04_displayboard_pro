@@ -366,11 +366,9 @@ void Display_SmgTiming_Value(void)
 			run_t.timer_dispTime_hours=0;
 			run_t.timer_dispTime_minutes=0;
              
-	        run_t.gPower_On = power_off;
-            run_t.power_off_flag = 0;
-            //SendData_PowerOff(0);
-            SendData_PowerOnOff(0);//power on
-			power_off_run_handler();
+	        gpro_t.send_ack_cmd = ack_power_off;
+			gpro_t.gTimer_again_send_power_on_off =0;
+			SendData_PowerOnOff(0);//power off
 			
 	      }
 		    
