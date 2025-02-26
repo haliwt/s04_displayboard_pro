@@ -101,7 +101,7 @@ void freeRTOS_Handler(void)
 *	返 回 值: 无
 *   优 先 级: 1  
 
-*   priority : 1  (数值越小优先级越低，这个跟uCOS相反)
+*   priority : 1  (数priority is 2,number is large priority is large值越低，这个跟uCOS相反)
 **********************************************************************************************************/
 static void vTaskDecoderPro(void *pvParameters)
 {
@@ -153,7 +153,7 @@ static void vTaskRunPro(void *pvParameters)
 	//BaseType_t xResult;
 	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(10); /* 设置最大等待时间为30ms */
 	//uint32_t ulValue;
-	
+	static uint8_t power_on_theFirst_times;
     
 	
     while(1)
@@ -349,6 +349,11 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
+       if(power_on_theFirst_times < 10){
+         power_on_theFirst_times ++;
+         Display_DHT11_Value();
+
+       }
 
        works_run_two_hours_handler();
 
