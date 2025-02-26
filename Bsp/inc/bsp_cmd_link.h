@@ -1,5 +1,5 @@
-#ifndef __CMD_LINK_H_
-#define __CMD_LINK_H_
+#ifndef __BSP_CMD_LINK_H_
+#define __BSP_CMD_LINK_H_
 
 #include "main.h"
 #define  MAX_BUFFER_SIZE   8

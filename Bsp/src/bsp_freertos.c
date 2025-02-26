@@ -440,7 +440,6 @@ static void vTaskStart(void *pvParameters)
 
 
             }
-           
             else if((ulValue & PLASMA_BIT_5 ) != 0){   /* 接收到消息，检测那个位被按下 */
             	  if(run_t.gPower_On == power_on){
             	                       key_t.key_plasma_flag =1;

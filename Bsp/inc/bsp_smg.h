@@ -1,5 +1,5 @@
-#ifndef __SMG_H__
-#define __SMG_H__
+#ifndef __BSP_SMG_H__
+#define __BSP_SMG_H__
 #include "main.h"
 
 

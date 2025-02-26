@@ -9,16 +9,16 @@
 
 
 
-#include "smg.h"
-#include "cmd_link.h"
-#include "run.h"
-#include "key.h"
-#include "led.h"
+#include "bsp_smg.h"
+#include "bsp_cmd_link.h"
+#include "bsp_run.h"
+#include "bsp_key.h"
+#include "bsp_led.h"
 #include "bsp_fan.h"
 #include "bsp_display_dynamic.h"
-#include "display.h"
+#include "bsp_display.h"
 #include "interrupt_manager.h"
-#include "delay.h"
+#include "bsp_delay.h"
 
 #include "bsp_key_app.h"
 #include "bsp_message.h"
