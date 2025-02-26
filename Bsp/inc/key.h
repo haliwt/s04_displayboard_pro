@@ -128,7 +128,7 @@ typedef enum{
 	TIMER_TIMING_DONOT_VALUE,
 	TIMER_TIMING_ITEM ,
 	set_timer_timing_item,
-	set_temperature_value
+	
 
 
 }set_timer_state;
@@ -174,7 +174,7 @@ uint8_t KEY_Normal_Scan(uint8_t mode);
 
 void Set_TimerTiming_Number_Value(void);
 
-void Set_Temperature_Value(void);
+void disp_smg_blink_set_tempeature_value(void);
 
 
 void set_timer_fun_led_blink(void);

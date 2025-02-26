@@ -6,6 +6,9 @@
  */
 #include "bsp.h"
 
+static void rx_answer_data_form_mainboard(uint8_t *pdata);
+
+
 /******************************************************************************
 *
 *Function Name:void send_cmd_ack_hanlder(void)
@@ -24,39 +27,42 @@ void send_cmd_ack_hanlder(void)
 
     break;
 
-    case ack_power_on:
+    case check_ack_power_on:
 
-      if(gpro_t.receive_copy_cmd == ack_power_on){
-         gpro_t.receive_copy_cmd =0;
-         gpro_t.send_ack_cmd = 0;
 
-      }
-      else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-         gpro_t.gTimer_again_send_power_on_off =0;
-         SendData_PowerOnOff(1);
-      }
+        
+     
+          if(gpro_t.receive_copy_cmd == 0x01){
+             gpro_t.receive_copy_cmd =0;
+             gpro_t.send_ack_cmd = 0;
 
+          }
+          else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+             gpro_t.gTimer_again_send_power_on_off =0;
+             SendData_PowerOnOff(1);
+          }
+
+        
+
+    case check_ack_power_off:
+
+         if(gpro_t.receive_copy_cmd == ack_ok_off){
+             gpro_t.receive_copy_cmd =0;
+             gpro_t.send_ack_cmd = 0;
+
+          }
+          else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+               gpro_t.gTimer_again_send_power_on_off =0;
+               SendData_PowerOnOff(0);
+           }
+             
+      
 
     break;
 
-    case ack_power_off : //0x02
+    case check_ack_ptc_on:
 
-     if(gpro_t.receive_copy_cmd == ack_power_off){
-        gpro_t.receive_copy_cmd =0;
-         gpro_t.send_ack_cmd = 0;
-
-      }
-      else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-          gpro_t.gTimer_again_send_power_on_off =0;
-          SendData_PowerOnOff(0);
-      }
-
-
-    break;
-
-    case ack_ptc_on:
-
-    if(gpro_t.receive_copy_cmd == ack_ptc_on){
+       if(gpro_t.receive_copy_cmd == ack_ok_on){
 			gpro_t.receive_copy_cmd =0;
 			 gpro_t.send_ack_cmd = 0;
 
@@ -67,127 +73,136 @@ void send_cmd_ack_hanlder(void)
     	}
 
 
+     break;
+
+    case check_ack_ptc_off:
+
+       if(gpro_t.receive_copy_cmd == 2){
+    	   gpro_t.receive_copy_cmd =0;
+    	   gpro_t.send_ack_cmd = 0;
+
+    	}
+    	else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+    		gpro_t.gTimer_again_send_power_on_off =0;
+    		SendData_Set_Command(dry_cmd,0x0); // link wifi of command .
+    	}
+
+
+     break;
+     
+
+    case check_ack_plasma_on:
+
+
+
+        if(gpro_t.receive_copy_cmd == 0x01){
+    			gpro_t.receive_copy_cmd =0;
+    			 gpro_t.send_ack_cmd = 0;
+        }
+        else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+    			  gpro_t.gTimer_again_send_power_on_off =0;
+    			  SendData_Set_Command(plasma_cmd,0x01); // link wifi of command .
+        }
+        break;
+
+    case check_ack_plasma_off:
+
+        if(gpro_t.receive_copy_cmd == 2){
+    			gpro_t.receive_copy_cmd =0;
+    			 gpro_t.send_ack_cmd = 0;
+        }
+        else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+    			  gpro_t.gTimer_again_send_power_on_off =0;
+    			  SendData_Set_Command(plasma_cmd,0x0); // link wifi of command .
+       
+
+     }
     break;
 
-    case ack_ptc_off:
+    case check_ack_mouse_on:
 
-   if(gpro_t.receive_copy_cmd == ack_ptc_off){
-	   gpro_t.receive_copy_cmd =0;
-	   gpro_t.send_ack_cmd = 0;
+            if(gpro_t.receive_copy_cmd == 1){
+        			gpro_t.receive_copy_cmd =0;
+        			 gpro_t.send_ack_cmd = 0;
+            }
+            else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+        			  gpro_t.gTimer_again_send_power_on_off =0;
+        			  SendData_Set_Command(mouse_cmd,0x01); // link wifi of command .
+            }
+     break;
 
-	}
-	else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-		gpro_t.gTimer_again_send_power_on_off =0;
-		SendData_Set_Command(dry_cmd,0x0); // link wifi of command .
-	}
-
-
+    case check_ack_mouse_off:
+            if(gpro_t.receive_copy_cmd == 2){
+        			gpro_t.receive_copy_cmd =0;
+        			 gpro_t.send_ack_cmd = 0;
+            }
+            else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+        			  gpro_t.gTimer_again_send_power_on_off =0;
+        			  SendData_Set_Command(mouse_cmd,0x0); // link wifi of command .        
+            }
     break;
+  
+    case check_ack_ai_on: 
+        
 
-    case ack_plasma_on:
+            if(gpro_t.receive_copy_cmd == 1){
+        			gpro_t.receive_copy_cmd =0;
+        			 gpro_t.send_ack_cmd = 0;        
+            }
+            else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+        			  gpro_t.gTimer_again_send_power_on_off =0;
+        			  SendData_Set_Command(ai_cmd,0x01); // link wifi of command .
+            }
+   break;
 
-    if(gpro_t.receive_copy_cmd == ack_plasma_on){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(plasma_cmd,0x01); // link wifi of command .
-    }
-    break;
+   case check_ack_ai_off:
+                if(gpro_t.receive_copy_cmd ==2){
+            			gpro_t.receive_copy_cmd =0;
+            			 gpro_t.send_ack_cmd = 0;   
+                }
+                else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+            			  gpro_t.gTimer_again_send_power_on_off =0;
+            			  SendData_Set_Command(ai_cmd,0x0); // link wifi of command .
+                }
+     break;
+           
+    case check_ack_dry_notice_on:
+     
+                if(gpro_t.receive_copy_cmd == 1){
+            			gpro_t.receive_copy_cmd =0;
+            			 gpro_t.send_ack_cmd = 0;   
+                }
+                else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+            			  gpro_t.gTimer_again_send_power_on_off =0;
+            			  SendData_Set_Command(dry_notice_cmd,0x01); // link wifi of command .
+                }
+      break;
 
-    case ack_plasma_off:
-
-    if(gpro_t.receive_copy_cmd == ack_plasma_off){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(plasma_cmd,0x0); // link wifi of command .
-    }
-    break;
-
-    case ack_mouse_on:
-    if(gpro_t.receive_copy_cmd == ack_mouse_on){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(mouse_cmd,0x01); // link wifi of command .
-    }
-    break;
-
-    case ack_mouse_off:
-    if(gpro_t.receive_copy_cmd == ack_mouse_off){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(mouse_cmd,0x0); // link wifi of command .        
-    }
-    break;
-
-    case ack_ai_on:   
-
-    if(gpro_t.receive_copy_cmd == ack_ai_on){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;        
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(ai_cmd,0x01); // link wifi of command .
-    }
-    break;
-
-    case ack_ai_off:
-    if(gpro_t.receive_copy_cmd == ack_ai_off){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;   
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(ai_cmd,0x0); // link wifi of command .
-    }
-    break;
-
-    case ack_dry_notice_on:
-    if(gpro_t.receive_copy_cmd == ack_dry_notice_on){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;   
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(dry_notice_cmd,0x01); // link wifi of command .
-    }
-    break;
-
-    case ack_dry_notice_off:
-    if(gpro_t.receive_copy_cmd == ack_dry_notice_off){
-			gpro_t.receive_copy_cmd =0;
-			 gpro_t.send_ack_cmd = 0;   
-    }
-    else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
-			  gpro_t.gTimer_again_send_power_on_off =0;
-			  SendData_Set_Command(dry_notice_cmd,0x0); // link wifi of command .
-    }
+      case check_ack_dry_notice_off:
+                if(gpro_t.receive_copy_cmd == 2){
+            			gpro_t.receive_copy_cmd =0;
+            			 gpro_t.send_ack_cmd = 0;   
+                }
+                else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
+            			  gpro_t.gTimer_again_send_power_on_off =0;
+            			  SendData_Set_Command(dry_notice_cmd,0x0); // link wifi of command .
+                }
+          
     break;
 
     
 
 
-    case ack_buzzer_sound:
+    case check_ack_buzzer:
 
-        if(gpro_t.receive_copy_cmd == ack_buzzer_sound){
+        if(gpro_t.receive_copy_cmd == 1){
             gpro_t.receive_copy_cmd =0;
             gpro_t.send_ack_cmd = 0;
 
         }
         else if(gpro_t.receive_copy_cmd != 0 && gpro_t.gTimer_again_send_power_on_off >1){
             gpro_t.gTimer_again_send_power_on_off =0;
-            SendData_Set_Command(0x06,0x01); //buzzer sound command .
+            SendData_Set_Command(ack_with_buzzer,0x01); //buzzer sound command .
 
         }
 
@@ -198,13 +213,13 @@ void send_cmd_ack_hanlder(void)
 }
 /******************************************************************************
 *
-*Function Name:void receive_data_fromm_mainboard(uint8_t *pdata,uint8_t len)
+*Function Name:void receive_data_from_mainboard(uint8_t *pdata,uint8_t len)
 *Funcion: handle of tall process
 *Input Ref:
 *Return Ref:
 *
 ******************************************************************************/
-void receive_data_fromm_mainboard(uint8_t *pdata)
+void receive_data_from_mainboard(uint8_t *pdata)
 {
     
 
@@ -297,7 +312,7 @@ void receive_data_fromm_mainboard(uint8_t *pdata)
             run_t.fan_warning = 1;
 
            run_t.gDry =0;
-           SendData_Set_Command(0x22,0x0); //close ptc ,but don't buzzer sound .
+           SendData_Set_Command(0x22,0x0); //0x22:PTC notice close .
 
         }
         else if(pdata[3] == 0x0){ //close
@@ -370,48 +385,7 @@ void receive_data_fromm_mainboard(uint8_t *pdata)
       break;
 
      case copy_cmd: // copy send cmd acknowlege
-          //power on or power off
-          if(pdata[3]==0x01){ //power on or power off cmd.
-              if(pdata[4]==1){ //power on
-
-                 gpro_t.receive_copy_cmd = ack_power_on;
-                 do{
-
-                     power_on_handler();
-                     run_t.gPower_On = power_on;
-                 }while(0);
-
-
-
-              }
-              else if(pdata[4]==2){ //power offf
-
-                 gpro_t.receive_copy_cmd = ack_power_off;
-
-                run_t.gPower_On = power_off;
-               	run_t.gRunCommand_label =RUN_NULL;
-
-
-              }
-
-          }
-          else if(pdata[3] == 0x05){ //link wifi command .
-
-              if(pdata[4]==1){
-
-                 gpro_t.receive_copy_cmd = ack_wifi_on;
-                 
-
-              }
-
-
-          }
-          else if(pdata[3] == 0x16){  //buzzer answer command
-
-                gpro_t.receive_copy_cmd = ack_buzzer_sound;
-
-           }
-
+          rx_answer_data_form_mainboard(pdata);
 
      break;
 
@@ -419,6 +393,94 @@ void receive_data_fromm_mainboard(uint8_t *pdata)
 
  }
 
+
+static void rx_answer_data_form_mainboard(uint8_t *pdata)
+{
+    
+    switch(pdata[3]){
+
+    case ack_power : //power_on 
+    if(pdata[4]==0x01){ //power on or power off cmd.
+        
+
+        gpro_t.receive_copy_cmd = 1;
+        do{
+
+        power_on_handler();
+        run_t.gPower_On = power_on;
+        }while(0);
+        }
+        else{ //power offf
+
+        gpro_t.receive_copy_cmd = 2;
+
+        run_t.gPower_On = power_off;
+        run_t.gRunCommand_label =RUN_NULL;
+
+
+        }
+
+    break;
+
+    case ack_ptc:
+
+    if(pdata[4]==1){
+
+        gpro_t.receive_copy_cmd = 1;
+    }
+    else{
+      gpro_t.receive_copy_cmd = 2;
+
+    }
+
+
+
+    break;
+
+    case ack_plasma:
+
+    if(pdata[4]==1){
+
+        gpro_t.receive_copy_cmd = 1;
+    }
+    else{
+      gpro_t.receive_copy_cmd = 2;
+
+    }
+    break;
+
+    case ack_ai:
+
+    if(pdata[4]==1){
+
+        gpro_t.receive_copy_cmd = 1;
+    }
+    else{
+      gpro_t.receive_copy_cmd = 2;
+
+    }
+
+    break;
+
+
+    
+    
+    case ack_with_buzzer:
+        if(pdata[4] == 1){  //buzzer answer command
+
+            gpro_t.receive_copy_cmd = 1;
+
+        }
+        else{
+          gpro_t.receive_copy_cmd = 2;
+
+
+        }
+     break;
+    }
+
+
+}
 
 
 /******************************************************************************

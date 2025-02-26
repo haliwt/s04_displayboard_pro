@@ -203,11 +203,7 @@ void set_timer_fun_led_blink(void)
 
     ai_ico_fast_blink();
     
-    
-
-
-
-}
+   }
 
    
    if(run_t.gPower_On == power_off){
@@ -246,15 +242,15 @@ void  ai_ico_fast_blink(void)
 
 /****************************************************************
 	*
-	*Function Name :void Set_Temperature_Value(void)
+	*Function Name :void disp_smg_blink_set_tempeature_value(void)
 	*Function : set timer timing how many ?
 	*Input Parameters :NO
 	*Retrurn Parameter :NO
 	*
 *****************************************************************/
-void Set_Temperature_Value(void)
+void disp_smg_blink_set_tempeature_value(void)
 {
-     static uint8_t counter_times;
+     static uint8_t counter_times,every_times;
 	  //waiting for 4 s 
 	  if(run_t.gTimer_key_temp_timing > 1 && run_t.set_temperature_special_value ==1 && gpro_t.set_timer_timing_doing_value==0){
 			
@@ -266,20 +262,27 @@ void Set_Temperature_Value(void)
 	 //temperature of smg of LED blink .
 	  if(run_t.set_temperature_special_value ==2 && gpro_t.set_timer_timing_doing_value==0){
 	  	
-	  	
-		  if(run_t.gTimer_set_temp_times < 15 ){ // 4
+	  	 
+		  if(run_t.gTimer_set_temp_times  > 15 ){ // 4
+                 run_t.gTimer_set_temp_times=0;
+                 counter_times++ ;  
+
+                 every_times ++;
+          if(every_times ==1){
+               
 		        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,1);
           }
-		  else if(run_t.gTimer_set_temp_times > 14 && run_t.gTimer_set_temp_times < 29){
-		  	
+		  else{
+		  	   every_times=0;
 			  TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
 		  }
-		  else{
-		  	 run_t.gTimer_set_temp_times=0;
-             counter_times++ ;  
-
-		  }
+       }
+//		  else{
+//		  	 run_t.gTimer_set_temp_times=0;
+//             counter_times++ ;  
+//
+//		  }
 
 
            if(counter_times > 3){

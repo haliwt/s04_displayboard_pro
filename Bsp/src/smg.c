@@ -282,7 +282,7 @@ void TM1639_Write_4Bit_Time(uint8_t onebit,uint8_t twobit,uint8_t threebit,uint8
 
     TM1639_Write_OneByte(0xCB);//0xC1H->GRID_2->BIT_2
      if(sl==0){
-         TM1639_Write_OneByte(segNumber_High_4bit[twobit]|seg_h);//display "2 :"
+         TM1639_Write_OneByte(segNumber_High_4bit[twobit]);//display "2 :"
    
      }
      else {
@@ -310,7 +310,7 @@ void TM1639_Write_4Bit_Time(uint8_t onebit,uint8_t twobit,uint8_t threebit,uint8
     TM1639_Start();
     TM1639_Write_OneByte(0xCD);//0xC2H->GRID_3->BIT_3
     if(sl==0){
-	    TM1639_Write_OneByte(segNumber_High_4bit[threebit]|seg_h);//display ""
+	    TM1639_Write_OneByte(segNumber_High_4bit[threebit]);//display ""
 
 	}//TM1639_Write_OneByte(OFFLED);//display "NULL"
     else TM1639_Write_OneByte(segNumber_High_4bit[0x10]);
@@ -333,7 +333,7 @@ void TM1639_Write_4Bit_Time(uint8_t onebit,uint8_t twobit,uint8_t threebit,uint8
     TM1639_Start();
     TM1639_Write_OneByte(0xCF);//0xC2H->GRID_4
     if(sl==0){//TM1639_Write_OneByte(OFFLED);//display "NULL"
-	    TM1639_Write_OneByte(segNumber_High_4bit[fourbit]|seg_h);//display ""
+	    TM1639_Write_OneByte(segNumber_High_4bit[fourbit]);//display ""
 
     }
     else TM1639_Write_OneByte(segNumber_High_4bit[0x10]);
@@ -574,7 +574,7 @@ void TM1639_Write_2bit_HumData(uint8_t onebit,uint8_t twobit)
     TM1639_Start();
     TM1639_Write_OneByte(AddrC7H);//0xC2H->GRID_4
 
-	TM1639_Write_OneByte(segNumber_High[twobit]|seg_h);//display ""
+	TM1639_Write_OneByte(segNumber_High[twobit]);//display ""
 
    
 
@@ -633,7 +633,7 @@ void TM1639_Write_2bit_TempData(uint8_t onebit,uint8_t twobit)
      TM1639_Start();
      TM1639_Write_OneByte(AddrC2H);//0xC1H->GRID_2->BIT_2
     
-     TM1639_Write_OneByte(segNumber_Low[twobit]|0x80);//display "2 :"
+     TM1639_Write_OneByte(segNumber_Low[twobit]);//display "2 :"
      
      TM1639_Stop();
    
@@ -642,7 +642,7 @@ void TM1639_Write_2bit_TempData(uint8_t onebit,uint8_t twobit)
 
      TM1639_Write_OneByte(AddrC3H);//0xC1H->GRID_2->BIT_2
    
-     TM1639_Write_OneByte(segNumber_High[twobit]|0x80|seg_h);//display "2 :"
+     TM1639_Write_OneByte(segNumber_High[twobit]);//TM1639_Write_OneByte(segNumber_High[twobit]|0x80|seg_h);//display "2 :"
    
   
      TM1639_Stop();
@@ -711,9 +711,9 @@ void TM1639_Write_2bit_SetUp_TempData(uint8_t onebit,uint8_t twobit,uint8_t sel)
 	 TM1639_Start();
      TM1639_Write_OneByte(AddrC3H);//0xC7H->GRID8->BIT_2
      if(sel==0)
-     	TM1639_Write_OneByte(segNumber_High[twobit]|seg_h);//display ""
+     	TM1639_Write_OneByte(segNumber_High[twobit]);//WT.EDIT.2025.02.22.//TM1639_Write_OneByte(segNumber_High[twobit]|seg_h);//display ""
      else{
-	    TM1639_Write_OneByte(segNumber_High[0x10]|seg_h);
+	    TM1639_Write_OneByte(segNumber_High[0x10]);//TM1639_Write_OneByte(segNumber_High[0x10]|seg_h);
 
 	 }
      TM1639_Stop();

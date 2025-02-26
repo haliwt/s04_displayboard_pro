@@ -72,6 +72,7 @@ MSG_T   gl_tMsg; /* 定义丢�个结构体用于消息队列 */
 uint8_t ucKeyCode;
 uint8_t uckey_number;
 uint8_t key_power_flag,decoder_flag ;
+uint8_t check_code;
 /**********************************************************************************************************
 *	凄1�7 敄1�7 各1�7: vTaskTaskUserIF
 *	功能说明: 接口消息处理〄1�7
@@ -107,7 +108,7 @@ static void vTaskDecoderPro(void *pvParameters)
     BaseType_t xResult;
 	//const TickType_t xMaxBlockTime = pdMS_TO_TICKS(500); /* 设置最大等待时间为30ms */
 	uint32_t ulValue;
-	uint8_t check_code;
+	
 
     while(1)
     {
@@ -129,7 +130,7 @@ static void vTaskDecoderPro(void *pvParameters)
 
 				if(check_code == gl_tMsg.bcc_check_code ){
 
-				receive_data_fromm_mainboard(gl_tMsg.usData);
+				receive_data_from_mainboard(gl_tMsg.usData);
 				}
 			}
 
@@ -180,7 +181,7 @@ static void vTaskRunPro(void *pvParameters)
         if(key_t.key_ai_flag ==20){
             //SendData_Buzzer(); 
             SendData_Buzzer_Has_Ack();
-		     gpro_t.send_ack_cmd = ack_buzzer_sound;
+		     gpro_t.send_ack_cmd = check_ack_buzzer;
 		     gpro_t.gTimer_again_send_power_on_off =0;
 
             key_t.key_ai_flag++;
@@ -192,12 +193,12 @@ static void vTaskRunPro(void *pvParameters)
 			key_t.key_power_flag ++;
 
 					if(run_t.gPower_On == power_off){
-					gpro_t.send_ack_cmd = ack_power_on;
+					gpro_t.send_ack_cmd = check_ack_power_on;
 					gpro_t.gTimer_again_send_power_on_off =0;
 					SendData_PowerOnOff(1);//power on
 				}
 				else{
-					gpro_t.send_ack_cmd = ack_power_off;
+					gpro_t.send_ack_cmd =  check_ack_power_off;
 					gpro_t.gTimer_again_send_power_on_off =0;
 					SendData_PowerOnOff(0);//power off
 
@@ -213,14 +214,14 @@ static void vTaskRunPro(void *pvParameters)
 			else if(key_t.key_dec_flag ==1){// && DEC_KEY_VALUE()==KEY_UP){
 				 key_t.key_dec_flag ++;
 				SendData_Buzzer_Has_Ack();
-				gpro_t.send_ack_cmd = ack_buzzer_sound;
+				gpro_t.send_ack_cmd = check_ack_buzzer;
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_dec_fun();
 			}
 			else if(key_t.key_add_flag ==1){ // && ADD_KEY_VALUE()==KEY_UP){
 				 key_t.key_add_flag ++;
 				 SendData_Buzzer_Has_Ack();
-				gpro_t.send_ack_cmd = ack_buzzer_sound;
+				gpro_t.send_ack_cmd = check_ack_buzzer;
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_add_fun();
 			}
@@ -251,7 +252,7 @@ static void vTaskRunPro(void *pvParameters)
         			 run_t.gPlasma = 0;
                      SendData_Set_Command(plasma_cmd,0x0); //
         			 LED_PLASMA_OFF();
-					gpro_t.send_ack_cmd = ack_plasma_off;
+					gpro_t.send_ack_cmd = check_ack_plasma_off;
 				     gpro_t.gTimer_again_send_power_on_off =0;
         			 
         		 }
@@ -260,7 +261,7 @@ static void vTaskRunPro(void *pvParameters)
 
                      SendData_Set_Command(plasma_cmd,0x01); //
         			 LED_PLASMA_ON();
-					  gpro_t.send_ack_cmd = ack_plasma_on;
+					  gpro_t.send_ack_cmd = check_ack_plasma_on;
 				     gpro_t.gTimer_again_send_power_on_off =0;
         			
         	     }
@@ -276,7 +277,7 @@ static void vTaskRunPro(void *pvParameters)
         		   run_t.gDry =1;
                    gpro_t.key_set_dry_flag = 0;
         		   LED_DRY_ON();
-        		   gpro_t.send_ack_cmd = ack_ptc_on;
+        		   gpro_t.send_ack_cmd = check_ack_ptc_on;
         		   gpro_t.gTimer_again_send_power_on_off =0;
         		   
         	   }
@@ -285,7 +286,7 @@ static void vTaskRunPro(void *pvParameters)
         		   run_t.gDry = 0;
                    gpro_t.key_set_dry_flag = 1; //if gpro_t.key_set_dry_flag ==1,don't again open dry function.
         		   LED_DRY_OFF();
-        		   gpro_t.send_ack_cmd = ack_ptc_off;
+        		   gpro_t.send_ack_cmd = check_ack_ptc_off;
         		   gpro_t.gTimer_again_send_power_on_off =0;
         		  
         	   }
@@ -300,7 +301,7 @@ static void vTaskRunPro(void *pvParameters)
                    SendData_Set_Command(mouse_cmd,0x01); //
                    run_t.gMouse =1;
         		   LED_MOUSE_ON();
-        		  // gpro_t.send_ack_cmd = ack_mouse_on;
+        		  // gpro_t.send_ack_cmd = check_ack_mouse_on;
         		  // gpro_t.gTimer_again_send_power_on_off =0;
                    
         		   
@@ -374,7 +375,7 @@ static void vTaskRunPro(void *pvParameters)
 *	Function: 
 *	Input Ref: pvParameters 是在创建该任务时传递的形参
 *	Return Ref:
-*   priority: 3  (数值越小优先级越低，这个跟uCOS相反)
+*priority: 3  (数值越小优先级越低，这个跟uCOS相反)
 *
 **********************************************************************************************************/
 static void vTaskStart(void *pvParameters)
@@ -464,22 +465,15 @@ static void vTaskStart(void *pvParameters)
             	                 
             }
 
-
-
-            }
+          }
            
         }
-      
-
 }
- 
-
-
-/**********************************************************************************************************
-*	凄1�7 敄1�7 各1�7: AppTaskCreate
+ /**********************************************************************************************************
+*	Function Name: AppTaskCreate
 *	功能说明: 创建应用任务
-*	彄1�7    参：旄1�7
-*	迄1�7 囄1�7 倄1�7: 旄1�7
+*	Input Ref:   
+*	Return Ref:
 **********************************************************************************************************/
 void AppTaskCreate (void)
 {

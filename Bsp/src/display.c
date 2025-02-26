@@ -96,23 +96,18 @@ static void TimeColon_Smg_Blink_Fun(void)
 		  SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,0);
      else{
           i=0;
-	  // }
-	  // else if(run_t.gTimer_colon >  1	&&	run_t.gTimer_colon < 3){
+	
 		   SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,1);
         }
 
-	 // }
-	 // else{
-	//	 run_t.gTimer_colon =0;
-        
-	 // }
+	
 }
 
 
 void Display_TimeColon_Blink_Fun(void)
 {
 
-  if(run_t.gTimer_time_colon >200){ //160 //10*20ms=300ms
+  if(run_t.gTimer_time_colon >200){ //200 //10*20ms=300ms
 
 	   run_t.gTimer_time_colon =0;
        

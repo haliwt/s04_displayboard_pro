@@ -93,7 +93,7 @@ void Display_SetTemperature_Value(void)
     if(gpro_t.set_temp_value_success ==1 && run_t.gTimer_temp_delay >60){
                run_t.gTimer_temp_delay =0;
 		 
-		 // set_temperature_value= run_t.set_temperature_decade_value*10+ run_t.set_temperature_unit_value;
+		 // disp_smg_blink_set_tempeature_value= run_t.set_temperature_decade_value*10+ run_t.set_temperature_unit_value;
 		  if(gpro_t.set_up_temperature_value <= run_t.gReal_humtemp[1] || run_t.gReal_humtemp[1] >39){//envirment temperature
 	  
 				run_t.gDry = 0;
@@ -366,7 +366,7 @@ void Display_SmgTiming_Value(void)
 			run_t.timer_dispTime_hours=0;
 			run_t.timer_dispTime_minutes=0;
              
-	        gpro_t.send_ack_cmd = ack_power_off;
+	        gpro_t.send_ack_cmd = check_ack_power_off;//ack_power_off;
 			gpro_t.gTimer_again_send_power_on_off =0;
 			SendData_PowerOnOff(0);//power off
 			

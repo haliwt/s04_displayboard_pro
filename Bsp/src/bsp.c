@@ -86,8 +86,8 @@ void power_on_run_handler(void)
               }
               else if(gpro_t.set_timer_timing_doing_value == 0 &&  run_t.set_temperature_special_value   >0 &&  run_t.set_temperature_special_value != 0xff ){
 
-           
-                   Set_Temperature_Value();
+                   //
+                   disp_smg_blink_set_tempeature_value();
 	              
 						
              }
@@ -129,9 +129,7 @@ void power_on_run_handler(void)
              }    
       break;
 
-	 
-
-  }
+	}
 }
 
 
@@ -296,7 +294,7 @@ void key_add_fun(void)
         run_t.set_temperature_decade_value = gpro_t.set_up_temperature_value / 10 ;
         run_t.set_temperature_unit_value  =gpro_t.set_up_temperature_value % 10; //
 
-       // run_t.set_temperature_flag=set_temperature_value;
+       // run_t.set_temperature_flag=disp_smg_blink_set_tempeature_value;
         run_t.set_temperature_special_value=1;
         run_t.gTimer_key_temp_timing=0;
         run_t.gTimer_time_colon=0;
@@ -391,7 +389,6 @@ void key_dec_fun(void)
         run_t.gTimer_time_colon=0;
         //SendData_Set_Command(DRY_ON_NO_BUZZER); =0; //after set temperature allow shut off dry .
 
-     //   TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
         
         TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
     break;
@@ -467,7 +464,7 @@ void compare_temp_value(void)
         LED_DRY_ON();
        if(gpro_t.interval_works_ten_minutes_flag ==0){
 		   SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
-		   gpro_t.send_ack_cmd = ack_dry_notice_on;
+		   gpro_t.send_ack_cmd = check_ack_dry_notice_on;
 		   gpro_t.gTimer_again_send_power_on_off =0;
 
         }
@@ -479,7 +476,7 @@ void compare_temp_value(void)
          LED_DRY_OFF();
       
     	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
-    	 gpro_t.send_ack_cmd = ack_dry_notice_off;
+    	 gpro_t.send_ack_cmd = check_ack_dry_notice_off;
 		 gpro_t.gTimer_again_send_power_on_off =0;
          }
 
@@ -491,7 +488,7 @@ void compare_temp_value(void)
          LED_DRY_OFF();
        
     	 SendData_Set_Command(dry_notice_cmd,0x0);//SendData_Set_Command(DRY_OFF_NO_BUZZER);
-    	 gpro_t.send_ack_cmd = ack_dry_notice_off;
+    	 gpro_t.send_ack_cmd = check_ack_dry_notice_off;
 		 gpro_t.gTimer_again_send_power_on_off =0;
         
          first_one_flag =1;
@@ -509,7 +506,7 @@ void compare_temp_value(void)
              
         		
         		 SendData_Set_Command(dry_notice_cmd,0x01);//SendData_Set_Command(DRY_ON_NO_BUZZER);
-                  gpro_t.send_ack_cmd = ack_dry_notice_on;
+                  gpro_t.send_ack_cmd = check_ack_dry_notice_on;
 		          gpro_t.gTimer_again_send_power_on_off =0;
 
                 }
