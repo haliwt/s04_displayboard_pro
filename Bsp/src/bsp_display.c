@@ -3,7 +3,7 @@
 
 
 
-static void TimeColon_Smg_Blink_Fun(void);
+//static void TimeColon_Smg_Blink_Fun(void);
 
 
 /**********************************************************************
@@ -86,32 +86,35 @@ void Display_Error_Digital(uint8_t errnumbers,uint8_t sel)
 *Return Ref: NO
 *
 ********************************************************************************/
-static void TimeColon_Smg_Blink_Fun(void)
-{
-	//if(run_t.gTimer_colon < 1){ //2
-	static uint8_t i;
+//static void TimeColon_Smg_Blink_Fun(void)
+//{
+//	//if(run_t.gTimer_colon < 1){ //2
+//	static uint8_t i;
 
-     i++ ;
-     if(i==1)
-		  SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,0);
-     else{
-          i=0;
-	
-		   SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,1);
-        }
+//     i++ ;
+//     if(i==1)
+//		  SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,0);
+//     else{
+//          i=0;
+//	
+//		   SmgBlink_Colon_Function(run_t.hours_two_unit_bit ,run_t.minutes_one_decade_bit,1);
+//        }
 
-	
-}
+//	
+//}
 
 
 void Display_TimeColon_Blink_Fun(void)
 {
 
-  if(run_t.gTimer_time_colon >200){ //200 //10*20ms=300ms
+  if(run_t.gTimer_time_colon >0 && gpro_t.set_timer_timing_doing_value==0){ //200 //10*20ms=300ms
 
 	   run_t.gTimer_time_colon =0;
        
-	   TimeColon_Smg_Blink_Fun();
+	 	  gpro_t.g_time_disp_colon_flag = gpro_t.g_time_disp_colon_flag ^ 0x01;
+	
+		  SmgBlink_Colon_Function(run_t.hours_two_unit_bit,run_t.minutes_one_decade_bit,gpro_t.g_time_disp_colon_flag);
+     
 	}
 }
 

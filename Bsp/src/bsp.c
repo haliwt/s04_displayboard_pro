@@ -109,6 +109,7 @@ void power_on_run_handler(void)
 				   break;
                     
                     case 2: //display 1:   timing times  2: timer times.
+                        if(gpro_t.set_timer_timing_doing_value==0){
                         if(run_t.ptc_warning ==0 && run_t.fan_warning ==0){ //read main board ptc_warning of ref.
                             Display_SmgTiming_Value();
 
@@ -119,7 +120,7 @@ void power_on_run_handler(void)
 
                         }
                         
-
+                        }
 
                      step_state=0;
                     break;
@@ -297,7 +298,7 @@ void key_add_fun(void)
        // run_t.set_temperature_flag=disp_smg_blink_set_tempeature_value;
         run_t.set_temperature_special_value=1;
         run_t.gTimer_key_temp_timing=0;
-        run_t.gTimer_time_colon=0;
+       
         gpro_t.key_set_dry_flag =0; // allow open dry function.WT.2025.02.21
       
         
@@ -338,7 +339,7 @@ void key_add_fun(void)
 
         }
 
-       run_t.gTimer_time_colon =0;
+
         
      run_t.hours_two_decade_bit = run_t.temporary_timer_dispTime_hours /10;
     run_t.hours_two_unit_bit   = run_t.temporary_timer_dispTime_hours %10;
@@ -366,7 +367,7 @@ void key_dec_fun(void)
 {
     
     if(run_t.ptc_warning ==0 ){
-    run_t.gTimer_time_colon=0;
+
   
     switch(gpro_t.set_timer_timing_doing_value){
 
@@ -386,7 +387,7 @@ void key_dec_fun(void)
         gpro_t.key_set_dry_flag = 0 ;//  allow open dry function
         run_t.set_temperature_special_value=1;
         run_t.gTimer_key_temp_timing=0;
-        run_t.gTimer_time_colon=0;
+
         //SendData_Set_Command(DRY_ON_NO_BUZZER); =0; //after set temperature allow shut off dry .
 
         
@@ -416,7 +417,7 @@ void key_dec_fun(void)
         }
 
      }
-     run_t.gTimer_time_colon =0;
+    
 
     run_t.hours_two_decade_bit = run_t.temporary_timer_dispTime_hours /10;
     run_t.hours_two_unit_bit   = run_t.temporary_timer_dispTime_hours %10;

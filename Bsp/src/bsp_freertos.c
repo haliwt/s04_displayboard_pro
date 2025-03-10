@@ -322,16 +322,9 @@ static void vTaskRunPro(void *pvParameters)
 
 	if(run_t.gPower_On == power_on){
 
-      
-       if(gpro_t.set_timer_timing_doing_value==1){
 
 
-         ai_ico_fast_blink();
-         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ;
-
-       }
-
-       if(run_t.ai_model_flag == AI_MODE && gpro_t.ai_mode_set_flag==1){
+       if(run_t.ai_model_flag == AI_MODE && gpro_t.ai_mode_set_flag==1 ){
           gpro_t.ai_mode_set_flag=20;
 
           run_t.gMouse =1;
@@ -349,7 +342,7 @@ static void vTaskRunPro(void *pvParameters)
              
        Display_TimeColon_Blink_Fun();
        set_timer_fun_led_blink();
-       if(power_on_theFirst_times < 10){
+       if(power_on_theFirst_times < 10 && gpro_t.set_timer_timing_doing_value==0){
          power_on_theFirst_times ++;
          Display_DHT11_Value();
 
@@ -470,6 +463,7 @@ static void vTaskStart(void *pvParameters)
             }
 
           }
+		
            
         }
 }

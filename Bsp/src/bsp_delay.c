@@ -25,12 +25,23 @@ void delay_init(uint8_t SYSCLK)
 	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk; //¿ªÆôSYSTICK
 #else
 #endif
-}								    
+}
+
+void delay_us(uint32_t us) {
+    SysTick->LOAD = SystemCoreClock / 1000000 * us;  // 设置重装载值
+    SysTick->VAL = 0x00;                             // 清空计数器
+    SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;         // 使 enable 能SysTick
+    while (!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk));  // waiting  counter finish .等待计数完成
+    SysTick->CTRL = 0x00;                            // 关close闭SysTick
+    SysTick->VAL = 0x00;                             // clear counter "0"清空计数器
+}
+
 
 
 //ÑÓÊ±nus
 //nus:ÒªÑÓÊ±µÄusÊý.	
-//nus:0~190887435(×î´óÖµ¼´2^32/fac_us@fac_us=22.5)	    								   
+//nus:0~190887435(×î´óÖµ¼´2^32/fac_us@fac_us=22.5)	
+#if 0
 void delay_us(uint32_t nus)
 {		
 	uint32_t ticks;
@@ -52,48 +63,7 @@ void delay_us(uint32_t nus)
 	};
 	//delay_osschedunlock();					//»Ö¸´OSµ÷¶È											    
 }  
-//ÑÓÊ±nms
-//nms:ÒªÑÓÊ±µÄmsÊý
-//nms:0~65535
-//void delay_ms(uint16_t nms)
-//{	
-////	if(delay_osrunning&&delay_osintnesting==0)//Èç¹ûOSÒÑ¾­ÔÚÅÜÁË,²¢ÇÒ²»ÊÇÔÚÖÐ¶ÏÀïÃæ(ÖÐ¶ÏÀïÃæ²»ÄÜÈÎÎñµ÷¶È	    
-////	{		 
-////		if(nms>=fac_ms)						//ÑÓÊ±µÄÊ±¼ä´óÓÚOSµÄ×îÉÙÊ±¼äÖÜÆÚ 
-////		{ 
-////   			delay_ostimedly(nms/fac_ms);	//OSÑÓÊ±
-////		}
-////		nms%=fac_ms;						//OSÒÑ¾­ÎÞ·¨Ìá¹©ÕâÃ´Ð¡µÄÑÓÊ±ÁË,²ÉÓÃÆÕÍ¨·½Ê½ÑÓÊ±    
-////	}
-//	delay_us((uint32_t)(nms*1000));				//ÆÕÍ¨·½Ê½ÑÓÊ±
-//}
-
-
-//ÑÓÊ±nus
-//nusÎªÒªÑÓÊ±µÄusÊý.	
-//nus:0~190887435(×î´óÖµ¼´2^32/fac_us@fac_us=22.5)	 
-//void delay_us(uint32_t nus)
-//{		
-//	uint32_t ticks;
-//	uint32_t told,tnow,tcnt=0;
-//	uint32_t reload=SysTick->LOAD;				//LOADµÄÖµ	    	 
-//	ticks=nus*fac_us; 						//ÐèÒªµÄ½ÚÅÄÊý 
-//	told=SysTick->VAL;        				//¸Õ½øÈëÊ±µÄ¼ÆÊýÆ÷Öµ
-//	while(1)
-//	{
-//		tnow=SysTick->VAL;	
-//		if(tnow!=told)
-//		{	    
-//			if(tnow<told)tcnt+=told-tnow;	//ÕâÀï×¢ÒâÒ»ÏÂSYSTICKÊÇÒ»¸öµÝ¼õµÄ¼ÆÊýÆ÷¾Í¿ÉÒÔÁË.
-//			else tcnt+=reload-tnow+told;	    
-//			told=tnow;
-//			if(tcnt>=ticks)break;			//Ê±¼ä³¬¹ý/µÈÓÚÒªÑÓ³ÙµÄÊ±¼ä,ÔòÍË³ö.
-//		}  
-//	};
-//}
-
-//ÑÓÊ±nms
-//nms:ÒªÑÓÊ±µÄmsÊý
+#endif 
 void delay_ms(uint16_t nms)
 {
 	uint32_t i;

@@ -44,7 +44,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
     run_t.gTimer_smg_blink_times++;
 	run_t.gTimer_set_temp_times++;
-	run_t.gTimer_time_colon++ ;
+	
     
     gpro_t.gTimer_4bitsmg_blink_times++;
 	
@@ -58,6 +58,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		
 		run_t.gTimer_fan_continue++;
         run_t.gTimer_detect_mb_receive_flag++;
+		run_t.gTimer_time_colon++ ;
 		//--------------//
 
         run_t.gTimer_timer_timing_counter ++;

@@ -144,7 +144,7 @@ void Set_TimerTiming_Number_Value(void)
 
    if(gpro_t.set_timer_timing_doing_value==1){
    //set timer timing value 
-    if(run_t.gTimer_key_timing > 4){
+    if(run_t.gTimer_key_timing > 3){
 		run_t.gTimer_key_timing =0;		
 		gpro_t.set_timer_timing_doing_value  =0 ;
 	    run_t.gTimer_timer_timing_counter=0;
@@ -159,61 +159,28 @@ void set_timer_fun_led_blink(void)
    static uint8_t time_smg_blink;
  
    if(gpro_t.set_timer_timing_doing_value==1){
+   	
 
-    
-
-    if(gpro_t.set_timer_first_smg_blink_flag ==0){
-       gpro_t.set_timer_first_smg_blink_flag++ ;
-
-        TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
-         LED_AI_OFF();
-       
-        gpro_t.gTimer_4bitsmg_blink_times=0;
-
-    }
-    else{
-   
-    if(gpro_t.gTimer_4bitsmg_blink_times  > 200 ){// //180ms
+     if(gpro_t.gTimer_4bitsmg_blink_times  > 300){// //180ms
        gpro_t.gTimer_4bitsmg_blink_times =0;
 
-       time_smg_blink++;
+       time_smg_blink = time_smg_blink ^ 0x01;
 
-       if(time_smg_blink==1){
-       
-       TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,0) ; 
-       LED_AI_ON();
-        
-      }
-      else{
-       
-         time_smg_blink=0;
-    
-          
-         TM1639_Write_4Bit_Time(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,1) ; 
-   
-         LED_AI_OFF();
-
-    }
   
-    }
-    }
-   // RunLocal_Dht11_Data_Process();
-
-
-
-    ai_ico_fast_blink();
+       TM1639_Write_4Bit_Time_sync_close(run_t.hours_two_decade_bit,run_t.hours_two_unit_bit, run_t.minutes_one_decade_bit,run_t.minutes_one_unit_bit,time_smg_blink) ; 
+    
+       //ai_ico_fast_blink();
     
    }
 
-   
+   }
    if(run_t.gPower_On == power_off){
       LED_AI_OFF();
        
    }
+   
 
-   //input set timer timing numbers is blink.
-
- }
+}
 
 void  ai_ico_fast_blink(void)
 {
@@ -267,22 +234,17 @@ void disp_smg_blink_set_tempeature_value(void)
                  run_t.gTimer_set_temp_times=0;
                  counter_times++ ;  
 
-                 every_times ++;
-          if(every_times ==1){
-               
-		        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,1);
-          }
-		  else{
-		  	   every_times=0;
+//                 every_times ++;
+//          if(every_times ==1){
+//               
+//		        TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,1);
+//          }
+//		  else{
+//		  	   every_times=0;
 			  TM1639_Write_2bit_SetUp_TempData(run_t.set_temperature_decade_value,run_t.set_temperature_unit_value,0);
 
 		  }
-       }
-//		  else{
-//		  	 run_t.gTimer_set_temp_times=0;
-//             counter_times++ ;  
-//
-//		  }
+       
 
 
            if(counter_times > 3){

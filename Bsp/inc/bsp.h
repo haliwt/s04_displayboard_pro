@@ -77,6 +77,8 @@ typedef struct _pro_t{
    uint8_t key_set_dry_flag;
    uint8_t ai_mode_set_flag;
 
+   uint8_t g_time_disp_colon_flag;
+
 
 
    
