@@ -12,6 +12,8 @@
   * mass version 1.0 no wifi displayPanel DATA.2024.06.27
   * mass version 2.1 interval ten minutes stop relay sound .DATA.2024.10.13
   * update modify error number display . DATA.2024.10.24
+  * data:2026-11-01 : S06S display board fit to U-WD-MB-YS32T031 
+  *
   *
   ******************************************************************************
   */

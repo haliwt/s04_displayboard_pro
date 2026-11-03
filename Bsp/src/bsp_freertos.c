@@ -158,35 +158,39 @@ static void vTaskRunPro(void *pvParameters)
 	
     while(1)
     {
-
-        if(AI_KEY_VALUE() == KEY_DOWN &&   key_t.key_ai_flag < 10 && run_t.gPower_On == power_on){
-        	key_t.key_ai_flag =20 ;
-          //  SendData_Buzzer();        
+      
+        if(AI_KEY_VALUE() == KEY_DOWN && key_t.key_ai_flag ==0 && run_t.gPower_On == power_on && run_t.ptc_warning==0 && run_t.fan_warning == 0){
+        	key_t.key_ai_flag =1 ;
+            SendData_Set_Command(0x0D,0x01);//SendData_Buzzer_Has_Ack();//SendData_Set_Command(0x0D,0x01); //WT.EDIT 2026-11-01
+            vTaskDelay(10);
         
-         if(run_t.ai_model_flag == AI_MODE){
-   		  run_t.ai_model_flag = NO_AI_MODE;
-          gpro_t.ai_mode_set_flag= 2;
-           LED_AI_OFF();
+	         if(run_t.ai_model_flag == AI_MODE){
+	   		  run_t.ai_model_flag = NO_AI_MODE;
+	          gpro_t.ai_mode_set_flag= 2;
+	           LED_AI_OFF();
 
-   		}
-   		else{
-   		   run_t.ai_model_flag = AI_MODE;
-            LED_AI_ON();
-            gpro_t.ai_mode_set_flag= 1;
-            }
-             
+	   		}
+	   		else{
+	   		   run_t.ai_model_flag = AI_MODE;
+	            LED_AI_ON();
+	            gpro_t.ai_mode_set_flag= 1;
+	        }
+	             
         }
-        else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==21) key_t.key_ai_flag =0;
+        else if(AI_KEY_VALUE() == KEY_UP &&  key_t.key_ai_flag ==1) key_t.key_ai_flag =0;
 
+	   
+       #if 0
         if(key_t.key_ai_flag ==20){
             //SendData_Buzzer(); 
-            SendData_Buzzer_Has_Ack();
+             //SendData_Buzzer_Has_Ack();
 		     gpro_t.send_ack_cmd = check_ack_buzzer;
 		     gpro_t.gTimer_again_send_power_on_off =0;
 
             key_t.key_ai_flag++;
 
          }
+		#endif 
 
 
      if(key_t.key_power_flag ==1){ //&& POWER_KEY_VALUE() ==KEY_UP){
@@ -196,61 +200,47 @@ static void vTaskRunPro(void *pvParameters)
 					gpro_t.send_ack_cmd = check_ack_power_on;
 					gpro_t.gTimer_again_send_power_on_off =0;
 					SendData_PowerOnOff(1);//power on
+					vTaskDelay(10);
 				}
 				else{
 					gpro_t.send_ack_cmd =  check_ack_power_off;
 					gpro_t.gTimer_again_send_power_on_off =0;
 					SendData_PowerOnOff(0);//power off
+					vTaskDelay(10);
 
 				}
 			}
-			else if(key_t.key_mode_flag ==1){ //&& MODEL_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_mode_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){ //&& MODEL_KEY_VALUE()==KEY_UP){
 				 key_t.key_mode_flag ++;
 				 SendData_Buzzer();//SendData_Buzzer_Has_Ack();
 				//gpro_t.send_ack_cmd = ack_buzzer_sound;
 				//gpro_t.gTimer_again_send_power_on_off =0;
 				mode_key_fun();
 			}
-			else if(key_t.key_dec_flag ==1){// && DEC_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_dec_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){// && DEC_KEY_VALUE()==KEY_UP){
 				 key_t.key_dec_flag ++;
 				SendData_Buzzer_Has_Ack();
+			    vTaskDelay(10);
 				gpro_t.send_ack_cmd = check_ack_buzzer;
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_dec_fun();
 			}
-			else if(key_t.key_add_flag ==1){ // && ADD_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_add_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){ // && ADD_KEY_VALUE()==KEY_UP){
 				 key_t.key_add_flag ++;
 				 SendData_Buzzer_Has_Ack();
+			     vTaskDelay(10);
 				gpro_t.send_ack_cmd = check_ack_buzzer;
 				gpro_t.gTimer_again_send_power_on_off =0;
 				key_add_fun();
 			}
-//			else if(key_t.key_ai_flag ==1){ // && AI_KEY_VALUE()==KEY_UP){
-//				 key_t.key_ai_flag =0;
-//				if(run_t.ai_model_flag == AI_MODE){
-//        		  run_t.ai_model_flag = NO_AI_MODE;
-//                  SendData_Buzzer();
-//        		  LED_AI_OFF();
-//				   ///gpro_t.send_ack_cmd = ack_ai_off;
-//				   //gpro_t.gTimer_again_send_power_on_off =0;
-//				  //SendData_Set_Command(ai_cmd,0x0); //
-//        		}
-//        		else{
-//        		   run_t.ai_model_flag = AI_MODE;
-//                   SendData_Buzzer();
-//        		   LED_AI_ON();
-//        		   //SendData_Set_Command(ai_cmd,0x01); //
-//				   //gpro_t.send_ack_cmd = ack_ai_on;
-//				   //gpro_t.gTimer_again_send_power_on_off =0;
-//        		}
-//			}
-			else if(key_t.key_plasma_flag ==1){// && PLASMA_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_plasma_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){// && PLASMA_KEY_VALUE()==KEY_UP){
 				 key_t.key_plasma_flag ++;
 
              if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gPlasma == 1){
         			 run_t.gPlasma = 0;
                      SendData_Set_Command(plasma_cmd,0x0); //
+                     vTaskDelay(10);
         			 LED_PLASMA_OFF();
 					gpro_t.send_ack_cmd = check_ack_plasma_off;
 				     gpro_t.gTimer_again_send_power_on_off =0;
@@ -260,7 +250,9 @@ static void vTaskRunPro(void *pvParameters)
         			 run_t.gPlasma = 1;
 
                      SendData_Set_Command(plasma_cmd,0x01); //
+                     vTaskDelay(10);
         			 LED_PLASMA_ON();
+					 
 					  gpro_t.send_ack_cmd = check_ack_plasma_on;
 				     gpro_t.gTimer_again_send_power_on_off =0;
         			
@@ -268,12 +260,13 @@ static void vTaskRunPro(void *pvParameters)
                 }
 
 			}
-			else if(key_t.key_dry_flag ==1){ // && DRY_KEY_VALUE()==KEY_UP){
+			else if(key_t.key_dry_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){ // && DRY_KEY_VALUE()==KEY_UP){
 				 key_t.key_dry_flag ++;
 
              if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gDry ==0){
                     SendData_Set_Command(dry_cmd,0x01); //
+                    vTaskDelay(10);
         		   run_t.gDry =1;
                    gpro_t.key_set_dry_flag = 0;
         		   LED_DRY_ON();
@@ -283,6 +276,7 @@ static void vTaskRunPro(void *pvParameters)
         	   }
         	   else{
                    SendData_Set_Command(dry_cmd,0x00); //
+                   vTaskDelay(10);
         		   run_t.gDry = 0;
                    gpro_t.key_set_dry_flag = 1; //if gpro_t.key_set_dry_flag ==1,don't again open dry function.
         		   LED_DRY_OFF();
@@ -293,12 +287,13 @@ static void vTaskRunPro(void *pvParameters)
                 }
 				
 			}
-			else if(key_t.key_mouse_flag ==1){
+			else if(key_t.key_mouse_flag ==1 && run_t.ptc_warning==0 && run_t.fan_warning == 0){
 				 key_t.key_mouse_flag ++;
                 if(gpro_t.set_timer_timing_doing_value==0){
 				 if(run_t.gMouse ==0){
         		   
                    SendData_Set_Command(mouse_cmd,0x01); //
+                   vTaskDelay(10);
                    run_t.gMouse =1;
         		   LED_MOUSE_ON();
         		  // gpro_t.send_ack_cmd = check_ack_mouse_on;
@@ -309,6 +304,7 @@ static void vTaskRunPro(void *pvParameters)
         	      else if(run_t.gMouse ==1){
         		   
                    SendData_Set_Command(mouse_cmd,0x00); //
+                   vTaskDelay(10);
                    run_t.gMouse = 0;
         		   LED_MOUSE_OFF();
         		   //gpro_t.send_ack_cmd = ack_mouse_off;
@@ -334,6 +330,7 @@ static void vTaskRunPro(void *pvParameters)
           LED_DRY_ON();
           LED_PLASMA_ON();
           SendData_Set_Command(ai_cmd,0x01); 
+		  vTaskDelay(10);
 
 
        }
@@ -447,13 +444,6 @@ static void vTaskStart(void *pvParameters)
             	                  //bsp_PutKey(keyvalue);
             	                     }
              }
-//           else if((ulValue & AI_BIT_7 ) != 0){   /* 接收到消息，检测那个位被按下 */
-//        	   if(run_t.gPower_On == power_on){
-//        	                        key_t.key_ai_flag = 1;
-//        	                        //keyvalue = KEY_AI_DOWN;
-//        	                        //bsp_PutKey(keyvalue);
-//        	                    }
-//            }
             else if((ulValue & MOUSE_BIT_4 ) != 0){   /* 接收到消息，检测那个位被按下 */
             	 if(run_t.gPower_On == power_on){
                    
@@ -469,7 +459,7 @@ static void vTaskStart(void *pvParameters)
 }
  /**********************************************************************************************************
 *	Function Name: AppTaskCreate
-*	功能说明: 创建应用任务
+*	功能说明: 创建应用任务,优先级数字越大，优先级越高
 *	Input Ref:   
 *	Return Ref:
 **********************************************************************************************************/
@@ -480,7 +470,7 @@ void AppTaskCreate (void)
                  "vTaskDecoderPro",  		/* 任务各1�7    */
                  128,         		/* stack大小，单位word，也就是4字节 */
                  NULL,        		/* 任务参数  */
-                 2,           		/* 任务优先纄1�7 数��越小优先级越低，这个跟uCOS相反 */
+                 2,           		/* (数值越小优先级越低，这个跟uCOS相反) */
                  &xHandleTaskDecoderPro); /* 任务句柄  */
 
   xTaskCreate( vTaskRunPro,    		/* 任务函数  */
